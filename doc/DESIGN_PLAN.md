@@ -189,6 +189,7 @@ This project makes use of 4 primary APIs -- Visualizer internal, Visualizer exte
     * Receive input from the parser/ front end side
     * Send the new information about turtle to the front end after each command
     * Generate a command list to send to the front end 
+
 Within these APIs and the two ends of the project will be a variety of classes which will interact with each other as follows:
 
 ![](./images/CRC.jpg)
