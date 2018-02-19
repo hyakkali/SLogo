@@ -170,18 +170,19 @@ User wants to redo a certain command
 
 In implementing this project, our team will create a functional, high level and user-friendly programming language designed for children to experiment with programming. The program will allow the user to update the color and position of a turtle sprite by typing single to multiple line codes referenced in the library of commands we write for the project. The project will be split up into several components-- the UI which is responsible for handling user input to the text console, displaying the information, and initializing the program, the backend which will take input from the UI and convert the slogo commands to java methods to be called on the turtle object in order to update it, hold data, and send it to the UI, and a controller which will manage the interactions between these two. To maintain efficient programming and decrease the work necessary to implement/ extend our design, we will ensure that the interactions between the UI and backend are as limited as possible-- our plan currently allows for the sharing of turtle information, sending and receiving text from the console, and getting basic information about the size of the form the turtle occupies. These interactions are to be rigid and remove the possibility of data being misused. We are designing with the intent of adding new commands and features, and we intend to do this by making modular classes and methods and by using the concept of properties tables. In general the backend will be most open to allow more complicated commands.
 
+___
 ### Design Overview
 
 This project makes use of 4 primary APIs -- Visualizer internal, Visualizer external, Backend internal, and Backend external with the following responsibilities: 
-* Visualizer internal- 
-    * Update the display based on the location and past movement of the turtle
+* Visualizer internal
+	* Update the display based on the location and past movement of the turtle
     * input from the console as users type commands
     * Initialize the UI
 * Visualizer external
-    * Get/ set the position and orientation of the form and the turtle as the backend sends this information
+    * Get/ set the position and orientation of the form and the turtle as the backend sends this    	 * information
     * Send information about the size of the drawing form to the backend
 * Backend internal 
-    * Translate parsed text into a list of commands to be executed on the turtle 
+	* Translate parsed text into a list of commands to be executed on the turtle 
     * Execute these commands 
     * Maintain the library of slogo commands to be called
 * Backend external 
@@ -192,9 +193,13 @@ Within these APIs and the two ends of the project will be a variety of classes w
 
 ![](./images/CRC.jpg)
 
+------
+
+
 ### User Interface 
 
 The user interface will consist of a large window that displays the turtle and lines that reflect the turtle’s movement. On the right side, there will be a pane that includes a list of past and possible commands that the user can give to the turtle, a list of current environment variables, a drop-down menu allowing the user to choose the color of the turtle, and a button that allows the user to upload an image file to replace the default turtle image. There will also be a dropdown menu to allow the user to choose the background color for the turtle screen, another menu to choose the pen color, and another to choose the language of the commands. On the bottom, there will be a large text field where the user will input commands for the program to run and right next to the text field will be a button that will run the inputted commands when it is pushed. 
+
 ![](./images/UI.jpg)
 
 
