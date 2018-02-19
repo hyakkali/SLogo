@@ -192,7 +192,7 @@ This project makes use of 4 primary APIs -- Visualizer internal, Visualizer exte
 
 Within these APIs and the two ends of the project will be a variety of classes which will interact with each other as follows:
 
-![](./images/CRC.jpg)
+![picture](images/CRC.JPG)
 
 ------
 
@@ -201,7 +201,7 @@ Within these APIs and the two ends of the project will be a variety of classes w
 
 The user interface will consist of a large window that displays the turtle and lines that reflect the turtle’s movement. On the right side, there will be a pane that includes a list of past and possible commands that the user can give to the turtle, a list of current environment variables, a drop-down menu allowing the user to choose the color of the turtle, and a button that allows the user to upload an image file to replace the default turtle image. There will also be a dropdown menu to allow the user to choose the background color for the turtle screen, another menu to choose the pen color, and another to choose the language of the commands. On the bottom, there will be a large text field where the user will input commands for the program to run and right next to the text field will be a button that will run the inputted commands when it is pushed. 
 
-![](./images/UI.jpg)
+![picture](images/UI.JPG)
 
 
 ### Team Responsibilities 
