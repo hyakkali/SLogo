@@ -26,7 +26,7 @@ This project makes use of 4 primary APIs -- Visualizer internal, Visualizer exte
 Within these APIs and the two ends of the project will be a variety of classes which will interact with each other as follows:
 ![alt text](CRC.jpg)
 
-![](API.jpg)
+![](https://coursework.cs.duke.edu/CompSci308_2018Spring/slogo_team04/blob/master/doc/API.jpg)
 
 ### User Interface 
 
