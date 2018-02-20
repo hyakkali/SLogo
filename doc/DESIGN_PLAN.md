@@ -215,7 +215,6 @@ private void cycleHistory();
 
 1. User types in a poorly formatted command and an error is thrown to let the user know
 
-```java
 /** 
  * The Model’s external API gets the String input from the console.
  * This method is contained in Model's external API. Done within the Interpreter class.
@@ -223,6 +222,7 @@ private void cycleHistory();
  */
 public String getInput();
 
+```java
 /**
  * Inside of the Model (internal API), the interpreter parses the input that it got from the user
  * and returns a Command object, the command object will not be returned and instead an error 
@@ -288,6 +288,7 @@ public Command parse(String input) {
 	}
 }
 ```
+
 ### Design Considerations
 As a team, we had a long discussion about whether there needs to be two turtles or only one. If two, one would exist in the back-end, and would be solely responsible for updating state variables, such as position, orientation, associated picture, etc. The other one would exist in the front end, and it would receive information about its state from the back-end turtle. The front-end turtle's only takes responsibility for drawing itself according to its new state (i.e. handles the JavaFX code).  We originally liked this idea because it keeps API implementation separate - if one wanted to change how the back-end turtle processes commands, this wouldn't change how the front-end turtle draws itself. However, we also feel like we are creating a data dependency here, and that having two turtles is redundant. Likely, we will stick with the two separate turtles, but we will weight the benefits and consequences more first.
 
