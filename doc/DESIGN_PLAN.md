@@ -215,6 +215,7 @@ private void cycleHistory();
 
 1. User types in a poorly formatted command and an error is thrown to let the user know
 
+```java
 /** 
  * The Model’s external API gets the String input from the console.
  * This method is contained in Model's external API. Done within the Interpreter class.
@@ -222,7 +223,6 @@ private void cycleHistory();
  */
 public String getInput();
 
-```java
 /**
  * Inside of the Model (internal API), the interpreter parses the input that it got from the user
  * and returns a Command object, the command object will not be returned and instead an error 
@@ -241,6 +241,7 @@ public Command parse(String input);
 public SLogoException(Throwable problem);
 ```
 2. The user inputs ‘fd 50 fd 50 fd 50’ and the interpreter grabs that input to use in the parsing.
+
 ```java
 /**
  * The Model's external API grabs the input from the View.
