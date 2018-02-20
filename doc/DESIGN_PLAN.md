@@ -210,6 +210,7 @@ private void cycleHistory();
 private void cycleHistory();
 ```
 
+
 ### Model - Interpreter
 
 1. User types in a poorly formatted command and an error is thrown to let the user know
