@@ -24,7 +24,7 @@ This project makes use of 4 primary APIs -- Visualizer internal, Visualizer exte
     * Generate a command list to send to the front end 
 
 Within these APIs and the two ends of the project will be a variety of classes which will interact with each other as follows:
-![](CRC.jpg)
+![alt text](CRC.jpg)
 
 ![](API.jpg)
 
