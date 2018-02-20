@@ -213,6 +213,7 @@ private void cycleHistory();
 ### Model - Interpreter
 
 1. User types in a poorly formatted command and an error is thrown to let the user know
+
 ```java
 /** 
  * The Model’s external API gets the String input from the console.
