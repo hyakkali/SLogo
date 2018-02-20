@@ -260,7 +260,9 @@ public Command parse(String input) {
 	// parsing implementation here
 }
 ```
+
 * Get the result of parsing a user input, and put this into command object.
+
 ```java
 /**
  * Command objects must be specified in a properties file set up at initialization.
