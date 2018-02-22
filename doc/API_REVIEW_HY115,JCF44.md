@@ -14,7 +14,7 @@ we can reduce the reliance between frontend and backend as much as possible. I b
 1. One design pattern that is currently implemented is the MVC (model view controller) where the model is the backend and the view is the frontend/UI. 
 2. Most excited to work with the backend on implementing the turtle and drawing the lines. 
 3. Most worried about relying too much on the backend such that progress slows down because we aren't able to work together often. Worried that the smallest changes will throw a large amount of errors. 
-4. 
+4. Use Cases:
 	1. Display valid command on the screen
 	2. Draw a straight line with the turtle
 	3. Display error if command contains an error
