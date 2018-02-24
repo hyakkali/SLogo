@@ -20,4 +20,3 @@ we can reduce the reliance between frontend and backend as much as possible. I b
 	3. Display error if command contains an error
 	4. Change language of the commands
 	5. Changing the background color
-	 
