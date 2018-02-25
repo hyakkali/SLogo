@@ -14,6 +14,7 @@ public class Controller {
 		this.model = model;
 	}
 	
+	//turtle commands
 	/**
 	 * 
 	 * @param amount Amount turtle needs to move horizontally
@@ -30,6 +31,11 @@ public class Controller {
 		view.setYLocation(amount);
 	}
 	
+	public void toggleTurtleDisplay(boolean showTurtle) {
+		view.toggleTurtle(showTurtle);
+	}
+	
+	//display commands
 	/**
 	 * 
 	 * @param color Background color of the interface
@@ -45,7 +51,12 @@ public class Controller {
 	public void setViewPenColor(Color color) {
 		view.setPenColor(color);
 	}
-		
+	
+	public void togglePen(boolean penBoolean) {
+		view.togglePenUpOrDown(penBoolean);
+	}
+	
+	//display methods
 	/**
 	 * 
 	 * @param command Original command String that user typed in
@@ -56,10 +67,20 @@ public class Controller {
 	
 	/**
 	 * 
-	 * @param variable 
+	 * @param variable String name of any variable that has been instantiated
 	 */
 	public void addExistingVariable(String variable) {
 		view.addVariable(variable);
+	}
+	
+	//misc 
+	/**
+	 * 
+	 * @param result String result of a math operation
+	 * Triggers view to print result to the screen
+	 */
+	public void displayResult(String result) {
+		view.printToScreen(result);
 	}
 	
 	/**

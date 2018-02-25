@@ -18,27 +18,55 @@ public class Turtle extends ImageView{
 		this.xLocation = 0;
 		this.yLocation = 0;
 		this.angle = 0;
-//		this.imageURL = 
+//		this.imageURL; 
 	}
 	
-	private void moveHorizontally(double amount) {
-		xLocation += amount;
+	public void move(double angle, double amount) {
+		xLocation += calculateXAmount(angle, amount);
+		yLocation += calculateYAmount(angle, amount);
 	}
 	
-	private void moveVertically(double amount) {
-		yLocation += amount;
-	}
-
-	private void setXPosition(double xCoordinate) {
+	//setters
+	public void setXPosition(double xCoordinate) {
 		xLocation = xCoordinate;
 	}
 	
-	private void setYPosition(double yCoordinate) {
+	public void setYPosition(double yCoordinate) {
 		yLocation = yCoordinate;
 	}
 	
-	private void setAngle(double heading) {
+	public void setAngle(double heading) {
 		angle = heading;
+	}
+	
+	public void setImageURL(String url) {
+		imageURL = url;
+	}
+		
+	//getters
+	public double getXLocation() {
+		return xLocation;
+	}
+	
+	public double getYLocation() {
+		return yLocation;
+	}
+	
+	public double getAngle() {
+		return angle;
+	}
+	
+	public String getImageURL() {
+		return imageURL;
+	}
+	
+	//misc
+	private double calculateXAmount(double angle, double amount) {
+		return amount*Math.cos(Math.toRadians(angle));
+	}
+	
+	private double calculateYAmount(double angle, double amount) {
+		return amount*Math.sin(Math.toRadians(angle));
 	}
 	
 }
