@@ -55,11 +55,11 @@ public class Turtle extends ImageView{
 		this.yLocation += calculateYAmount(angle, amount);
 	}
 	
+	//setters
 	/**
 	 * 
 	 * @param xCoordinate X coordinate of the turtle
 	 */
-	//setters
 	public void setXPosition(double xCoordinate) {
 		this.xLocation = xCoordinate;
 	}
@@ -123,10 +123,22 @@ public class Turtle extends ImageView{
 	}
 	
 	//misc
+	/**
+	 * 
+	 * @param angle Heading of the turtle
+	 * @param amount Amount of pixels to move turtle
+	 * @return Amount of pixel change in the x direction
+	 */ 
 	private double calculateXAmount(double angle, double amount) {
 		return amount*Math.cos(Math.toRadians(angle));
 	}
 	
+	/**
+	 * 
+	 * @param angle Heading of the turtle
+	 * @param amount Amount of pixels to move turtle
+	 * @return Amount of pixel change in the y direction
+	 */ 
 	private double calculateYAmount(double angle, double amount) {
 		return amount*Math.sin(Math.toRadians(angle));
 	}
