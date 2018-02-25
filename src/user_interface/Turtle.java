@@ -1,4 +1,5 @@
-import javafx.scene.image.Image;
+package user_interface;
+
 import javafx.scene.image.ImageView;
 
 /**
@@ -21,23 +22,23 @@ public class Turtle extends ImageView{
 //		this.imageURL = 
 	}
 	
-	private void moveHorizontally(double amount) {
+	public void moveHorizontally(double amount) {
 		xLocation += amount;
 	}
 	
-	private void moveVertically(double amount) {
+	public void moveVertically(double amount) {
 		yLocation += amount;
 	}
 
-	private void setXPosition(double xCoordinate) {
+	public void setXPosition(double xCoordinate) {
 		xLocation = xCoordinate;
 	}
-	
-	private void setYPosition(double yCoordinate) {
+
+	public void setYPosition(double yCoordinate) {
 		yLocation = yCoordinate;
 	}
-	
-	private void setAngle(double heading) {
+
+	public void setAngle(double heading) {
 		angle = heading;
 	}
 	
