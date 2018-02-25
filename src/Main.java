@@ -1,4 +1,4 @@
-package resources.languages;
+
 
 import javafx.application.Application;
 import javafx.stage.Stage;
