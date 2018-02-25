@@ -7,7 +7,7 @@ public enum Language {
 
     CHINESE("Chinese"),
     ENGLISH("English"),
-    French("French"),
+    FRENCH("French"),
     GERMAN("German"),
     ITALIAN("ITALIAN"),
     PORTUGUESE("Portuguese"),
