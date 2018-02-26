@@ -3,6 +3,8 @@ package user_interface;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -21,10 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class UserScreen extends Application {
@@ -51,7 +50,12 @@ public class UserScreen extends Application {
     private Turtle t = new Turtle();
     private HashMap<String, Object> vars = new HashMap<String, Object>();
     private TextArea console;
-    private History history= new History();
+    private TextArea commands;
+    private TextArea variables;
+    private ArrayList<Button> buttons;
+    private History history = new History();
+    private Pane turtlePane;
+    private HashMap<String, String> colors;
 //    public UserSceen(List<Turtle> t)
 //    {
 //        turtles=(ArrayList<Turtle>)t;
@@ -69,8 +73,9 @@ public class UserScreen extends Application {
      * in the slogo project and add to the scene
      */
     private Scene setScene(int width, int length) {
+        initializeColors();
         turtles.add(t);
-        setupProperties("English");
+        setupProperties("Spanish");
         Group root = new Group();
         myScene = new Scene(root, width, length);
         setScreen(root);
@@ -84,15 +89,15 @@ public class UserScreen extends Application {
 
         VBox right = createSideMenu();
         HBox bottom = createBottomMenu();
-        Pane p = new Pane();
+        turtlePane = new Pane();
         for (Turtle turtle : turtles) {
-            p.getChildren().add(turtle);
+            turtlePane.getChildren().add(turtle);
         }
 
         form.setRight(right);
         form.setBottom(bottom);
         form.setPrefSize(XSIZE, YSIZE);
-        form.setCenter(p);
+        form.setCenter(turtlePane);
         r.getChildren().add(form);
     }
 
@@ -124,8 +129,13 @@ public class UserScreen extends Application {
 
     private void setupProperties(String language) {
         properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
-        descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "_Descriptions");
-
+        try {
+            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "_Descriptions");
+        }
+        catch(MissingResourceException m)
+        {
+            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
+        }
     }
 
     public static void main(String[] args) {
@@ -142,24 +152,63 @@ public class UserScreen extends Application {
     private VBox createSideMenu() {
         VBox interactives = new VBox();
         Button resetButton = getResetButton();
-        TextArea commands = getCommandsList();
-        TextArea variables = getVariableList();
-//        Button loadButton = getLoadButton();
-//        Button saveButton = getSaveButton();
+        commands = getCommandsList();
+        variables = getVariableList();
+        ComboBox background = getBackgroundCombo();
+        ComboBox language = getBackgroundCombo();
         interactives.setPrefWidth(200);
         interactives.setStyle("-fx-background-color: #008000");
         interactives.setPadding(new Insets(20, 10, 20, 10));
         interactives.setAlignment(Pos.CENTER);
         interactives.setSpacing(10);
-        interactives.getChildren().addAll(commands, variables, resetButton);
+        interactives.getChildren().addAll(background, commands, variables, resetButton);
         return interactives;
     }
 
-    private HBox createBottomMenu() {
+    private ComboBox getBackgroundCombo()
+    {
+        ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
+        ComboBox<String> combobox = new ComboBox<>(options);
+        combobox.setValue("White");
+        combobox.setOnAction(e->handleBackgroundCombo(combobox.getValue()));
+        return combobox;
+    }
+
+    private ComboBox getLanguageCombo()
+    {
+        ObservableList<String> language =FXCollections.observableArrayList(
+                "English",
+                "Chinese",
+                "French",
+                "German",
+                "Italian",
+                "Portuguese",
+                "Russian",
+                "Spanish"
+        );
+        ComboBox<String> combobox = new ComboBox<>(language);
+        combobox.setValue("English");
+        combobox.setOnAction(e->handleLanguageCombo(combobox.getValue()));
+        return combobox;
+    }
+
+    private void handleLanguageCombo(String s)
+    {
+        setupProperties(s);
+        setupCommandsList();
+    }
+
+
+    private void handleBackgroundCombo(String v)
+    {
+        turtlePane.setStyle(colors.get(v));
+    }
+
+    private HBox createBottomMenu()
+    {
         HBox interactives = new HBox();
 
         TextArea console = getConsole();
-
         interactives.setPrefHeight(YSIZE / 9 * 2);
         interactives.setStyle("-fx-background-color: #008000");
         interactives.setPadding(new Insets(20, 10, 20, 10));
@@ -169,38 +218,57 @@ public class UserScreen extends Application {
         return interactives;
     }
 
+    public void addCommand(String s)
+    {
+
+    }
+
     public void addVariable(String s, Object o)
     {
+        variables.clear();
         vars.put(s,o);
+        for(String var : vars.keySet())
+            variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
     }
 
     public void displayError(String s)
     {
-
-
+        console.clear();
+        console.setText("Error: "+s);
     }
 
     private Button getResetButton() {
 
-        Button b = new Button(properties.getString("Reset"));
+        Button b = new Button(descriptions.getString("Reset"));
         b.setOnAction(e -> this.reset());
         return b;
     }
 
+
+
     private TextArea getCommandsList() {
-        TextArea commands = new TextArea();
+        commands = new TextArea();
         commands.prefWidth(XSIZE / 7 * 4);
         commands.setPrefWidth(XSIZE / 7 * 4);
         commands.setPrefHeight(YSIZE / 7 * 2);
         commands.setEditable(false);
         commands.setWrapText(true);
+        setupCommandsList();
 
+        return commands;
+    }
+
+    private void setupCommandsList()
+    {
         for (String cmd : descriptions.keySet()) {
             commands.appendText(cmd + "\n");
             commands.appendText(descriptions.getString(cmd) + properties.getString(cmd) + "\n\n");
         }
+    }
 
-        return commands;
+    private void setupoDescriptionsList( )
+    {
+
     }
 
     private TextArea getVariableList() {
@@ -230,6 +298,7 @@ public class UserScreen extends Application {
         return console;
     }
 
+
     private void consoleHandler( KeyCode k) {
         if (k.equals(KeyCode.ENTER)) {
             //send to parser
@@ -252,5 +321,14 @@ public class UserScreen extends Application {
     {
         if(history.hasPrev())
             console.setText(history.moveBack());
+    }
+
+    private void initializeColors()
+    {
+        colors= new HashMap<String,String>();
+        ResourceBundle p = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
+           for (String s : p.keySet()) {
+               colors.put(s, "-fx-background-color: " + p.getString(s));
+           }
     }
 }
