@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -17,6 +18,8 @@ public class Turtle extends ImageView{
 	private boolean penBoolean;
 	
 	private Stack<Line> lines;
+	
+	private Color penColor;
 	
 	/**
 	 * String of path to an image file
@@ -39,8 +42,11 @@ public class Turtle extends ImageView{
 		this.setRotate(0.0);
 		this.setImage(turtleImage);
 		this.penBoolean = true;
+		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
-		lines.add(new Line(0.0,0.0,0.0,0.0));
+		Line newLine = new Line(0,0,0,0);
+		newLine.setFill(penColor);
+		lines.add(newLine);
 	}
 	
 	/**
@@ -81,6 +87,10 @@ public class Turtle extends ImageView{
 		this.setRotate(heading);
 	}
 	
+	public void setTowards(double xCoord, double yCoord) {
+		
+	}
+	
 	public void rotate(double heading) { //can be ccwise or cwise
 		this.setRotate(this.getRotate()+heading);
 	}
@@ -97,6 +107,10 @@ public class Turtle extends ImageView{
 	
 	public void togglePenUpOrDown(boolean bool) {
 		penBoolean = bool;
+	}
+	
+	public void setPenColor(Color color) {
+		
 	}
 	
 	//getters
@@ -153,6 +167,10 @@ public class Turtle extends ImageView{
 		return amount*Math.sin(Math.toRadians(angle));
 	} 
 	
+	private double calculateAngle(double xCoord, double yCoord) {
+		return 0;
+	}
+	
 	//lines
 	
 	private void drawLine(double xAmount, double yAmount) {
@@ -160,7 +178,9 @@ public class Turtle extends ImageView{
 			Line lastLine = lines.pop();
 			double startX = lastLine.getEndX();
 			double startY = lastLine.getEndY();
-			lines.push(new Line(startX,startY,startX+xAmount,startY+yAmount));
+			Line newLine = new Line(startX,startY,startX+xAmount,startY+yAmount);
+			newLine.setFill(penColor);
+			lines.push(newLine);
 		}
 	}
 	
