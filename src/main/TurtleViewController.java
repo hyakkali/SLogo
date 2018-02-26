@@ -20,18 +20,18 @@ public class TurtleViewController implements Controller{
 	//turtle commands
 	/**
 	 * 
-	 * @param amount Amount turtle needs to move horizontally
+	 * @param xCoord Desired Y Coordinate of the turtle
 	 */
-	public void setTurtleXLocation(double amount) {
-		turtle.setXPosition(amount);
+	public void setTurtleXLocation(double xCoord) {
+		turtle.setXPosition(xCoord);
 	}
 	
 	/**
 	 * 
-	 * @param amount Amount turtle needs to move vertically
+	 * @param yCoord Desired Y Coordinate of the turtle
 	 */
-	public void setTurtleYLocation(double amount) {
-		turtle.setYPosition(amount);
+	public void setTurtleYLocation(double yCoord) {
+		turtle.setYPosition(yCoord);
 	}
 		
 	public void moveTurtle(double amount) {
@@ -64,6 +64,14 @@ public class TurtleViewController implements Controller{
 	 */
 	public void setViewPenColor(Color color) {
 		turtle.setPenColor(color);
+	}
+	
+	public void clearTurtleLines() {
+		turtle.clearLines();
+	}
+	
+	public void resetTurtle() {
+		turtle.reset();
 	}
 	
 	//display commands
@@ -105,6 +113,18 @@ public class TurtleViewController implements Controller{
 	 */
 	public void displayResult(String result) {
 		view.printToScreen(result);
+	}
+	
+	public double getTurtleHeading() {
+		return turtle.getAngle();
+	}
+	
+	public double getTurtleXLocation() {
+		return turtle.getXLocation();
+	}
+	
+	public double getTurtleYLocation() {
+		return turtle.getYLocation();
 	}
 	
 }
