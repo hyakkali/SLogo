@@ -7,7 +7,7 @@ import turtle.Turtle;
  * @author Hemanth Yakkali
  * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
  */
-public class Controller {
+public class Controller implements IController{
 	
 	private UserInterface view;
 	private Turtle turtle;
