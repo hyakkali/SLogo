@@ -8,26 +8,47 @@ public class Controller {
 	
 	private UserInterface view;
 	private Command model;
+	private Turtle turtle;
 	
-	public Controller(UserInterface view, Command model){
+	public Controller(UserInterface view, Command model, Turtle turtle){
 		this.view = view;
 		this.model = model;
+		this.turtle = turtle;
 	}
 	
+	//turtle commands
 	/**
 	 * 
 	 * @param amount Amount turtle needs to move horizontally
 	 */
-	public void setTurtleXLocation(int amount) {
-		view.setXLocation(amount);
+	public void setTurtleXLocation(double amount) {
+		turtle.setXPosition(amount);
 	}
 	
 	/**
 	 * 
 	 * @param amount Amount turtle needs to move vertically
 	 */
-	public void setTurtleYLocation(int amount) {
-		view.setYLocation(amount);
+	public void setTurtleYLocation(double amount) {
+		turtle.setYPosition(amount);
+	}
+		
+	public void moveTurtle(double heading, double amount) {
+		turtle.move(heading, amount);
+	}
+		
+	public void rotateTurtle(double heading) {
+		turtle.rotate(heading);
+	}
+	
+	public void setTurtleHeading(double heading) {
+		turtle.setHeading(heading);
+	}
+	
+	//display commands
+	
+	public void toggleTurtleDisplay(boolean showTurtle) {
+		view.toggleTurtle(showTurtle);
 	}
 	
 	/**
@@ -45,7 +66,12 @@ public class Controller {
 	public void setViewPenColor(Color color) {
 		view.setPenColor(color);
 	}
-		
+	
+	public void togglePen(boolean penBoolean) {
+		view.togglePenUpOrDown(penBoolean);
+	}
+	
+	//non-command display methods
 	/**
 	 * 
 	 * @param command Original command String that user typed in
@@ -56,18 +82,20 @@ public class Controller {
 	
 	/**
 	 * 
-	 * @param variable 
+	 * @param variable String name of any variable that has been instantiated
 	 */
 	public void addExistingVariable(String variable) {
 		view.addVariable(variable);
 	}
 	
+	//misc 
 	/**
 	 * 
-	 * @param turtle Turtle object
+	 * @param result String result of a math operation
+	 * Triggers view to print result to the screen
 	 */
-	public void whichTurtle(Turtle turtle) {
-		view.setTurtle(turtle);
+	public void displayResult(String result) {
+		view.printToScreen(result);
 	}
 	
 }
