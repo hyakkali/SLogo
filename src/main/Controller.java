@@ -36,4 +36,8 @@ public interface Controller {
 	
 	public double getTurtleYLocation();
 	
+	public boolean getIsPen();
+	
+	public boolean getIsTurtle();
+	
 }
