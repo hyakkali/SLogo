@@ -20,7 +20,7 @@ public class Forward implements Command {
 	
 	/**
 	 * Executes this command by moving the turtle forward by amount
-	 * @return the value in pixels
+	 * @return the value in pixels that the turtle moved
 	 */
 	@Override
 	public double execute(Controller controller) {
