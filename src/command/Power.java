@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Raises a given base to a given exponent.
  * @author dylanpowers
@@ -24,6 +23,7 @@ public class Power implements Command {
 	 * Calculates base^exponent
 	 * @return base^exponent
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return Math.pow(this.base, this.exponent);
 	}
