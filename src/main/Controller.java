@@ -1,0 +1,57 @@
+package main;
+import javafx.scene.paint.Color;
+import command.Command;
+import javafx.scene.paint.Color;
+import turtle.Turtle;
+import user_interface.UserScreen;
+
+/**
+ * 
+ * @author Hemanth Yakkali
+ * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
+ */
+
+
+public interface Controller {
+	
+	public void setTurtleXLocation(double amount);
+
+	public void setTurtleYLocation(double amount);
+	
+	public void moveTurtle(double amount);
+	
+	public void rotateTurtle(double heading);
+	
+	public void setTurtleHeading(double heading);
+	
+	public void setTurtleTowards(double xCoord, double yCoord);
+	
+	public void togglePen(boolean penBoolean);
+	
+	public void setViewPenColor(Color color);
+	
+	public void toggleTurtleDisplay(boolean showTurtle);
+	
+	public void setViewBackgroundColor(Color color);
+	
+	public void addPreviouslyRunCommand(String command);
+	
+	public void addExistingVariable(String variable);
+	
+	public void displayResult(String result);
+	
+	public double getTurtleHeading();
+	
+	public double getTurtleXLocation();
+	
+	public double getTurtleYLocation();
+	
+	public boolean getIsPen();
+	
+	public boolean getIsTurtle();
+	
+	public void clearTurtleLines();
+	
+	public void resetTurtlePosition();
+	
+}
