@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Sets the turtle to face a certain place on the screen.
  * @author dylanpowers
@@ -6,22 +8,28 @@ package command;
  */
 public class SetTowards implements Command {
 
-	private Integer x;
-	private Integer y;
+	private Double x;
+	private Double y;
 	/**
 	 * 
 	 * @param x x coordinate that turtle should face
 	 * @param y y coordinate that turtle should face
 	 */
-	public SetTowards(Integer x, Integer y) {
+	public SetTowards(Double x, Double y) {
 		this.x = x;
 		this.y = y;
 	}
 	
 	/**
 	 * Makes the turtle face the location (x, y)
+	 * @return number of degrees the turtle turned
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		// need to keep track of the previous heading, and then subtract from the new one
+		double prevHeading = controller.getTurtleHeading();
+		controller.setTurtleTowards(this.x, this.y);
+		// heading is now updated, so we call it again
+		return Math.abs(controller.getTurtleHeading() - prevHeading);
 	}
 }

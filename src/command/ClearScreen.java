@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Moves the turtle to the center of the screen AND erases the trail.
  * @author dylanpowers
@@ -17,10 +19,12 @@ public class ClearScreen implements Command {
 	
 	/**
 	 * Moves the turtle to the center of the screen and erases the trail.
+	 * @return distance the turtle moved
 	 */
-	public void execute(Controller controller) {
-		homeCommand.execute(controller);
-		// TODO finish implementation
+	@Override
+	public double execute(Controller controller) {
+		controller.clearTurtleLines();
+		return this.homeCommand.execute(controller);
 	}
 	
 }

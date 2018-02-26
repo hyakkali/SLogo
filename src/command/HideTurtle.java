@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * When this command is run, the turtle is hidden
  * @author dylanpowers
@@ -13,8 +15,11 @@ public class HideTurtle implements Command {
 	
 	/**
 	 * Makes the turtle invisible.
+	 * @return 0
 	 */
+	@Override
 	public double execute(Controller controller) {
-		// TODO implementation
+		controller.toggleTurtleDisplay(false);
+		return 0;
 	}
 }
