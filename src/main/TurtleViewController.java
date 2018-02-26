@@ -1,6 +1,7 @@
 package main;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
+import user_interface.UserScreen;
 
 /**
  * 
@@ -9,10 +10,10 @@ import turtle.Turtle;
  */
 public class TurtleViewController implements Controller{
 	
-	private UserInterface view;
+	private UserScreen view;
 	private Turtle turtle;
 	
-	public TurtleViewController(UserInterface view, Turtle turtle){
+	public TurtleViewController(UserScreen view, Turtle turtle){
 		this.view = view;
 		this.turtle = turtle;
 	}

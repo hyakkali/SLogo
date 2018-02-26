@@ -173,7 +173,7 @@ public class UserScreen extends Application {
         ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
         ComboBox<String> combobox = new ComboBox<>(options);
         combobox.setValue("White");
-        combobox.setOnAction(e->handleBackgroundCombo(combobox.getValue()));
+        combobox.setOnAction(e->changeBackground(combobox.getValue()));
         return combobox;
     }
 
@@ -202,7 +202,7 @@ public class UserScreen extends Application {
     }
 
 
-    private void handleBackgroundCombo(String v)
+    private void changeBackground(String v)
     {
         turtlePane.setStyle(colors.get(v));
     }
@@ -241,7 +241,6 @@ public class UserScreen extends Application {
     }
 
     private Button getResetButton() {
-
         Button b = new Button(descriptions.getString("Reset"));
         b.setOnAction(e -> this.reset());
         return b;
@@ -319,14 +318,23 @@ public class UserScreen extends Application {
         if(history.hasNext())
             console.setText(history.moveForward());
     }
+    public void addVariable(String s)
+    {
 
+    }
     public void toggleTurtle(boolean t){myTurtle.setVisible(t);}
     public void addPreviousCommand(String command){history.add(command);}
-    public void setBackgroundColor(Color c){
-     try{
-
-     }
+    public void printToScreen(String s){
+       //TODO CHANGE IMPLEMENTATION
+        console.setText(s);
     }
+
+    public void setBackgroundColor(Color c){
+     if(colors.containsKey(c.toString()))
+         changeBackground(c.toString());
+    }
+
+
 
     private void displayPrev(TextArea console)
     {
