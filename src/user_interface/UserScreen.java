@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,7 +19,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import turtle.Turtle;
@@ -37,32 +40,28 @@ public class UserScreen extends Application {
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-    private static final Paint BACKGROUND = Color.AZURE;
-    private static final String[] languages = {"English.properties"};
 
-    private ResourceBundle resources;
     private Scene myScene;
+    private Stage myStage;
     private static final String DEFAULT_RESOURCES = "resources.languages/";
 
 
     private ResourceBundle properties;
     private ResourceBundle descriptions;
+    private ResourceBundle turtleImages;
 
     private Turtle myTurtle = new Turtle();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
-    private Turtle t = new Turtle();
     private HashMap<String, Object> vars = new HashMap<String, Object>();
     private TextArea console;
     private TextArea commands;
     private TextArea variables;
+    private Button resetButton;
     private ArrayList<Button> buttons;
     private History history = new History();
     private Pane turtlePane;
     private HashMap<String, String> colors;
-//    public UserSceen(List<Turtle> t)
-//    {
-//        turtles=(ArrayList<Turtle>)t;
-//    }
+
 
     /*will be used to draw the form on initialization
      * and hopefully recycled to redraw after the user
@@ -77,7 +76,7 @@ public class UserScreen extends Application {
      */
     private Scene setScene(int width, int length) {
         initializeColors();
-        turtles.add(t);
+        turtles.add(myTurtle);
         setupProperties("Spanish");
         Group root = new Group();
         myScene = new Scene(root, width, length);
@@ -96,7 +95,6 @@ public class UserScreen extends Application {
         for (Turtle turtle : turtles) {
             turtlePane.getChildren().add(turtle);
         }
-
         form.setRight(right);
         form.setBottom(bottom);
         form.setPrefSize(XSIZE, YSIZE);
@@ -106,6 +104,7 @@ public class UserScreen extends Application {
 
     private void reset() {
         System.out.print("Reset");
+        printToScreen("you done fucked up");
     }
 
 
@@ -116,7 +115,7 @@ public class UserScreen extends Application {
     @Override
     public void start(Stage stage) {
         myScene = setScene(XSIZE, YSIZE); // get the scene
-
+        myStage=stage;
 
         stage.setScene(myScene);
         stage.setTitle(TITLE);
@@ -131,6 +130,7 @@ public class UserScreen extends Application {
     }
 
     private void setupProperties(String language) {
+        turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
         properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
         try {
             descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "_Descriptions");
@@ -151,20 +151,27 @@ public class UserScreen extends Application {
     private void step(double elapsedTime) {
     }
 
+    private void drawLine()
+    {
+        Line toDraw = myTurtle.getLastLine();
+        turtlePane.getChildren().add(toDraw);
+    }
+
 
     private VBox createSideMenu() {
         VBox interactives = new VBox();
-        Button resetButton = getResetButton();
+        resetButton = getResetButton();
         commands = getCommandsList();
+        ComboBox imageCombo = getImageCombo();
         variables = getVariableList();
         ComboBox background = getBackgroundCombo();
-        ComboBox language = getBackgroundCombo();
+        ComboBox language = getLanguageCombo();
         interactives.setPrefWidth(200);
         interactives.setStyle("-fx-background-color: #008000");
         interactives.setPadding(new Insets(20, 10, 20, 10));
         interactives.setAlignment(Pos.CENTER);
         interactives.setSpacing(10);
-        interactives.getChildren().addAll(background, commands, variables, resetButton);
+        interactives.getChildren().addAll(language, background, imageCombo, commands, variables, resetButton);
         return interactives;
     }
 
@@ -173,6 +180,8 @@ public class UserScreen extends Application {
         ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
         ComboBox<String> combobox = new ComboBox<>(options);
         combobox.setValue("White");
+        combobox.setPromptText("Background Color");
+
         combobox.setOnAction(e->changeBackground(combobox.getValue()));
         return combobox;
     }
@@ -191,7 +200,18 @@ public class UserScreen extends Application {
         );
         ComboBox<String> combobox = new ComboBox<>(language);
         combobox.setValue("English");
+        combobox.setPromptText("Language");
         combobox.setOnAction(e->handleLanguageCombo(combobox.getValue()));
+        return combobox;
+    }
+
+    private ComboBox getImageCombo()
+    {
+        ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
+        ComboBox<String> combobox = new ComboBox<>(language);
+        combobox.setValue("Turtle");
+        combobox.setPromptText("Turtle Image");
+        combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
         return combobox;
     }
 
@@ -199,6 +219,7 @@ public class UserScreen extends Application {
     {
         setupProperties(s);
         setupCommandsList();
+        resetButton.setText(properties.getString("Reset"));
     }
 
 
@@ -210,8 +231,7 @@ public class UserScreen extends Application {
     private HBox createBottomMenu()
     {
         HBox interactives = new HBox();
-
-        TextArea console = getConsole();
+        console = getConsole();
         interactives.setPrefHeight(YSIZE / 9 * 2);
         interactives.setStyle("-fx-background-color: #008000");
         interactives.setPadding(new Insets(20, 10, 20, 10));
@@ -320,17 +340,25 @@ public class UserScreen extends Application {
     }
     public void addVariable(String s)
     {
-
+        //Figure out how this will work
     }
     public void toggleTurtle(boolean t){myTurtle.setVisible(t);}
     public void addPreviousCommand(String command){history.add(command);}
+
     public void printToScreen(String s){
-       //TODO CHANGE IMPLEMENTATION
-        console.setText(s);
+        //look into gettin an error type and error specific
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Error");
+        alert.setContentText(s);
+        alert.showAndWait();
+
     }
 
+
     public void setBackgroundColor(Color c){
-     if(colors.containsKey(c.toString()))
+
+        //Figure out what this is
+        if(colors.containsKey(c.toString()))
          changeBackground(c.toString());
     }
 

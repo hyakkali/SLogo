@@ -1,10 +1,7 @@
 package command;
 
 import main.Controller;
-<<<<<<< HEAD
 
-=======
->>>>>>> 95dc8841f134d5094a8dc6217737581d77b73b0f
 /**
  * Returns the product of two numbers
  * @author dylanpowers
