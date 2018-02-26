@@ -28,12 +28,13 @@ public class Turtle extends ImageView{
 	/**
 	 * String of path to an image file
 	 */
-	private String imageURL = "turtle.png";
+	private String imageURL = "TMNT.png";
+
 	
 	/**
 	 * Image object of the turtle
 	 */
-	private Image turtleImage = new Image(getClass().getClassLoader().getResourceAsStream(imageURL));
+	private Image turtleImage = new Image(getClass().getClassLoader().getResourceAsStream("TMNT.png"));
 	
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
