@@ -10,12 +10,10 @@ import turtle.Turtle;
 public class Controller {
 	
 	private UserInterface view;
-	private Command model;
 	private Turtle turtle;
 	
-	public Controller(UserInterface view, Command model, Turtle turtle){
+	public Controller(UserInterface view, Turtle turtle){
 		this.view = view;
-		this.model = model;
 		this.turtle = turtle;
 	}
 	
