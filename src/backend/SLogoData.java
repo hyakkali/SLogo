@@ -1,7 +1,6 @@
 package backend;
 
-import java.util.Observable;
-import java.util.Observer;
+import turtle.Turtle;
 import resources.languages.Language;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -12,7 +11,7 @@ import resources.languages.LanguageFactory;
 import java.util.Arrays;
 
 
-public class SLogoData extends Observable {
+public class SLogoData {
 
     private List<Turtle> myTurtles;
     private List<Variable> myVariables;
@@ -30,18 +29,6 @@ public class SLogoData extends Observable {
         showSelected = false;
     }
 
-    @Override
-    public void addObserver(Observer o) {
-        super.addObserver(o);
-        o.update(this, null);
-    }
-
-    @Override
-    public void notifyObservers() {
-        setChanged();
-        super.notifyObservers();
-    }
-
 
     public void deleteVariable(String variableName) {
         for (Variable v: myVariables) {
@@ -50,13 +37,11 @@ public class SLogoData extends Observable {
                 break;
             }
         }
-        notifyObservers();
     }
 
     public void addVariable(Variable newVar) {
         deleteVariable(newVar.getName());
         myVariables.add(newVar);
-        notifyObservers();
     }
 
     protected Variable getVariable(String name) {
@@ -85,7 +70,6 @@ public class SLogoData extends Observable {
             }
         }
         myFunctions.add(newNode);
-        notifyObservers();
     }
 
     public Language getLanguage() {

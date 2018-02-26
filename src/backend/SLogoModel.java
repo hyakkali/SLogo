@@ -6,7 +6,7 @@ import java.util.Observable;
 
 import resources.languages.Language;
 
-public class SLogoModel implements Observer{
+public class SLogoModel {
 
     SLogoData myData;
     Executor myExecutor;
@@ -25,12 +25,4 @@ public class SLogoModel implements Observer{
             for (String str : input.split("\\s+")) add(str.trim());
         }}).evaluate();
     }
-
-    @Override
-    public void update(Observable data, Object arg) {
-        myData = (SLogoData) data;
-        setLanguage(myData.getLanguage());
-    }
-
-
 }

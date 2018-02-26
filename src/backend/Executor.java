@@ -2,8 +2,10 @@ package backend;
 
 import resources.constants.Constants;
 import resources.languages.Language;
+import command.Command;
+import commandFactory.CommandFactory;
+import main.Controller;
 
-import javax.swing.plaf.SliderUI;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public class Executor {
     private CommandFactory commandFactory; //Might need to change based on class names
     private Parser syntaxParser;
     private Language myLang;
+    private Controller myController;
 
     protected Executor() {
         commandFactory = new CommandFactory();
@@ -43,14 +46,8 @@ public class Executor {
                     return function;
                 }
 
-
-                Command cmd = commandFactory.getCommand(languageParser.getSymbol(input.get(0)));
+                Command cmd = commandFactory.command(languageParser.getSymbol(input.get(0)));
                 input.remove(0);
-                if (command is asking for user instruction) {
-                    arguments.add(parseFunctionText(data, input));
-                }
-
-
                 while (input.size() > 0) {
                     if (cmd.isMathCommand()) {
                         if (parseText(data, new ArrayList<>(input)).isMathCmd() || arguments.size()==0) {
@@ -135,7 +132,6 @@ public class Executor {
             index--;
         }
     }
-
 
     private int findMatchingBrace(List<String> input) {
         int counter = 0;

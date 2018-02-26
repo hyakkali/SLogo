@@ -1,14 +1,18 @@
 package backend;
 
 import resources.constants.Constants;
+import command.Command;
+import main.Controller;
 
 import java.util.List;
 
 
 /**
- * Class to create an abstract syntax tree node to be able to parse and execute
- * commands in the proper order
+ * This class is a node of the abstract syntax tree. It contains information about itself (whether it
+ * represents a double value, a variable, or a command) and it also contains a List<AbsTreeNode> of arguments.
+ * Subtrees are evaluated recursively from the head node.
  */
+
 public class AbsTreeNode {
 
     private Command myCommand; //Will need to edit based on how commands are implemented
@@ -18,6 +22,7 @@ public class AbsTreeNode {
     private boolean validBlock;
     private List<AbsTreeNode> myArguments;
     private SLogoData myData;
+    private Controller myController;
 
     public AbsTreeNode(Command command, String variable, String function, double value,
                        boolean block, List<AbsTreeNode> arguments, SLogoData data) {
@@ -72,19 +77,19 @@ public class AbsTreeNode {
         return retVal;
     }
 
-    protected boolean isMathCmd() {
-        if (validBlock) {
-            return false;
-        }
-        if (myCommand == null) {
-            return true;
-        }
-        return myCommand.isMathCmd();
-    }
+//    protected boolean isMathCmd() {
+//        if (validBlock) {
+//            return false;
+//        }
+//        if (myCommand == null) {
+//            return true;
+//        }
+//        return myCommand.isMathCmd();
+//    }
 
     /**
-     * recursively go through abstract syntax tree
-     * @return
+     * @return The double value of the recrusively calculated value of this node. Returns its own double value
+     * if this node is a double or variable, else evaluates this node's function with its parameters.
      */
     public double evaluate() {
         System.out.println(this);
@@ -96,7 +101,7 @@ public class AbsTreeNode {
             if (myArguments.size() > 2) {
                 return runFunc();
             }
-            else {return 0.0};
+            else {return 0.0;}
         }
         if (myVariable != null) {
             if (myData.getVariable(myVariable) != null) {
@@ -109,7 +114,7 @@ public class AbsTreeNode {
         if (myCommand == null) {
             return myValue;
         }
-        return myCommand.execute(param1, param2);
+        return myCommand.execute(myController);
     }
 
 
