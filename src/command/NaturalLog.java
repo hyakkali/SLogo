@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Finds the natural logarithm of a number.
  * @author dylanpowers
@@ -19,6 +21,7 @@ public class NaturalLog implements Command {
 	 * Finds the natural logarithm of a given number.
 	 * @return ln(expr)
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return Math.log(this.expr);
 	}

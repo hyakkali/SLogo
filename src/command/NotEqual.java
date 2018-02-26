@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Finds if two numbers are not equal to each other
  * @author dylanpowers
@@ -20,6 +22,7 @@ public class NotEqual implements Command {
 	/**
 	 * @return 1 if expr1 is not equal to expr2, 0 o.w.
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return this.expr1 != this.expr2 ? 1 : 0;
 	}

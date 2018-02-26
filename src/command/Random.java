@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Returns a random number strictly less than a given maximum
  * @author dylanpowers
@@ -17,7 +19,9 @@ public class Random implements Command {
 	
 	/**
 	 * Returns a random number strictly less than max
+	 * @return random number between 0 and max, exclusive
 	 */
+	@Override
 	public double execute(Controller controller) {
 		if (this.max == 0) return 0;
 		if (this.max < 0) {

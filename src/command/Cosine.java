@@ -1,4 +1,6 @@
 package command;
+
+import main.Controller;
 /**
  * Returns the cosine of a given number
  * @author dylanpowers
@@ -17,7 +19,9 @@ public class Cosine implements Command {
 	
 	/**
 	 * Returns the cosine of a given angle
+	 * @return cosine of angle
 	 */
+	@Override
 	public double execute(Controller controller) {
 		// Math.cos() takes radians as a parameter, so change degrees to radians
 		return Math.cos(Math.toRadians(this.degrees));
