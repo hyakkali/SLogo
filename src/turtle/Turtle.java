@@ -13,16 +13,29 @@ import javafx.scene.shape.Line;
  */
 public class Turtle extends ImageView{
 	
+	/**
+	 * Boolean for whether or not pen is down
+	 */
 	private boolean penBoolean;
-	
-	private boolean turtleBoolean;
-	
+		
+	/**
+	 * Stack of lines drawn by the turtle
+	 */
 	private Stack<Line> lines;
 	
+	/**
+	 * Start X coordinate for the next line
+	 */
 	private double xStartLineLocation;
 	
+	/**
+	 * Start Y coordinate for the next line
+	 */
 	private double yStartLineLocation;
 	
+	/**
+	 * Color of the next line to be drawn
+	 */
 	private Color penColor;
 	
 	/**
@@ -30,7 +43,6 @@ public class Turtle extends ImageView{
 	 */
 	private String imageURL = "TMNT.png";
 
-	
 	/**
 	 * Image object of the turtle
 	 */
@@ -47,7 +59,6 @@ public class Turtle extends ImageView{
 		this.setRotate(0.0);
 		this.setImage(turtleImage);
 		this.penBoolean = true;
-		this.turtleBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
 		Line newLine = new Line(0,0,0,0);
@@ -55,6 +66,7 @@ public class Turtle extends ImageView{
 		lines.add(newLine);
 	}
 	
+	//turtle commands
 	/**
 	 * 
 	 * @param angle Heading of the turtle
@@ -69,7 +81,22 @@ public class Turtle extends ImageView{
 		drawLine(xAmount,yAmount);
 	}
 	
-	//setters
+	/**
+	 * 
+	 * @param heading Amount of degrees to rotate turtle
+	 */
+	public void rotate(double heading) { //can be ccwise or cwise
+		this.setRotate(this.getRotate()+heading);
+	}
+	
+	/**
+	 * Resets location of the turtle to (0,0)
+	 */
+	public void resetLocation() {
+		this.setLayoutX(0.0);
+		this.setLayoutY(0.0);
+	}
+	
 	/**
 	 * 
 	 * @param xCoordinate X coordinate of the turtle
@@ -94,13 +121,14 @@ public class Turtle extends ImageView{
 		this.setRotate(heading);
 	}
 	
+	/**
+	 * 
+	 * @param xCoord X coordinate
+	 * @param yCoord Y coordinate
+	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate() % 360; //coterminal angle
 		this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
-	}
-	
-	public void rotate(double heading) { //can be ccwise or cwise
-		this.setRotate(this.getRotate()+heading);
 	}
 	
 	/**
@@ -113,10 +141,26 @@ public class Turtle extends ImageView{
 		this.setImage(turtleImage);
 	}
 	
+	/**
+	 * 
+	 * @param bool True or false boolean
+	 */
 	public void togglePenUpOrDown(boolean bool) {
 		penBoolean = bool;
 	}
 	
+	/**
+	 * 
+	 * @param bool True or false boolean
+	 */
+	public void toggleTurtle(boolean bool) {
+		this.setVisible(bool);
+	}
+	
+	/**
+	 * 
+	 * @param color Color of the line
+	 */
 	public void setPenColor(Color color) {
 		penColor = color;
 	}
@@ -154,28 +198,39 @@ public class Turtle extends ImageView{
 		return imageURL;
 	}
 	
+	/**
+	 * 
+	 * @return Last line object that was drawn
+	 */
 	public Line getLastLine(){
 		return lines.peek();
 	}
 	
+	/**
+	 * 
+	 * @return Color of the last line drawn
+	 */
 	public Color getPenColor() {
 		return penColor;
 	}
 	
+	/**
+	 * 
+	 * @return Boolean if pen is down or not
+	 */
 	public boolean getPenBoolean() {
 		return penBoolean;
 	}
 	
+	/**
+	 * 
+	 * @return Boolean if turtle is visible or not
+	 */
 	public boolean getTurtleBoolean() {
-		return turtleBoolean;
+		return this.isVisible();
 	}
 	
-	public void resetLocation() {
-		this.setLayoutX(0.0);
-		this.setLayoutY(0.0);
-	}
-	
-	//misc
+	//math
 	/**
 	 * 
 	 * @param angle Heading of the turtle
@@ -196,12 +251,22 @@ public class Turtle extends ImageView{
 		return amount*Math.sin(Math.toRadians(angle));
 	} 
 	
+	/**
+	 * 
+	 * @param xCoord X Coordinate
+	 * @param yCoord Y Coordinate
+	 * @return Degree measure turtle needs to rotate to face (xCoord,yCoord)
+	 */
 	private double calculateAngle(double xCoord, double yCoord) {
 		double currHeading = this.getRotate() % 360.0; //get coterminal angle
 		double newHeading = Math.atan(yCoord/xCoord);
 		return currHeading-newHeading;
 	}
 	
+	//lines
+	/**
+	 * Sets the start X and start Y coordinate for the next line to be drawn
+	 */
 	private void setStartLineLocation() {
 		if(penBoolean) { //if pen is down
 			xStartLineLocation = lines.peek().getEndX();
@@ -212,17 +277,22 @@ public class Turtle extends ImageView{
 		}
 	}
 
-	//lines
+	/**
+	 * 
+	 * @param xAmount Amount pixel change in x direction
+	 * @param yAmount Amount pixel change in y direction
+	 */
 	private void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
-//			double startX = lines.peek().getEndX();
-//			double startY = lines.peek().getEndY();
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation+yAmount);
 			newLine.setFill(penColor);
 			lines.push(newLine);
 		}
 	}
 	
+	/**
+	 * Clears all the lines that were drawn by the turtle
+	 */
 	public void clearLines() {
 		lines.clear();
 	}

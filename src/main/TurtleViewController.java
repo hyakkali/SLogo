@@ -75,11 +75,11 @@ public class TurtleViewController implements Controller{
 		turtle.resetLocation();
 	}
 	
-	//display commands
-	
 	public void toggleTurtleDisplay(boolean showTurtle) {
-		view.toggleTurtle(showTurtle);
+		turtle.toggleTurtle(showTurtle);
 	}
+	
+	//display commands
 	
 	/**
 	 * 
