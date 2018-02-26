@@ -28,7 +28,7 @@ public class Turtle extends ImageView{
 	/**
 	 * String of path to an image file
 	 */
-	private String imageURL;
+	private String imageURL = "turtle.png";
 	
 	/**
 	 * Image object of the turtle
