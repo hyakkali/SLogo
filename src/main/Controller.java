@@ -1,110 +1,33 @@
 package main;
-import javafx.scene.paint.Color;
-import turtle.Turtle;
 
-/**
- * 
- * @author Hemanth Yakkali
- * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
- */
-public class Controller implements IController{
+import javafx.scene.paint.Color;
+
+public interface Controller {
 	
-	private UserInterface view;
-	private Turtle turtle;
+	public void setTurtleXLocation(double amount);
 	
-	public Controller(UserInterface view, Turtle turtle){
-		this.view = view;
-		this.turtle = turtle;
-	}
+	public void setTurtleYLocation(double amount);
 	
-	//turtle commands
-	/**
-	 * 
-	 * @param amount Amount turtle needs to move horizontally
-	 */
-	public void setTurtleXLocation(double amount) {
-		turtle.setXPosition(amount);
-	}
+	public void moveTurtle(double amount);
 	
-	/**
-	 * 
-	 * @param amount Amount turtle needs to move vertically
-	 */
-	public void setTurtleYLocation(double amount) {
-		turtle.setYPosition(amount);
-	}
-		
-	public void moveTurtle(double amount) {
-		turtle.move(turtle.getAngle(), amount);
-	}
-		
-	public void rotateTurtle(double heading) {
-		turtle.rotate(heading);
-	}
+	public void rotateTurtle(double heading);
 	
-	public void setTurtleHeading(double heading) {
-		turtle.setHeading(heading);
-	}
+	public void setTurtleHeading(double heading);
 	
-	public void setTurtleTowards(double xCoord, double yCoord) {
-		turtle.setTowards(xCoord,yCoord);
-	}
+	public void setTurtleTowards(double xCoord, double yCoord);
 	
-	/**
-	 * Toggles the pen 
-	 * @param penBoolean Boolean of true or false
-	 */
-	public void togglePen(boolean penBoolean) {
-		turtle.togglePenUpOrDown(penBoolean);
-	}
+	public void togglePen(boolean penBoolean);
 	
-	/**
-	 * 
-	 * @param color Color of the pen
-	 */
-	public void setViewPenColor(Color color) {
-		turtle.setPenColor(color);
-	}
+	public void setViewPenColor(Color color);
 	
-	//display commands
+	public void toggleTurtleDisplay(boolean showTurtle);
 	
-	public void toggleTurtleDisplay(boolean showTurtle) {
-		view.toggleTurtle(showTurtle);
-	}
+	public void setViewBackgroundColor(Color color);
 	
-	/**
-	 * 
-	 * @param color Background color of the interface
-	 */
-	public void setViewBackgroundColor(Color color) {
-		view.setBackgroundColor(color);
-	}
+	public void addPreviouslyRunCommand(String command);
 	
-	//non-command display methods
-	/**
-	 * 
-	 * @param command Original command String that user typed in
-	 */
-	public void addPreviouslyRunCommand(String command) {
-		view.addPreviousCommand(command);
-	}
+	public void addExistingVariable(String variable);
 	
-	/**
-	 * 
-	 * @param variable String name of any variable that has been instantiated
-	 */
-	public void addExistingVariable(String variable) {
-		view.addVariable(variable);
-	}
-	
-	//misc 
-	/**
-	 * 
-	 * @param result String result of a math operation
-	 * Triggers view to print result to the screen
-	 */
-	public void displayResult(String result) {
-		view.printToScreen(result);
-	}
+	public void displayResult(String result);
 	
 }
