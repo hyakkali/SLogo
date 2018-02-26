@@ -1,6 +1,11 @@
 package turtle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Line;
 
 /**
  * 
@@ -8,6 +13,10 @@ import javafx.scene.image.ImageView;
  * Turtle object that lies in the View part of the project.
  */
 public class Turtle extends ImageView{
+	
+	private boolean penBoolean;
+	
+	private Stack<Line> lines;
 	
 	/**
 	 * String of path to an image file
@@ -29,6 +38,9 @@ public class Turtle extends ImageView{
 		this.setLayoutY(0.0);
 		this.setRotate(0.0);
 		this.setImage(turtleImage);
+		this.penBoolean = true;
+		this.lines = new Stack<>();
+		lines.add(new Line(0.0,0.0,0.0,0.0));
 	}
 	
 	/**
@@ -37,8 +49,11 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		this.setLayoutX(this.getXLocation()+calculateXAmount(angle, amount));
-		this.setLayoutY(this.getYLocation()+calculateYAmount(angle, amount));
+		double xAmount = calculateXAmount(angle,amount);
+		double yAmount = calculateYAmount(angle,amount);
+		this.setLayoutX(this.getXLocation()+xAmount);
+		this.setLayoutY(this.getYLocation()+yAmount);
+		drawLine(xAmount,yAmount);
 	}
 	
 	//setters
@@ -78,6 +93,10 @@ public class Turtle extends ImageView{
 	public void setImage(String url) {
 		imageURL = url;
 		this.setImage(turtleImage);
+	}
+	
+	public void togglePenUpOrDown(boolean bool) {
+		penBoolean = bool;
 	}
 	
 	//getters
@@ -132,6 +151,17 @@ public class Turtle extends ImageView{
 	 */ 
 	private double calculateYAmount(double angle, double amount) {
 		return amount*Math.sin(Math.toRadians(angle));
+	} 
+	
+	//lines
+	
+	private void drawLine(double xAmount, double yAmount) {
+		if(penBoolean) {
+			Line lastLine = lines.pop();
+			double startX = lastLine.getEndX();
+			double startY = lastLine.getEndY();
+			lines.push(new Line(startX,startY,startX+xAmount,startY+yAmount));
+		}
 	}
 	
 }

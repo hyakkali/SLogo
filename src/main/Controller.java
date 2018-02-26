@@ -47,6 +47,14 @@ public class Controller {
 		turtle.setHeading(heading);
 	}
 	
+	/**
+	 * Toggles the pen 
+	 * @param penBoolean Boolean of true or false
+	 */
+	public void togglePen(boolean penBoolean) {
+		turtle.togglePenUpOrDown(penBoolean);
+	}
+	
 	//display commands
 	
 	public void toggleTurtleDisplay(boolean showTurtle) {
@@ -67,10 +75,6 @@ public class Controller {
 	 */
 	public void setViewPenColor(Color color) {
 		view.setPenColor(color);
-	}
-	
-	public void togglePen(boolean penBoolean) {
-		view.togglePenUpOrDown(penBoolean);
 	}
 	
 	//non-command display methods
