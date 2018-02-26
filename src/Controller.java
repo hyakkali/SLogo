@@ -8,10 +8,12 @@ public class Controller {
 	
 	private UserInterface view;
 	private Command model;
+	private Turtle turtle;
 	
-	public Controller(UserInterface view, Command model){
+	public Controller(UserInterface view, Command model, Turtle turtle){
 		this.view = view;
 		this.model = model;
+		this.turtle = turtle;
 	}
 	
 	//turtle commands
@@ -19,23 +21,36 @@ public class Controller {
 	 * 
 	 * @param amount Amount turtle needs to move horizontally
 	 */
-	public void setTurtleXLocation(int amount) {
-		view.setXLocation(amount);
+	public void setTurtleXLocation(double amount) {
+		turtle.setXPosition(amount);
 	}
 	
 	/**
 	 * 
 	 * @param amount Amount turtle needs to move vertically
 	 */
-	public void setTurtleYLocation(int amount) {
-		view.setYLocation(amount);
+	public void setTurtleYLocation(double amount) {
+		turtle.setYPosition(amount);
 	}
+		
+	public void moveTurtle(double heading, double amount) {
+		turtle.move(heading, amount);
+	}
+		
+	public void rotateTurtle(double heading) {
+		turtle.rotate(heading);
+	}
+	
+	public void setTurtleHeading(double heading) {
+		turtle.setHeading(heading);
+	}
+	
+	//display commands
 	
 	public void toggleTurtleDisplay(boolean showTurtle) {
 		view.toggleTurtle(showTurtle);
 	}
 	
-	//display commands
 	/**
 	 * 
 	 * @param color Background color of the interface
@@ -56,7 +71,7 @@ public class Controller {
 		view.togglePenUpOrDown(penBoolean);
 	}
 	
-	//display methods
+	//non-command display methods
 	/**
 	 * 
 	 * @param command Original command String that user typed in
@@ -81,14 +96,6 @@ public class Controller {
 	 */
 	public void displayResult(String result) {
 		view.printToScreen(result);
-	}
-	
-	/**
-	 * 
-	 * @param turtle Turtle object
-	 */
-	public void whichTurtle(Turtle turtle) {
-		view.setTurtle(turtle);
 	}
 	
 }

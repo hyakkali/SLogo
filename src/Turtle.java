@@ -9,21 +9,6 @@ import javafx.scene.image.ImageView;
 public class Turtle extends ImageView{
 	
 	/**
-	 * X coordinate of the turtle
-	 */
-	private double xLocation;
-	
-	/**
-	 * Y coordinate of the turtle
-	 */
-	private double yLocation;
-	
-	/**
-	 * Current heading of the turtle
-	 */
-	private double heading;
-	
-	/**
 	 * String of path to an image file
 	 */
 	private String imageURL;
@@ -39,9 +24,9 @@ public class Turtle extends ImageView{
 	 */
 	public Turtle(){
 		super(); //sets image found in url
-		this.xLocation = 0;
-		this.yLocation = 0;
-		this.heading = 0;
+		this.setLayoutX(0.0);
+		this.setLayoutY(0.0);
+		this.setRotate(0.0);
 		this.setImage(turtleImage);
 	}
 	
@@ -51,8 +36,8 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		this.xLocation += calculateXAmount(angle, amount);
-		this.yLocation += calculateYAmount(angle, amount);
+		this.setLayoutX(this.getXLocation()+calculateXAmount(angle, amount));
+		this.setLayoutY(this.getYLocation()+calculateYAmount(angle, amount));
 	}
 	
 	//setters
@@ -61,7 +46,7 @@ public class Turtle extends ImageView{
 	 * @param xCoordinate X coordinate of the turtle
 	 */
 	public void setXPosition(double xCoordinate) {
-		this.xLocation = xCoordinate;
+		this.setLayoutX(xCoordinate);
 	}
 	
 	/**
@@ -69,20 +54,25 @@ public class Turtle extends ImageView{
 	 * @param yCoordinate Y coordinate of the turtle
 	 */
 	public void setYPosition(double yCoordinate) {
-		this.yLocation = yCoordinate;
+		this.setLayoutY(yCoordinate);
 	}
 	
 	/**
 	 * 
 	 * @param heading Heading of the turtle
 	 */
-	public void setAngle(double heading) {
-		this.heading = heading;
+	public void setHeading(double heading) {
+		this.setRotate(heading);
+	}
+	
+	public void rotate(double heading) { //can be ccwise or cwise
+		this.setRotate(this.getRotate()+heading);
 	}
 	
 	/**
-	 * 
+	 * Sets image of the turtle
 	 * @param url String path to an image
+	 * 
 	 */
 	public void setImage(String url) {
 		imageURL = url;
@@ -95,7 +85,7 @@ public class Turtle extends ImageView{
 	 * @return X coordinate of the turtle
 	 */
 	public double getXLocation() {
-		return xLocation;
+		return this.getLayoutX();
 	}
 	
 	/**
@@ -103,7 +93,7 @@ public class Turtle extends ImageView{
 	 * @return Y coordinate of the turtle
 	 */
 	public double getYLocation() {
-		return yLocation;
+		return this.getLayoutY();
 	}
 	
 	/**
@@ -111,7 +101,7 @@ public class Turtle extends ImageView{
 	 * @return Current heading of the turtle
 	 */
 	public double getAngle() {
-		return heading;
+		return this.getRotate();
 	}
 	
 	/**
