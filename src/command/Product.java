@@ -1,7 +1,10 @@
 package command;
 
 import main.Controller;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95dc8841f134d5094a8dc6217737581d77b73b0f
 /**
  * Returns the product of two numbers
  * @author dylanpowers
@@ -22,7 +25,9 @@ public class Product implements Command {
 	
 	/**
 	 * Returns the product of expr1 and expr2
+	 * @return expr1 * expr2
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return expr1 * expr2;
 	}

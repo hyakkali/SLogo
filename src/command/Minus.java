@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Returns the negative of a number
  * @author dylanpowers
@@ -20,7 +19,9 @@ public class Minus implements Command {
 	
 	/**
 	 * Returns the negative of expr1
+	 * @return -expr1
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return -expr1;
 	}

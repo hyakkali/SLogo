@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Returns the difference between two expressions
  * @author dylanpowers
@@ -22,7 +21,9 @@ public class Difference implements Command {
 	
 	/**
 	 * Return the difference between these two expressions
+	 * @return value of expr1 - expr2
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return this.expr1 - this.expr2;
 	}

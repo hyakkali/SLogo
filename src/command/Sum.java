@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Gets and returns the sum of expr1 and expr2
  * @author dylanpowers
@@ -22,7 +21,9 @@ public class Sum implements Command {
 	
 	/**
 	 * Adds the two expressions together, returns it
+	 * @return expr1 + expr2
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return this.expr1 + this.expr2;
 	}

@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Finds if either of two numbers is non-zero
  * @author dylanpowers
@@ -23,6 +22,7 @@ public class Or implements Command {
 	/**
 	 * @return 1 if test1 or test2 are non-zero, 0 o.w.
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return (this.test1 != 0 || this.test2 != 0) ? 1 : 0;
 	}

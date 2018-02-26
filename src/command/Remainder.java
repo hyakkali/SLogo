@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Returns the remainder of two numbers
  * @author dylanpowers
@@ -22,7 +21,9 @@ public class Remainder implements Command {
 	
 	/**
 	 * Returns the remainder of expr1 and expr2
+	 * @return expr1 % expr2
 	 */
+	@Override
 	public double execute(Controller controller) {
 		if (this.expr2 == 0) {
 			throw new IllegalArgumentException("Cannot divide by 0.");
