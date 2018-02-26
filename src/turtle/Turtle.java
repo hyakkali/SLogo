@@ -169,10 +169,9 @@ public class Turtle extends ImageView{
 		return turtleBoolean;
 	}
 	
-	public void reset() {
+	public void resetLocation() {
 		this.setLayoutX(0.0);
 		this.setLayoutY(0.0);
-		clearLines();
 	}
 	
 	//misc
