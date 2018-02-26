@@ -15,6 +15,8 @@ public class Turtle extends ImageView{
 	
 	private boolean penBoolean;
 	
+	private boolean turtleBoolean;
+	
 	private Stack<Line> lines;
 	
 	private double xStartLineLocation;
@@ -44,6 +46,7 @@ public class Turtle extends ImageView{
 		this.setRotate(0.0);
 		this.setImage(turtleImage);
 		this.penBoolean = true;
+		this.turtleBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
 		Line newLine = new Line(0,0,0,0);
@@ -160,6 +163,10 @@ public class Turtle extends ImageView{
 	
 	public boolean getPenBoolean() {
 		return penBoolean;
+	}
+	
+	public boolean getTurtleBoolean() {
+		return turtleBoolean;
 	}
 	
 	public void reset() {
