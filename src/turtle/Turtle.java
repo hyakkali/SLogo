@@ -1,6 +1,4 @@
 package turtle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import javafx.scene.image.Image;
@@ -147,8 +145,8 @@ public class Turtle extends ImageView{
 		return imageURL;
 	}
 	
-	public Stack<Line> getLineStack(){
-		return lines;
+	public Line getLastLine(){
+		return lines.peek();
 	}
 	
 	public Color getPenColor() {
