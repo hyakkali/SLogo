@@ -19,6 +19,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import turtle.Turtle;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class UserScreen extends Application {
     private ResourceBundle properties;
     private ResourceBundle descriptions;
 
+    private Turtle myTurtle = new Turtle();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private Turtle t = new Turtle();
     private HashMap<String, Object> vars = new HashMap<String, Object>();
@@ -246,6 +249,14 @@ public class UserScreen extends Application {
     {
         if(history.hasNext())
             console.setText(history.moveForward());
+    }
+
+    public void toggleTurtle(boolean t){myTurtle.setVisible(t);}
+    public void addPreviousCommand(String command){history.add(command);}
+    public void setBackgroundColor(Color c){
+     try{
+
+     }
     }
 
     private void displayPrev(TextArea console)
