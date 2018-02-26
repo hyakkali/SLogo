@@ -1,6 +1,6 @@
 package command;
 
-import turtle.Turtle;
+import main.Controller;
 /**
  * Interface that all commands (ex. Forward, Backward, Change picture, etc.) must implement.
  * @author dylanpowers

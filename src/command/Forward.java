@@ -1,6 +1,6 @@
 package command;
 
-import turtle.Turtle;
+import main.Controller;
 /**
  * Command to move the turtle forward.
  * @author dylanpowers
@@ -8,23 +8,24 @@ import turtle.Turtle;
  */
 public class Forward implements Command {
 
-	private Integer amount;
+	private Double amount;
 	
 	/**
 	 * Specifies that the turtle should move forward a certain amount
 	 * @param amount
 	 */
-	public Forward(Integer amount) {
+	public Forward(Double amount) {
 		this.amount = amount;
 	}
 	
 	/**
 	 * Executes this command by moving the turtle forward by amount
+	 * @return the value in pixels
 	 */
 	@Override
-	public void execute(Controller controller) {
-		// TODO make turtle move forward by amount
-		
+	public double execute(Controller controller) {
+		controller.moveTurtle(this.amount);
+		return this.amount;
 	}
 
 }
