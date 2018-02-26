@@ -36,8 +36,8 @@ public class Controller {
 		turtle.setYPosition(amount);
 	}
 		
-	public void moveTurtle(double heading, double amount) {
-		turtle.move(heading, amount);
+	public void moveTurtle(double amount) {
+		turtle.move(turtle.getAngle(), amount);
 	}
 		
 	public void rotateTurtle(double heading) {
