@@ -1,7 +1,6 @@
 package command;
 
 import main.Controller;
-
 /**
  * Find if a given number is less than another given number.
  * @author dylanpowers
@@ -23,6 +22,7 @@ public class LessThan implements Command {
 	/**
 	 * @return 1 if expr1 is strictly less than expr2, 0 otherwise
 	 */
+	@Override
 	public double execute(Controller controller) {
 		return this.expr1 < this.expr2 ? 1 : 0;
 	}
