@@ -88,7 +88,8 @@ public class Turtle extends ImageView{
 	}
 	
 	public void setTowards(double xCoord, double yCoord) {
-		
+		double currHeading = this.getRotate() % 360; //coterminal angle
+		this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
 	}
 	
 	public void rotate(double heading) { //can be ccwise or cwise
@@ -110,7 +111,7 @@ public class Turtle extends ImageView{
 	}
 	
 	public void setPenColor(Color color) {
-		
+		penColor = color;
 	}
 	
 	//getters
@@ -146,6 +147,18 @@ public class Turtle extends ImageView{
 		return imageURL;
 	}
 	
+	public Stack<Line> getLineStack(){
+		return lines;
+	}
+	
+	public Color getPenColor() {
+		return penColor;
+	}
+	
+	public boolean getPenBoolean() {
+		return penBoolean;
+	}
+	
 	//misc
 	/**
 	 * 
@@ -168,14 +181,16 @@ public class Turtle extends ImageView{
 	} 
 	
 	private double calculateAngle(double xCoord, double yCoord) {
-		return 0;
+		double currHeading = this.getRotate() % 360.0; //get coterminal angle
+		double newHeading = Math.atan(yCoord/xCoord);
+		return currHeading-newHeading;
 	}
 	
 	//lines
 	
 	private void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
-			Line lastLine = lines.pop();
+			Line lastLine = lines.peek();
 			double startX = lastLine.getEndX();
 			double startY = lastLine.getEndY();
 			Line newLine = new Line(startX,startY,startX+xAmount,startY+yAmount);
