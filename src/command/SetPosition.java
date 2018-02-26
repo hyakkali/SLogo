@@ -9,23 +9,31 @@ import main.Controller;
  */
 public class SetPosition implements Command {
 
-	private Integer x;
-	private Integer y;
+	private Double x;
+	private Double y;
 	
 	/**
 	 * 
 	 * @param x x coordinate to move to
 	 * @param y y coordinate to move to
 	 */
-	public SetPosition(Integer x, Integer y) {
+	public SetPosition(Double x, Double y) {
 		this.x = x;
 		this.y = y;
 	}
 	
 	/**
 	 * Move the turtle to the location (x, y)
+	 * @return distance that turtle moved
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		// calculate distance using distance formula 
+		double turtleX = controller.getTurtleXLocation();
+		double turtleY = controller.getTurtleYLocation();
+		double distance = Math.sqrt(Math.pow(this.x - turtleX, 2) + Math.pow(this.y - turtleY, 2));
+		controller.setTurtleXLocation(this.x);
+		controller.setTurtleYLocation(this.y);
+		return distance;
 	}
 }

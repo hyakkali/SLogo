@@ -128,4 +128,12 @@ public class TurtleViewController implements Controller{
 		return turtle.getYLocation();
 	}
 	
+	public boolean getIsPen() {
+		return turtle.getPenBoolean();
+	}
+	
+	public boolean getIsTurtle() {
+		return turtle.getTurtleBoolean();
+	}
+	
 }

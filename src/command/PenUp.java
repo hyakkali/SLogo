@@ -16,8 +16,11 @@ public class PenUp implements Command {
 	
 	/**
 	 * Picks the pen up so that the turtle does not leave a trail.
+	 * @return 0
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		controller.togglePen(false);
+		return 0;
 	}
 }

@@ -16,8 +16,10 @@ public class YCoordinate implements Command {
 	
 	/**
 	 * Gets turtle's y-coordinate
+	 * @return turtle's y-coordinate from the center of the screen
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		return controller.getTurtleYLocation();
 	}
 }

@@ -9,17 +9,24 @@ import main.Controller;
  */
 public class Right implements Command {
 
-	private Integer amount;
+	private Double degrees;
 	
 	/**
 	 * Specifies amount to move the turtle right.
 	 * @param amount the amount to move.
 	 */
-	public Right(Integer amount) {
-		this.amount = amount;
+	public Right(Double degrees) {
+		this.degrees = degrees;
 	}
 	
-	public void execute(Controller controller) {
-		// TODO implement execute for Left
+	/**
+	 * Rotates the turtle clockwise
+	 * @return the number of degrees turned
+	 */
+	@Override
+	public double execute(Controller controller) {
+		// JavaFX specifies that CW is positive, so leave "degrees" as is
+		controller.rotateTurtle(this.degrees);
+		return this.degrees;
 	}
 }

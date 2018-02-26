@@ -16,8 +16,11 @@ public class PenDown implements Command {
 	
 	/**
 	 * Put the pen down so that the turtle leaves a trail.
+	 * @return 1
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		controller.togglePen(true);
+		return 1;
 	}
 }

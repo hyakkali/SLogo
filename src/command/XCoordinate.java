@@ -16,8 +16,10 @@ public class XCoordinate implements Command {
 	
 	/**
 	 * Get turtle's x coordinate
+	 * @return turtle's x-coordinate from center of the screen
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		return controller.getTurtleXLocation();
 	}
 }

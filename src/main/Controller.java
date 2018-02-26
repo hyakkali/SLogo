@@ -40,4 +40,14 @@ public interface Controller {
 	
 	public void displayResult(String result);
 	
+	public double getTurtleHeading();
+	
+	public double getTurtleXLocation();
+	
+	public double getTurtleYLocation();
+	
+	public boolean getIsPen();
+	
+	public boolean getIsTurtle();
+	
 }

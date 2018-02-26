@@ -16,8 +16,11 @@ public class ShowTurtle implements Command {
 	
 	/**
 	 * Makes the turtle visible.
+	 * @return 1
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		controller.toggleTurtleDisplay(true);
+		return 1;
 	}
 }
