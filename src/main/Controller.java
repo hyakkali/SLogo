@@ -1,4 +1,5 @@
 package main;
+import javafx.scene.paint.Color;
 import turtle.Turtle;
 
 /**
@@ -47,6 +48,26 @@ public class Controller {
 		turtle.setHeading(heading);
 	}
 	
+	public void setTurtleTowards(double xCoord, double yCoord) {
+		turtle.setTowards(xCoord,yCoord);
+	}
+	
+	/**
+	 * Toggles the pen 
+	 * @param penBoolean Boolean of true or false
+	 */
+	public void togglePen(boolean penBoolean) {
+		turtle.togglePenUpOrDown(penBoolean);
+	}
+	
+	/**
+	 * 
+	 * @param color Color of the pen
+	 */
+	public void setViewPenColor(Color color) {
+		turtle.setPenColor(color);
+	}
+	
 	//display commands
 	
 	public void toggleTurtleDisplay(boolean showTurtle) {
@@ -59,18 +80,6 @@ public class Controller {
 	 */
 	public void setViewBackgroundColor(Color color) {
 		view.setBackgroundColor(color);
-	}
-	
-	/**
-	 * 
-	 * @param color Color of the pen
-	 */
-	public void setViewPenColor(Color color) {
-		view.setPenColor(color);
-	}
-	
-	public void togglePen(boolean penBoolean) {
-		view.togglePenUpOrDown(penBoolean);
 	}
 	
 	//non-command display methods

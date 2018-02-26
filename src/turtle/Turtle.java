@@ -1,6 +1,10 @@
 package turtle;
+import java.util.Stack;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 /**
  * 
@@ -8,6 +12,12 @@ import javafx.scene.image.ImageView;
  * Turtle object that lies in the View part of the project.
  */
 public class Turtle extends ImageView{
+	
+	private boolean penBoolean;
+	
+	private Stack<Line> lines;
+	
+	private Color penColor;
 	
 	/**
 	 * String of path to an image file
@@ -29,6 +39,12 @@ public class Turtle extends ImageView{
 		this.setLayoutY(0.0);
 		this.setRotate(0.0);
 		this.setImage(turtleImage);
+		this.penBoolean = true;
+		this.penColor = Color.BLACK;
+		this.lines = new Stack<>();
+		Line newLine = new Line(0,0,0,0);
+		newLine.setFill(penColor);
+		lines.add(newLine);
 	}
 	
 	/**
@@ -37,8 +53,11 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		this.setLayoutX(this.getXLocation()+calculateXAmount(angle, amount));
-		this.setLayoutY(this.getYLocation()+calculateYAmount(angle, amount));
+		double xAmount = calculateXAmount(angle,amount);
+		double yAmount = calculateYAmount(angle,amount);
+		this.setLayoutX(this.getXLocation()+xAmount);
+		this.setLayoutY(this.getYLocation()+yAmount);
+		drawLine(xAmount,yAmount);
 	}
 	
 	//setters
@@ -66,6 +85,11 @@ public class Turtle extends ImageView{
 		this.setRotate(heading);
 	}
 	
+	public void setTowards(double xCoord, double yCoord) {
+		double currHeading = this.getRotate() % 360; //coterminal angle
+		this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
+	}
+	
 	public void rotate(double heading) { //can be ccwise or cwise
 		this.setRotate(this.getRotate()+heading);
 	}
@@ -78,6 +102,14 @@ public class Turtle extends ImageView{
 	public void setImage(String url) {
 		imageURL = url;
 		this.setImage(turtleImage);
+	}
+	
+	public void togglePenUpOrDown(boolean bool) {
+		penBoolean = bool;
+	}
+	
+	public void setPenColor(Color color) {
+		penColor = color;
 	}
 	
 	//getters
@@ -113,6 +145,18 @@ public class Turtle extends ImageView{
 		return imageURL;
 	}
 	
+	public Line getLastLine(){
+		return lines.peek();
+	}
+	
+	public Color getPenColor() {
+		return penColor;
+	}
+	
+	public boolean getPenBoolean() {
+		return penBoolean;
+	}
+	
 	//misc
 	/**
 	 * 
@@ -132,6 +176,25 @@ public class Turtle extends ImageView{
 	 */ 
 	private double calculateYAmount(double angle, double amount) {
 		return amount*Math.sin(Math.toRadians(angle));
+	} 
+	
+	private double calculateAngle(double xCoord, double yCoord) {
+		double currHeading = this.getRotate() % 360.0; //get coterminal angle
+		double newHeading = Math.atan(yCoord/xCoord);
+		return currHeading-newHeading;
+	}
+	
+	//lines
+	
+	private void drawLine(double xAmount, double yAmount) {
+		if(penBoolean) {
+			Line lastLine = lines.peek();
+			double startX = lastLine.getEndX();
+			double startY = lastLine.getEndY();
+			Line newLine = new Line(startX,startY,startX+xAmount,startY+yAmount);
+			newLine.setFill(penColor);
+			lines.push(newLine);
+		}
 	}
 	
 }
