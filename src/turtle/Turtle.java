@@ -17,6 +17,10 @@ public class Turtle extends ImageView{
 	
 	private Stack<Line> lines;
 	
+	private double xStartLineLocation;
+	
+	private double yStartLineLocation;
+	
 	private Color penColor;
 	
 	/**
@@ -57,6 +61,7 @@ public class Turtle extends ImageView{
 		double yAmount = calculateYAmount(angle,amount);
 		this.setLayoutX(this.getXLocation()+xAmount);
 		this.setLayoutY(this.getYLocation()+yAmount);
+		setStartLineLocation();
 		drawLine(xAmount,yAmount);
 	}
 	
@@ -157,6 +162,12 @@ public class Turtle extends ImageView{
 		return penBoolean;
 	}
 	
+	public void reset() {
+		this.setLayoutX(0.0);
+		this.setLayoutY(0.0);
+		clearLines();
+	}
+	
 	//misc
 	/**
 	 * 
@@ -184,17 +195,29 @@ public class Turtle extends ImageView{
 		return currHeading-newHeading;
 	}
 	
+	private void setStartLineLocation() {
+		if(penBoolean) { //if pen is down
+			xStartLineLocation = lines.peek().getEndX();
+			yStartLineLocation = lines.peek().getEndY();
+		} else {
+			xStartLineLocation = this.getLayoutX();
+			yStartLineLocation = this.getLayoutY();
+		}
+	}
+
 	//lines
-	
 	private void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
-			Line lastLine = lines.peek();
-			double startX = lastLine.getEndX();
-			double startY = lastLine.getEndY();
-			Line newLine = new Line(startX,startY,startX+xAmount,startY+yAmount);
+//			double startX = lines.peek().getEndX();
+//			double startY = lines.peek().getEndY();
+			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation+yAmount);
 			newLine.setFill(penColor);
 			lines.push(newLine);
 		}
+	}
+	
+	public void clearLines() {
+		lines.clear();
 	}
 	
 }
