@@ -111,4 +111,12 @@ public class TurtleViewController implements Controller{
 		return turtle.getAngle();
 	}
 	
+	public double getTurtleXLocation() {
+		return turtle.getXLocation();
+	}
+	
+	public double getTurtleYLocation() {
+		return turtle.getYLocation();
+	}
+	
 }
