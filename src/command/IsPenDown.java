@@ -15,8 +15,10 @@ public class IsPenDown implements Command {
 	
 	/**
 	 * Gets the status of the pen
+	 * @return 1 if turtle's pen is down, 0 o.w.
 	 */
-	public void execute(Controller controller) {
-		// TODO implementation
+	@Override
+	public double execute(Controller controller) {
+		return controller.getIsPen() ? 1 : 0;
 	}
 }
