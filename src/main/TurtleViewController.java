@@ -70,8 +70,8 @@ public class TurtleViewController implements Controller{
 		turtle.clearLines();
 	}
 	
-	public void resetTurtle() {
-		turtle.reset();
+	public void resetTurtlePosition() {
+		turtle.resetLocation();
 	}
 	
 	//display commands
@@ -134,5 +134,5 @@ public class TurtleViewController implements Controller{
 	public boolean getIsTurtle() {
 		return turtle.getTurtleBoolean();
 	}
-	
+		
 }
