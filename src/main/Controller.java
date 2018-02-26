@@ -50,4 +50,8 @@ public interface Controller {
 	
 	public boolean getIsTurtle();
 	
+	public void clearTurtleLines();
+	
+	public void resetTurtlePosition();
+	
 }
