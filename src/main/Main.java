@@ -4,6 +4,7 @@ package main;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import turtle.Turtle;
+import user_interface.UserScreen;
 
 public class Main extends Application{
 
@@ -11,7 +12,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		Turtle turtle = new Turtle();
-		UserInterface view =  new UserInterface();
+		UserScreen view =  new UserScreen();
 		Controller controller = new TurtleViewController(view, turtle);
 	}
 	
