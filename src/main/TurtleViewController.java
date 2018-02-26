@@ -107,4 +107,8 @@ public class TurtleViewController implements Controller{
 		view.printToScreen(result);
 	}
 	
+	public double getTurtleHeading() {
+		return turtle.getAngle();
+	}
+	
 }
