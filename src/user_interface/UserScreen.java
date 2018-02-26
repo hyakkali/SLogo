@@ -24,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import turtle.Turtle;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class UserScreen extends Application {
     private ResourceBundle properties;
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
+    private ResourceBundle colors;
 
     private Turtle myTurtle = new Turtle();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
@@ -60,7 +62,6 @@ public class UserScreen extends Application {
     private ArrayList<Button> buttons;
     private History history = new History();
     private Pane turtlePane;
-    private HashMap<String, String> colors;
 
 
     /*will be used to draw the form on initialization
@@ -74,36 +75,34 @@ public class UserScreen extends Application {
     /*will be used to insantiate all of the visual elements in
      * in the slogo project and add to the scene
      */
-    private Scene setScene(int width, int length) {
-        initializeColors();
-        turtles.add(myTurtle);
-        setupProperties("Spanish");
+    private Scene setScene(int width, int length)
+    {
         Group root = new Group();
         myScene = new Scene(root, width, length);
-        setScreen(root);
-        return myScene;
-    }
 
-
-    private void setScreen(Group r) {
-
-        BorderPane form = new BorderPane();
+        setupProperties("English");
 
         VBox right = createSideMenu();
         HBox bottom = createBottomMenu();
+        BorderPane form = new BorderPane();
+
         turtlePane = new Pane();
+        turtles.add(myTurtle);
         for (Turtle turtle : turtles) {
             turtlePane.getChildren().add(turtle);
         }
+
         form.setRight(right);
         form.setBottom(bottom);
-        form.setPrefSize(XSIZE, YSIZE);
         form.setCenter(turtlePane);
-        r.getChildren().add(form);
+        form.setPrefSize(XSIZE, YSIZE);
+
+        root.getChildren().add(form);
+
+        return myScene;
     }
 
     private void reset() {
-        System.out.print("Reset");
         printToScreen("you done fucked up");
     }
 
@@ -132,8 +131,9 @@ public class UserScreen extends Application {
     private void setupProperties(String language) {
         turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
         properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
+        colors = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
         try {
-            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "_Descriptions");
+            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "Descriptions");
         }
         catch(MissingResourceException m)
         {
@@ -163,6 +163,7 @@ public class UserScreen extends Application {
         resetButton = getResetButton();
         commands = getCommandsList();
         ComboBox imageCombo = getImageCombo();
+        ComboBox lineCombo = getLineCombo();
         variables = getVariableList();
         ComboBox background = getBackgroundCombo();
         ComboBox language = getLanguageCombo();
@@ -171,7 +172,7 @@ public class UserScreen extends Application {
         interactives.setPadding(new Insets(20, 10, 20, 10));
         interactives.setAlignment(Pos.CENTER);
         interactives.setSpacing(10);
-        interactives.getChildren().addAll(language, background, imageCombo, commands, variables, resetButton);
+        interactives.getChildren().addAll(language, background, imageCombo, lineCombo, commands, variables, resetButton);
         return interactives;
     }
 
@@ -179,7 +180,7 @@ public class UserScreen extends Application {
     {
         ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
         ComboBox<String> combobox = new ComboBox<>(options);
-        combobox.setValue("White");
+        combobox.setValue("WHITE");
         combobox.setPromptText("Background Color");
 
         combobox.setOnAction(e->changeBackground(combobox.getValue()));
@@ -215,6 +216,22 @@ public class UserScreen extends Application {
         return combobox;
     }
 
+    private ComboBox getLineCombo()
+    {
+        ObservableList<String> color =FXCollections.observableArrayList(new ArrayList<String>(colors.keySet()));
+        ComboBox<String> combobox = new ComboBox<>(color);
+        combobox.setValue("BLACK");
+        combobox.setPromptText("LineColor");
+        Color c = Color.web(colors.getString(combobox.getValue()));
+        combobox.setOnAction(e->myTurtle.setPenColor(c));
+        return combobox;
+    }
+
+    public ResourceBundle getLanguage()
+    {
+        return properties;
+    }
+
     private void handleLanguageCombo(String s)
     {
         setupProperties(s);
@@ -225,7 +242,7 @@ public class UserScreen extends Application {
 
     private void changeBackground(String v)
     {
-        turtlePane.setStyle(colors.get(v));
+        turtlePane.setStyle("-fx-background-color: " +colors.getString(v));
     }
 
     private HBox createBottomMenu()
@@ -239,19 +256,6 @@ public class UserScreen extends Application {
         interactives.setSpacing(10);
         interactives.getChildren().addAll(console);
         return interactives;
-    }
-
-    public void addCommand(String s)
-    {
-
-    }
-
-    public void addVariable(String s, Object o)
-    {
-        variables.clear();
-        vars.put(s,o);
-        for(String var : vars.keySet())
-            variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
     }
 
     public void displayError(String s)
@@ -268,46 +272,80 @@ public class UserScreen extends Application {
 
 
 
-    private TextArea getCommandsList() {
-        commands = new TextArea();
-        commands.prefWidth(XSIZE / 7 * 4);
-        commands.setPrefWidth(XSIZE / 7 * 4);
-        commands.setPrefHeight(YSIZE / 7 * 2);
-        commands.setEditable(false);
-        commands.setWrapText(true);
-        setupCommandsList();
 
-        return commands;
-    }
+//MENU RELATED METHODS//
 
-    private void setupCommandsList()
-    {
-        for (String cmd : descriptions.keySet()) {
-            commands.appendText(cmd + "\n");
-            commands.appendText(descriptions.getString(cmd) + properties.getString(cmd) + "\n\n");
+   //COMMAND FUNCTIONS//__________________________________________________________________________________________
+        /* Initializes the shape and properties of the command area
+         */
+       private TextArea getCommandsList()
+       {
+       commands = new TextArea();
+       commands.prefWidth(XSIZE / 7 * 4);
+       commands.setPrefWidth(XSIZE / 7 * 4);
+       commands.setPrefHeight(YSIZE / 7 * 2);
+       commands.setEditable(false);
+       commands.setWrapText(true);
+       setupCommandsList();
+
+       return commands;
+   }
+
+        /*Initializes the command window with the descriptions
+         * of each command from the properties/ user definition
+         */
+        private void setupCommandsList()
+        {
+            commands.appendText("Inherent Commands: \n\n");
+            for (String cmd : descriptions.keySet()) {
+                commands.appendText(cmd + "\n");
+                commands.appendText(descriptions.getString(cmd) + properties.getString(cmd) + "\n\n");
+            }
+            commands.appendText("User Defined Commands: \n\n");
         }
-    }
 
-    private void setupoDescriptionsList( )
-    {
+        /* Appends user defined command to the list of callable commands
+         *
+         */
+        public void addCommand(String s)
+        {
+            commands.appendText(s+"\n\n");
+        }
 
-    }
+    //____________________________________________________________________________________________________________
 
-    private TextArea getVariableList() {
+
+    //VARIABLE FUNCTIONS__________________________________________________________________________________________
+
+        /* Creates properties of the variable textarea
+         * and initialized the values from the vars hashmap
+         */
+        private TextArea getVariableList()
+        {
         TextArea textArea = new TextArea();
         textArea.prefWidth(XSIZE / 7 * 4);
         textArea.setPrefWidth(XSIZE / 7 * 4);
         textArea.setPrefHeight(YSIZE / 7 * 2);
         textArea.setEditable(false);
         textArea.setWrapText(false);
-
+        textArea.appendText("Current Variables: \n\n");
         for (String var : vars.keySet()) {
             textArea.appendText(var + ": " + vars.get(var).toString() + "\n\n");
         }
-
         return textArea;
-
     }
+
+        /* adds the variables from controller to the hashmap
+         *  and rewrites the variables to the textarea
+         */
+        public void addVariable(String s, Object o)
+        {
+            variables.clear();
+            vars.put(s,o);
+            for(String var : vars.keySet())
+                variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
+        }
+    //____________________________________________________________________________________________________________
 
     private TextArea getConsole() {
         TextArea console = new TextArea();
@@ -323,7 +361,7 @@ public class UserScreen extends Application {
 
     private void consoleHandler( KeyCode k) {
         if (k.equals(KeyCode.ENTER)) {
-            //send to parser
+            //slogoModel.parse(console.getText());
         }
         if (k.equals(KeyCode.UP)) {
             this.displayPrev(console);
@@ -346,7 +384,7 @@ public class UserScreen extends Application {
     public void addPreviousCommand(String command){history.add(command);}
 
     public void printToScreen(String s){
-        //look into gettin an error type and error specific
+        //look into getting an error type and error specific
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Error");
         alert.setContentText(s);
@@ -368,14 +406,5 @@ public class UserScreen extends Application {
     {
         if(history.hasPrev())
             console.setText(history.moveBack());
-    }
-
-    private void initializeColors()
-    {
-        colors= new HashMap<String,String>();
-        ResourceBundle p = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
-           for (String s : p.keySet()) {
-               colors.put(s, "-fx-background-color: " + p.getString(s));
-           }
     }
 }
