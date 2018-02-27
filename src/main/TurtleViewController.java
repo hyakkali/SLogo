@@ -36,19 +36,32 @@ public class TurtleViewController implements Controller {
 	public void setTurtleYLocation(double yCoord) {
 		turtle.setYPosition(yCoord);
 	}
-		
+	
+	/**
+	 * @param amount Amount of pixels to move turtle
+	 */
 	public void moveTurtle(double amount) {
-		turtle.move(turtle.getAngle(), amount);
+		turtle.move(turtle.getRotate(), amount);
 	}
-		
+	
+	/**
+	 * @param heading Amount of degrees to rotate turtle
+	 */
 	public void rotateTurtle(double heading) {
 		turtle.rotate(heading);
 	}
 	
+	/**
+	 * @param heading Desired heading of turtle
+	 */
 	public void setTurtleHeading(double heading) {
 		turtle.setHeading(heading);
 	}
 	
+	/**
+	 * @param xCoord X coordinate to set turtle towards
+	 * @param yCoord Y coordinate to set turtle towards
+	 */
 	public void setTurtleTowards(double xCoord, double yCoord) {
 		turtle.setTowards(xCoord,yCoord);
 	}
@@ -69,19 +82,28 @@ public class TurtleViewController implements Controller {
 		turtle.setPenColor(color);
 	}
 	
+	/**
+	 * Removes all the lines that the turtle has drawn
+	 */
 	public void clearTurtleLines() {
 		turtle.clearLines();
 	}
 	
+	/**
+	 * Sets turtle back to (0,0)
+	 */
 	public void resetTurtlePosition() {
 		turtle.resetLocation();
 	}
 	
-	//display commands
-	
+	/**
+	 * Toggles display of turtle
+	 */
 	public void toggleTurtleDisplay(boolean showTurtle) {
-		view.toggleTurtle(showTurtle);
+		turtle.toggleTurtle(showTurtle);
 	}
+	
+	//display commands
 	
 	/**
 	 * 
@@ -118,24 +140,39 @@ public class TurtleViewController implements Controller {
 		view.printToScreen(result);
 	}
 	
+	/**
+	 * @return Current heading of the turtle
+	 */
 	public double getTurtleHeading() {
-		return turtle.getAngle();
+		return turtle.getRotate();
 	}
 	
+	/**
+	 * @return X coordinate of the turtle
+	 */
 	public double getTurtleXLocation() {
-		return turtle.getXLocation();
+		return turtle.getLayoutX();
 	}
 	
+	/**
+	 * @return Y coordinate of the turtle
+	 */
 	public double getTurtleYLocation() {
-		return turtle.getYLocation();
+		return turtle.getLayoutY();
 	}
 	
+	/**
+	 * @return Whether or not pen is down
+	 */
 	public boolean getIsPen() {
 		return turtle.getPenBoolean();
 	}
 	
+	/**
+	 * @return Whether or not turtle is visible
+	 */
 	public boolean getIsTurtle() {
 		return turtle.getTurtleBoolean();
 	}
-		
+
 }
