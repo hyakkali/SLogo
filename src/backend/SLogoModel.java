@@ -40,7 +40,7 @@ public class SLogoModel {
     public void parse(String input) {
         Stack<String> inputStack = new Stack<String>();
         for (String str : input.split("\\s+")) {
-            inputStack.add(str);
+            inputStack.push(str);
         }
         myExecutor.parseText(inputStack, myData);
     }
