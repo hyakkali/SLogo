@@ -2,16 +2,18 @@ package main;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
 import user_interface.UserScreen;
+import backend.SLogoModel;
 
 /**
  * 
  * @author Hemanth Yakkali
  * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
  */
-public class TurtleViewController implements Controller{
+public class TurtleViewController implements Controller {
 	
 	private UserScreen view;
 	private Turtle turtle;
+	private SLogoModel model;
 	
 	public TurtleViewController(UserScreen view, Turtle turtle){
 		this.view = view;
