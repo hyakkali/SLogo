@@ -145,7 +145,7 @@ public class UserScreen extends Application {
         launch(args);
     }
 
-    /* called to update the turtle location
+    /** called to update the turtle location
      * whenever the stuff is changed
      */
     private void step(double elapsedTime) {
