@@ -25,11 +25,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import main.Controller;
+import main.TurtleViewController;
 import turtle.Turtle;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
+
+import backend.SLogoModel;
 
 
 public class UserScreen extends Application {
@@ -62,6 +66,7 @@ public class UserScreen extends Application {
     private ArrayList<Button> buttons;
     private History history = new History();
     private Pane turtlePane;
+    SLogoModel model = new SLogoModel(null);
 
 
     /*will be used to draw the form on initialization
