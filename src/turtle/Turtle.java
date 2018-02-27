@@ -60,6 +60,8 @@ public class Turtle extends ImageView{
 		super(); //sets image found in url
 		initializeImages();
 		this.setImage("Turtle");
+		this.setFitWidth(20);
+		this.setFitHeight(20);
 		this.setLayoutX(0.0);
 		this.setLayoutY(0.0);
 		this.setRotate(0.0);
