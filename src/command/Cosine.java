@@ -26,4 +26,5 @@ public class Cosine implements Command {
 		// Math.cos() takes radians as a parameter, so change degrees to radians
 		return Math.cos(Math.toRadians(this.degrees));
 	}
+
 }

@@ -27,4 +27,5 @@ public class Equal implements Command {
 		return this.expr1 == this.expr2 ? 1 : 0;
 	}
 
+
 }

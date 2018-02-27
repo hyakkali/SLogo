@@ -26,4 +26,5 @@ public class Sine implements Command {
 		// Math.sin() takes radians as a parameter, so change degrees to radians
 		return Math.sin(Math.toRadians(this.degrees));
 	}
+
 }

@@ -2,16 +2,18 @@ package main;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
 import user_interface.UserScreen;
+import backend.SLogoModel;
 
 /**
  * 
  * @author Hemanth Yakkali
  * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
  */
-public class TurtleViewController implements Controller{
+public class TurtleViewController implements Controller {
 	
 	private UserScreen view;
 	private Turtle turtle;
+	private SLogoModel model;
 	
 	public TurtleViewController(UserScreen view, Turtle turtle){
 		this.view = view;
@@ -39,7 +41,7 @@ public class TurtleViewController implements Controller{
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		turtle.move(turtle.getAngle(), amount);
+		turtle.move(turtle.getRotate(), amount);
 	}
 	
 	/**
@@ -142,21 +144,21 @@ public class TurtleViewController implements Controller{
 	 * @return Current heading of the turtle
 	 */
 	public double getTurtleHeading() {
-		return turtle.getAngle();
+		return turtle.getRotate();
 	}
 	
 	/**
 	 * @return X coordinate of the turtle
 	 */
 	public double getTurtleXLocation() {
-		return turtle.getXLocation();
+		return turtle.getLayoutX();
 	}
 	
 	/**
 	 * @return Y coordinate of the turtle
 	 */
 	public double getTurtleYLocation() {
-		return turtle.getYLocation();
+		return turtle.getLayoutY();
 	}
 	
 	/**
@@ -172,5 +174,5 @@ public class TurtleViewController implements Controller{
 	public boolean getIsTurtle() {
 		return turtle.getTurtleBoolean();
 	}
-		
+
 }
