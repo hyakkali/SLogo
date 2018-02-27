@@ -276,6 +276,13 @@ public class Turtle extends ImageView{
 			lines.push(newLine);
 		}
 	}
+	
+	/**
+	 * Clears all the lines that were drawn by the turtle
+	 */
+	public void clearLines() {
+		lines.clear();
+	}
 
 	private void initializeImages()
 	{
@@ -286,13 +293,6 @@ public class Turtle extends ImageView{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
 		}
-	}
-	
-	/**
-	 * Clears all the lines that were drawn by the turtle
-	 */
-	public void clearLines() {
-		lines.clear();
 	}
 	
 }
