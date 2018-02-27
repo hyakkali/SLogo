@@ -75,8 +75,8 @@ public class Turtle extends ImageView{
 	public void move(double angle, double amount) {
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		this.setLayoutX(this.getXLocation()+xAmount);
-		this.setLayoutY(this.getYLocation()+yAmount);
+		this.setLayoutX(this.getLayoutX()+xAmount);
+		this.setLayoutY(this.getLayoutY()+yAmount);
 		setStartLineLocation();
 		drawLine(xAmount,yAmount);
 	}
@@ -166,30 +166,6 @@ public class Turtle extends ImageView{
 	}
 	
 	//getters
-	/**
-	 * 
-	 * @return X coordinate of the turtle
-	 */
-	public double getXLocation() {
-		return this.getLayoutX();
-	}
-	
-	/**
-	 * 
-	 * @return Y coordinate of the turtle
-	 */
-	public double getYLocation() {
-		return this.getLayoutY();
-	}
-	
-	/**
-	 * 
-	 * @return Current heading of the turtle
-	 */
-	public double getAngle() {
-		return this.getRotate();
-	}
-	
 	/**
 	 * 
 	 * @return Current path to the image file being used 
