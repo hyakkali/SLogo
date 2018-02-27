@@ -37,6 +37,4 @@ public class History {
             pointer--;
         return history.get(pointer);
     }
-
-
 }

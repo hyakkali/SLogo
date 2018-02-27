@@ -1,4 +1,6 @@
 package turtle;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 import java.util.Stack;
 
 import javafx.scene.image.Image;
@@ -37,6 +39,8 @@ public class Turtle extends ImageView{
 	 * Color of the next line to be drawn
 	 */
 	private Color penColor;
+
+	private HashMap<String, Image> images;
 	
 	/**
 	 * String of path to an image file
@@ -46,18 +50,19 @@ public class Turtle extends ImageView{
 	/**
 	 * Image object of the turtle
 	 */
-	private Image turtleImage = new Image(getClass().getClassLoader().getResourceAsStream("TMNT.png"));
-	
+	private Image turtleImage;
+
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
 	 * image of the turtle to the default image.
 	 */
 	public Turtle(){
 		super(); //sets image found in url
+		initializeImages();
+		this.setImage("Turtle");
 		this.setLayoutX(0.0);
 		this.setLayoutY(0.0);
 		this.setRotate(0.0);
-		this.setImage(turtleImage);
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
@@ -75,8 +80,8 @@ public class Turtle extends ImageView{
 	public void move(double angle, double amount) {
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		this.setLayoutX(this.getXLocation()+xAmount);
-		this.setLayoutY(this.getYLocation()+yAmount);
+		this.setLayoutX(this.getLayoutX()+xAmount);
+		this.setLayoutY(this.getLayoutY()+yAmount);
 		setStartLineLocation();
 		drawLine(xAmount,yAmount);
 	}
@@ -133,12 +138,13 @@ public class Turtle extends ImageView{
 	
 	/**
 	 * Sets image of the turtle
-	 * @param url String path to an image
+	 * @param k String mapping to an image
 	 * 
 	 */
-	public void setImage(String url) {
-		imageURL = url;
-		this.setImage(turtleImage);
+	public void setImage(String k) {
+		System.out.print("why arent you updating");
+		this.setX(100);
+		this.setImage(images.get(k));
 	}
 	
 	/**
@@ -166,30 +172,6 @@ public class Turtle extends ImageView{
 	}
 	
 	//getters
-	/**
-	 * 
-	 * @return X coordinate of the turtle
-	 */
-	public double getXLocation() {
-		return this.getLayoutX();
-	}
-	
-	/**
-	 * 
-	 * @return Y coordinate of the turtle
-	 */
-	public double getYLocation() {
-		return this.getLayoutY();
-	}
-	
-	/**
-	 * 
-	 * @return Current heading of the turtle
-	 */
-	public double getAngle() {
-		return this.getRotate();
-	}
-	
 	/**
 	 * 
 	 * @return Current path to the image file being used 
@@ -287,6 +269,17 @@ public class Turtle extends ImageView{
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation+yAmount);
 			newLine.setFill(penColor);
 			lines.push(newLine);
+		}
+	}
+
+	private void initializeImages()
+	{
+		images= new HashMap<String, Image>();
+		ResourceBundle imageFile = ResourceBundle.getBundle("resources.languages/TurtleImages");
+		for(String k:imageFile.keySet())
+		{
+			Image turtle = new Image("File:images/"+imageFile.getString(k));
+			images.put(k,turtle);
 		}
 	}
 	
