@@ -13,15 +13,12 @@ import java.util.Arrays;
 
 public class SLogoData {
 
-    private List<Turtle> myTurtles;
     private List<Variable> myVariables;
     private Language myLanguage;
-    private Group myRoot;
     private boolean showSelected;
 
 
-    public SLogoData(Turtle startTurtle) {
-        myTurtles = new ArrayList<>(Arrays.asList(startTurtle)); // will need to change once turtle is added
+    public SLogoData() {
         myVariables = new ArrayList<>();
         myLanguage = LanguageFactory.getLanguage(Constants.DEFAULT_LANGUAGE);
         showSelected = false;
@@ -49,6 +46,10 @@ public class SLogoData {
             }
         }
         throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UninitializedVariableError") + name);
+    }
+
+    public List<Variable> getMyVariables() {
+        return myVariables;
     }
 
     public Language getLanguage() {

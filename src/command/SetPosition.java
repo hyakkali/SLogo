@@ -36,4 +36,5 @@ public class SetPosition implements Command {
 		controller.setTurtleYLocation(this.y);
 		return distance;
 	}
+
 }

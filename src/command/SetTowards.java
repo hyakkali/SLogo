@@ -33,4 +33,5 @@ public class SetTowards implements Command {
 		// heading is now updated, so we call it again
 		return Math.abs(controller.getTurtleHeading() - prevHeading);
 	}
+
 }

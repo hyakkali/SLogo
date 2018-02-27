@@ -30,5 +30,5 @@ public class SetHeading implements Command {
 		controller.setTurtleHeading(this.heading);
 		return Math.abs(degreesMoved);
 	}
-	
+
 }

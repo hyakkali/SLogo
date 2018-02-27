@@ -14,4 +14,5 @@ public interface Command {
 	 * @param controller the controller for the command to be executed on.
 	 */
 	public double execute(Controller controller);
+
 }

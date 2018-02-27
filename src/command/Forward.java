@@ -29,4 +29,5 @@ public class Forward implements Command {
 		return this.amount;
 	}
 
+
 }
