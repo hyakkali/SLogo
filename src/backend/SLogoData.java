@@ -15,7 +15,6 @@ public class SLogoData {
 
     private List<Turtle> myTurtles;
     private List<Variable> myVariables;
-    private List<AbsTreeNode> myFunctions;
     private Language myLanguage;
     private Group myRoot;
     private boolean showSelected;
@@ -24,7 +23,6 @@ public class SLogoData {
     public SLogoData(Turtle startTurtle) {
         myTurtles = new ArrayList<>(Arrays.asList(startTurtle)); // will need to change once turtle is added
         myVariables = new ArrayList<>();
-        myFunctions = new ArrayList<>();
         myLanguage = LanguageFactory.getLanguage(Constants.DEFAULT_LANGUAGE);
         showSelected = false;
     }
@@ -51,25 +49,6 @@ public class SLogoData {
             }
         }
         throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UninitializedVariableError") + name);
-    }
-
-    protected AbsTreeNode getFunction (String myFunction) {
-        for (AbsTreeNode func : myFunctions) {
-            if (func.getFunctionName().equals(myFunction)) {
-                return func;
-            }
-        }
-        throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndeclaredFunctionError") + myFunction);
-    }
-
-    public void addFunction (AbsTreeNode newNode) {
-        for (AbsTreeNode func : myFunctions) {
-            if (newNode.getFunctionName().equals(func.getFunctionName())) {
-                myFunctions.remove(func);
-                break;
-            }
-        }
-        myFunctions.add(newNode);
     }
 
     public Language getLanguage() {

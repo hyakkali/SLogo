@@ -30,7 +30,7 @@ public class Parser{
                 return entry.getKey();
             }
         }
-        return Constants.POSS_FUNC;
+        return null;
     }
     /**
      * add the valid keys for specified language into the list
@@ -47,6 +47,7 @@ public class Parser{
     private boolean match(String text, Pattern regex) {
         return regex.matcher(text).matches();
     }
+
 
 
 

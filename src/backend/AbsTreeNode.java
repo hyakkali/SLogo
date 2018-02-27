@@ -24,15 +24,15 @@ public class AbsTreeNode {
     private SLogoData myData;
     private Controller myController;
 
-    public AbsTreeNode(Command command, String variable, String function, double value,
-                       boolean block, List<AbsTreeNode> arguments, SLogoData data) {
+    public AbsTreeNode(Command command, String variable, double value,
+                       boolean block, List<AbsTreeNode> arguments, SLogoData data, Controller ctrl) {
         myCommand = command;
         myVariable = variable;
-        myFunction = function;
         myValue = value;
         validBlock = block;
         myArguments = arguments;
         myData = data;
+        myController = ctrl;
     }
 
 
@@ -56,26 +56,10 @@ public class AbsTreeNode {
         return myArguments;
     }
 
-    public String getFunctionName() {
-        return myFunction;
-    }
-
     protected void addArg(AbsTreeNode newNode) {
         myArguments.add(newNode);
     }
 
-    private double runFunc() {
-        for (int x = 0; x < myArguments.get(0).getArguments().size(); x++) {
-            myData.addVariable(new Variable(myArguments.get(0).getArguments().get(x).getVariableName(),
-                    myArguments.get(2).getArguments().get(x).evaluate()));
-        }
-        double retVal = myArguments.get(1).evaluate();
-        for (int x = 0; x < myArguments.get(0).getArguments().size(); x++) {
-            myData.deleteVariable(myArguments.get(0).getArguments().get(x).getVariableName());
-        }
-        myArguments.remove(2);
-        return retVal;
-    }
 
 //    protected boolean isMathCmd() {
 //        if (validBlock) {
@@ -96,12 +80,6 @@ public class AbsTreeNode {
         System.out.println(this.myArguments);
         if (validBlock) {
             return myArguments.get(0).evaluate();
-        }
-        if (myFunction != null) {
-            if (myArguments.size() > 2) {
-                return runFunc();
-            }
-            else {return 0.0;}
         }
         if (myVariable != null) {
             if (myData.getVariable(myVariable) != null) {

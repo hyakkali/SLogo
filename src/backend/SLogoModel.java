@@ -1,18 +1,17 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Observer;
-import java.util.Observable;
 
 import resources.languages.Language;
+import main.Controller;
 
 public class SLogoModel {
 
     SLogoData myData;
     Executor myExecutor;
 
-    public SLogoModel() {
-        myExecutor = new Executor();
+    public SLogoModel(Controller ctrl) {
+        myExecutor = new Executor(ctrl);
     }
 
     public void setLanguage(Language lang) {
