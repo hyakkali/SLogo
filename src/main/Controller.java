@@ -7,9 +7,11 @@ import javafx.scene.paint.Color;
  * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
  */
 
-
 public interface Controller {
 	
+	/*
+	 * Turtle-specific commands
+	 */
 	public void setTurtleXLocation(double amount);
 
 	public void setTurtleYLocation(double amount);
@@ -22,6 +24,13 @@ public interface Controller {
 	
 	public void setTurtleTowards(double xCoord, double yCoord);
 	
+	public void clearTurtleLines();
+	
+	public void resetTurtlePosition();
+	
+	/*
+	 * Display-specific commands
+	 */
 	public void togglePen(boolean penBoolean);
 	
 	public void setViewPenColor(Color color);
@@ -36,6 +45,9 @@ public interface Controller {
 	
 	public void displayResult(String result);
 	
+	/*
+	 * Getters
+	 */
 	public double getTurtleHeading();
 	
 	public double getTurtleXLocation();
@@ -45,9 +57,5 @@ public interface Controller {
 	public boolean getIsPen();
 	
 	public boolean getIsTurtle();
-	
-	public void clearTurtleLines();
-	
-	public void resetTurtlePosition();
 	
 }

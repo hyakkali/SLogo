@@ -13,13 +13,10 @@ public class TurtleViewController implements Controller {
 	
 	private UserScreen view;
 	private Turtle turtle;
-	private SLogoModel model;
 	
-	public TurtleViewController(UserScreen view, Turtle turtle, SLogoModel slogoModel){
+	public TurtleViewController(UserScreen view, Turtle turtle){
 		this.view = view;
 		this.turtle = turtle;
-		this.model = slogoModel;
-		this.model.setController(this);
 	}
 	
 	//turtle commands
