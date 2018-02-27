@@ -12,6 +12,7 @@ public class SLogoModel {
     SLogoData myData;
     Executor myExecutor;
     CommandFactory myFactory;
+    Controller myController;
 
     public SLogoModel(Controller ctrl) {
         myFactory = new CommandFactory();
@@ -43,5 +44,9 @@ public class SLogoModel {
             inputStack.push(str);
         }
         myExecutor.parseText(inputStack, myData);
+    }
+
+    public void setController(Controller ctrl) {
+        myController = ctrl;
     }
 }

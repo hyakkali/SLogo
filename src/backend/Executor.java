@@ -15,7 +15,6 @@ public class Executor {
     private Parser syntaxParser;
     private Language myLang;
     private Controller myController;
-    private Stack<String> inputs;
     private CommandFactory commandFactory;
 
 
@@ -74,9 +73,10 @@ public class Executor {
             }
             else {
                 if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
-                    //throw error
+                    throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
                 }
             }
+            throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
         }
 
     }
