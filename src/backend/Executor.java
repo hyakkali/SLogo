@@ -47,6 +47,8 @@ public class Executor {
                 Double value = Double.parseDouble(input.pop());
                 myParameters.add(value);
             }
+
+
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
                 if (myData.getMyVariables() != null) {
@@ -57,6 +59,8 @@ public class Executor {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndefinedVariableError"));
                 }
             }
+
+
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
                 Stack<String> tempStack = new Stack<String>();
                 for (String s: input) {
