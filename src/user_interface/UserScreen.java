@@ -11,14 +11,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -31,36 +29,34 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
-
-public class UserScreen extends Application {
-
+public class UserScreen extends Application
+{
+    private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
-    private static final int XSIZE = 800;
-    private static final int YSIZE = 600;
 
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    private static final int XSIZE = 800;
+    private static final int YSIZE = 600;
+
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Scene myScene;
     private Stage myStage;
-    private static final String DEFAULT_RESOURCES = "resources.languages/";
 
-
-    private ResourceBundle properties;
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
+    private ResourceBundle properties;
     private ResourceBundle colors;
 
-    private Turtle myTurtle = new Turtle();
-    private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private HashMap<String, Object> vars = new HashMap<String, Object>();
-    private TextArea console;
-    private TextArea commands;
+    private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
+    private History history = new History();
+    private Turtle myTurtle = new Turtle();
     private TextArea variables;
     private Button resetButton;
-    private ArrayList<Button> buttons;
-    private History history = new History();
+    private TextArea commands;
+    private TextArea console;
     private Pane turtlePane;
 
 
@@ -69,7 +65,7 @@ public class UserScreen extends Application {
 
         /*will be used to insantiate all of the visual elements in
          * in the slogo project and add to the scene which returns to
-         * start this calls the menu related functions
+         * start --this calls the menu related functions
          */
         private Scene setScene(int width, int length) {
             Group root = new Group();
@@ -98,8 +94,7 @@ public class UserScreen extends Application {
         }
 
         /* creates the scene within the stage by calling setScene
-         * defines the keys necessary for the project
-         * initializes the state and begins stepping
+         * defines/ initializes the state and begins stepping
          */
         public void start(Stage stage) {
             myScene = setScene(XSIZE, YSIZE); // get the scene
@@ -118,6 +113,7 @@ public class UserScreen extends Application {
         }
 
     //PROPERTY INIT FUNCTIONS_________________________________________________________________________
+
         /* initializes the properties files containing value
          * key pairs for commands, images, and colors
          */
@@ -450,7 +446,4 @@ public class UserScreen extends Application {
     /* Returns YSize of scene
      */
     public int getYSize(){return YSIZE;}
-
-
-
 }
