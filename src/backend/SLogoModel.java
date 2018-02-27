@@ -3,6 +3,7 @@ package backend;
 import java.util.ArrayList;
 
 import commandFactory.CommandFactory;
+import resources.constants.Constants;
 import resources.languages.Language;
 import main.Controller;
 import java.util.Stack;
@@ -28,7 +29,7 @@ public class SLogoModel {
             }
         }
         catch (ClassNotFoundException e){
-            //fix later
+            System.out.println(Constants.DEFAULT_RESOURCES.getString("ClassNotDefinedError"));
         }
     }
 
@@ -37,9 +38,9 @@ public class SLogoModel {
         myExecutor.setMyLanguage(lang);
     }
 
-    @SuppressWarnings("serial")
+
     public void parse(String input) {
-        Stack<String> inputStack = new Stack<String>();
+        Stack<String> inputStack = new Stack<>();
         for (String str : input.split("\\s+")) {
             inputStack.push(str);
         }
