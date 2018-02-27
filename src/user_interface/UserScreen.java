@@ -63,6 +63,9 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
+        public UserScreen() {}
+
+
         /*will be used to insantiate all of the visual elements in
          * in the slogo project and add to the scene which returns to
          * start --this calls the menu related functions
@@ -232,12 +235,12 @@ public class UserScreen extends Application
         /* adds the variables from controller to the hashmap
          *  and rewrites the variables to the textarea
          */
-        public void addVariable(String s, Object o) {
-        variables.clear();
-        vars.put(s,o);
-        for(String var : vars.keySet())
-            variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
-    }
+        public void addVariable(String v) {
+//            vars.put(v.getName(),v.getValue());
+//            variables.clear();
+//            for(String var : vars.keySet())
+//                variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
+        }
 
     //CONSOLE FUNCTIONS__________________________________________________________________________________________
 
@@ -427,7 +430,6 @@ public class UserScreen extends Application
             alert.setTitle("Error");
             alert.setContentText(s);
             alert.showAndWait();
-
         }
 
 //MISC GETTER FUNCTIONS
@@ -441,9 +443,14 @@ public class UserScreen extends Application
 
     /* Returns XSize of scene
      */
-    public int getXSize(){return XSIZE;}
+    public int getXSize(){return (int)turtlePane.getWidth();}
 
     /* Returns YSize of scene
      */
-    public int getYSize(){return YSIZE;}
+    public int getYSize(){return (int)turtlePane.getHeight();}
+
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 }

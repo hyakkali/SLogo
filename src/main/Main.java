@@ -1,6 +1,5 @@
 package main;
 
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import turtle.Turtle;
@@ -14,8 +13,9 @@ public class Main extends Application{
 		Turtle turtle = new Turtle();
 		UserScreen view =  new UserScreen();
 		Controller controller = new TurtleViewController(view, turtle);
+		view.start(primaryStage);
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
