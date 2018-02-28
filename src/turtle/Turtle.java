@@ -91,8 +91,8 @@ public class Turtle extends ImageView{
 		double yAmount = calculateYAmount(angle,amount);
 //		System.out.println("x"+xAmount);
 //		System.out.println(yAmount);
-		this.setLayoutX(this.getLayoutX()+xAmount);
-		this.setLayoutY(this.getLayoutY()+yAmount);
+		this.setLayoutX(this.getLayoutX()-xAmount);
+		this.setLayoutY(this.getLayoutY()-yAmount);
 		System.out.println(this.getLayoutY());
 		setStartLineLocation();
 		drawLine(xAmount,yAmount);
