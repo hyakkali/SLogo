@@ -61,7 +61,7 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(){}
+        public UserScreen(Turtle t){myTurtle =t;}
 
        /* Add slogomodel to the view
         */
