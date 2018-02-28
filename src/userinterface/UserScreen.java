@@ -444,7 +444,7 @@ public class UserScreen extends Application
          */
         private void drawLine() {
         Line toDraw = myTurtle.getLastLine();
-        System.out.println(toDraw);
+//        System.out.println(toDraw);
         if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
             turtlePane.getChildren().add(toDraw);
         }
