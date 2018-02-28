@@ -15,8 +15,9 @@ public class Main extends Application{
         UserScreen view =  new UserScreen();
         Controller controller = new TurtleViewController(view, turtle);
         SLogoModel smodel = new SLogoModel(controller);
-        view.addSlogo(smodel);
         view.start(primaryStage);
+		view.addSlogo(smodel);
+
 	}
 
 	public static void main(String[] args) {

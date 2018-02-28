@@ -19,8 +19,10 @@ public enum Language {
     private ResourceBundle myResources;
 
     Language(String lang) {
+
         myLanguage = lang;
-        myResources = ResourceBundle.getBundle("resources/language/"+lang);
+        myResources = ResourceBundle.getBundle("resources.languages/"+lang);
+
     }
 
     public String getLanguage(){

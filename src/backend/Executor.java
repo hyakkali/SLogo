@@ -32,13 +32,23 @@ public class Executor {
     protected void parseText(Stack<String> input, SLogoData myData) {
         ArrayList<Double> myParameters = new ArrayList<>();
         Parser languageParser = new Parser(myLang);
+     //  System.out.println(languageParser.getSymbols().toString());
         while (!input.isEmpty()) {
+          //  System.out.println((syntaxParser.getSymbol(input.peek())));
             if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
+                System.out.print("hi");
                 if (myParameters.isEmpty()) {
                     myParameters.add(commandFactory.command(languageParser.getSymbol(input.pop())).execute(myController));
                 }
+                else if (myParameters.size() == 1){
+                    System.out.print("One Param Command");
+                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters.get(0)).execute(myController);
+                    myParameters.clear();
+                    myParameters.add(temp);
+                }
                 else {
-                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters).execute(myController);
+                    System.out.print("Two Param Command");
+                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters.get(0), myParameters.get(1)).execute(myController);
                     myParameters.clear();
                     myParameters.add(temp);
                 }
@@ -46,6 +56,7 @@ public class Executor {
             else if (syntaxParser.getSymbol(input.peek()).equals("Constant")) {
                 Double value = Double.parseDouble(input.pop());
                 myParameters.add(value);
+                System.out.println(value);
             }
 
 
@@ -79,7 +90,7 @@ public class Executor {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
                 }
             }
-            throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
+           // throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
         }
 
     }

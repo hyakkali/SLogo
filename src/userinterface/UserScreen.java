@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
-
 import java.util.*;
 
 public class UserScreen extends Application
@@ -53,6 +52,7 @@ public class UserScreen extends Application
     private TextArea console;
     private Pane turtlePane;
     private String language;
+    private List<Line> lines;
 
 
 //INITIALIZATION RELATED FUNCTIONS
@@ -272,7 +272,7 @@ public class UserScreen extends Application
          */
         private void consoleHandler( KeyCode k) {
             if (k.equals(KeyCode.ENTER)) {
-                mySLogoModel.parse(console.getText());
+               mySLogoModel.parse(console.getText());
             }
             if (k.equals(KeyCode.UP)) {
                 this.displayPrev(console);
@@ -349,7 +349,6 @@ public class UserScreen extends Application
             myTurtle.setX(turtlePane.getWidth()/2);
             myTurtle.setY(turtlePane.getHeight()/2);
         }
-        //NEEDS TO BE IMPLEMENTED!!!!!!
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
 
