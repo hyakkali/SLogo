@@ -119,6 +119,7 @@ public class UserScreen extends Application
         public void step(double elapsedTime) {
 //        		System.out.println("step to the right!");
         		myTurtle.updateState();
+            drawLine();        		
         }
 
         /* creates the scene within the stage by calling setScene
@@ -132,14 +133,7 @@ public class UserScreen extends Application
             stage.show();
 
             reset();
-
-            //attach "game loop" to timeline to play it
-    //        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-    //                e -> step(SECOND_DELAY));
-    //        Timeline animation = new Timeline();
-    //        animation.setCycleCount(Timeline.INDEFINITE);
-    //        animation.getKeyFrames().add(frame);
-    //        animation.play();
+            
         }
 
     //PROPERTY INIT FUNCTIONS_________________________________________________________________________
@@ -449,7 +443,10 @@ public class UserScreen extends Application
          */
         private void drawLine() {
         Line toDraw = myTurtle.getLastLine();
-        turtlePane.getChildren().add(toDraw);
+        System.out.println(toDraw);
+        if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
+            turtlePane.getChildren().add(toDraw);
+        }
     }
 
     //ERROR FUNCTIONS____________________________________________________________________________________________

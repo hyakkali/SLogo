@@ -71,9 +71,6 @@ public class Turtle extends ImageView{
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
-		Line newLine = new Line(0,0,0,0);
-		newLine.setFill(penColor);
-		lines.add(newLine);
 	}
 	
 	//turtle commands
@@ -85,13 +82,9 @@ public class Turtle extends ImageView{
 	public void move(double angle, double amount) {
 		System.out.println("turtle moving");
 		System.out.println(this.getLayoutY());
-//		System.out.println(amount);
-//		System.out.println(angle);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-//		System.out.println("x"+xAmount);
-//		System.out.println(yAmount);
-		this.setLayoutX(this.getLayoutX()-xAmount);
+		this.setLayoutX(this.getLayoutX()+xAmount);
 		this.setLayoutY(this.getLayoutY()-yAmount);
 		System.out.println(this.getLayoutY());
 		setStartLineLocation();
@@ -195,7 +188,10 @@ public class Turtle extends ImageView{
 	 * @return Last line object that was drawn
 	 */
 	public Line getLastLine(){
-		return lines.peek();
+		if(!lines.empty()) {
+			return lines.peek();
+		}
+		return null;
 	}
 	
 	/**
@@ -261,8 +257,13 @@ public class Turtle extends ImageView{
 	 */
 	private void setStartLineLocation() {
 		if(penBoolean) { //if pen is down
-			xStartLineLocation = lines.peek().getEndX();
-			yStartLineLocation = lines.peek().getEndY();
+			if(!lines.empty()) {
+				xStartLineLocation = lines.peek().getEndX();
+				yStartLineLocation = lines.peek().getEndY();
+			} else {
+				xStartLineLocation = this.getLayoutX();
+				yStartLineLocation = this.getLayoutY();	
+			}
 		} else {
 			xStartLineLocation = this.getLayoutX();
 			yStartLineLocation = this.getLayoutY();
@@ -301,11 +302,17 @@ public class Turtle extends ImageView{
 	}
 	
 	public void updateState() {
-//		System.out.println("updating");
-		System.out.println("update"+this.getLayoutY());
 		this.setLayoutX(this.getLayoutX());
 		this.setLayoutY(this.getLayoutY());
 		this.setRotate(this.getRotate());
+		System.out.println(this.getLayoutX());
+		if(!lines.empty()) {
+			Line line = this.lines.peek();
+			line.setStartX(line.getStartX());
+			line.setStartY(line.getStartY());
+			line.setEndX(line.getEndX());
+			line.setEndY(line.getEndY());
+		}
 	}
 	
 }
