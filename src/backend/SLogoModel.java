@@ -6,6 +6,7 @@ import commandFactory.CommandFactory;
 import resources.languages.Language;
 import main.Controller;
 import java.util.Stack;
+import command.*;
 
 public class SLogoModel {
 
@@ -23,12 +24,18 @@ public class SLogoModel {
     private void registerCommands(CommandFactory cmdFact) {
         try {
             for (String key : Language.ENGLISH.getKeys()) {
-                Class<?> regClass = Class.forName(key);
+            		// create full qualified name to load in
+            		String qualifiedName = "command." + key;
+            		System.out.println(String.format("Class name: %s", qualifiedName));
+                Class<?> regClass = Class.forName(qualifiedName);
                 cmdFact.registerCommand(key, regClass);
             }
         }
         catch (ClassNotFoundException e){
-            //fix later
+            // TODO Make this exception handling better
+        		System.out.println("Error is here dumbass\n");
+        		e.printStackTrace();
+        		System.out.println("I said here\n");
         }
     }
 
