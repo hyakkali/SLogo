@@ -1,4 +1,4 @@
-package user_interface;
+package userInterface;
 
 import java.util.ArrayList;
 
