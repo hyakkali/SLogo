@@ -1,9 +1,5 @@
 package main;
 import javafx.scene.paint.Color;
-import command.Command;
-import javafx.scene.paint.Color;
-import turtle.Turtle;
-import user_interface.UserScreen;
 
 /**
  * 

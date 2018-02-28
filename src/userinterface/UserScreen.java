@@ -1,12 +1,10 @@
-package user_interface;
+package userinterface;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import backend.SLogoModel;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,15 +16,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import jdk.nashorn.internal.ir.annotations.Immutable;
+import resources.languages.Language;
+import resources.languages.LanguageFactory;
 import turtle.Turtle;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 
 public class UserScreen extends Application
@@ -42,7 +36,6 @@ public class UserScreen extends Application
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Scene myScene;
-    private Stage myStage;
 
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
@@ -53,18 +46,23 @@ public class UserScreen extends Application
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private History history = new History();
     private Turtle myTurtle = new Turtle();
+    private SLogoModel mySLogoModel;
     private TextArea variables;
     private Button resetButton;
     private TextArea commands;
     private TextArea console;
     private Pane turtlePane;
+    private String language;
 
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen() {}
+        public UserScreen(){}
 
+       /* Add slogomodel to the view
+        */
+        public void addSlogo(SLogoModel s){mySLogoModel = s; setupProperties(language);}
 
         /*will be used to insantiate all of the visual elements in
          * in the slogo project and add to the scene which returns to
@@ -81,6 +79,9 @@ public class UserScreen extends Application
             BorderPane form = new BorderPane();
 
             turtlePane = new Pane();
+            turtlePane.setPrefHeight(500);
+            turtlePane.setPrefWidth(500);
+
             turtles.add(myTurtle);
             for (Turtle turtle : turtles) {
                 turtlePane.getChildren().add(turtle);
@@ -101,12 +102,14 @@ public class UserScreen extends Application
          */
         public void start(Stage stage) {
             myScene = setScene(XSIZE, YSIZE); // get the scene
-            myStage=stage;
-
+            stage.setResizable(false);
             stage.setScene(myScene);
             stage.setTitle(TITLE);
             stage.show();
-    //attach "game loop" to timeline to play it
+
+            reset();
+
+            //attach "game loop" to timeline to play it
     //        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
     //                e -> step(SECOND_DELAY));
     //        Timeline animation = new Timeline();
@@ -119,19 +122,25 @@ public class UserScreen extends Application
 
         /* initializes the properties files containing value
          * key pairs for commands, images, and colors
+         * Also gives slogomodel the correct language
          */
-        private void setupProperties(String language) {
-        turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
-        properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
-        colors = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
-        try {
-            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language + "Descriptions");
+        private void setupProperties(String lang) {
+            turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
+            properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
+            colors = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
+            try {
+                descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang + "Descriptions");
+            }
+            catch(MissingResourceException m)
+            {
+                descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
+            }
+            LanguageFactory backendLanguage = new LanguageFactory();
+            Language myLanguage =backendLanguage.getLanguage(lang);
+            if(mySLogoModel!=null)
+                mySLogoModel.setLanguage(myLanguage);
+            language=lang;
         }
-        catch(MissingResourceException m)
-        {
-            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + language);
-        }
-    }
 
 //MENU RELATED FUNCTIONS
     //MENU INIT FUNCTIONS_________________________________________________________________________________________
@@ -176,7 +185,6 @@ public class UserScreen extends Application
         interactives.getChildren().addAll(console);
         return interactives;
     }
-
 
     //COMMAND FUNCTIONS//__________________________________________________________________________________________
 
@@ -264,7 +272,7 @@ public class UserScreen extends Application
          */
         private void consoleHandler( KeyCode k) {
             if (k.equals(KeyCode.ENTER)) {
-                //slogoModel.parse(console.getText());
+                mySLogoModel.parse(console.getText());
             }
             if (k.equals(KeyCode.UP)) {
                 this.displayPrev(console);
@@ -306,21 +314,21 @@ public class UserScreen extends Application
          * to be added to the side menu
          */
         private ComboBox getLanguageCombo() {
-        ObservableList<String> language =FXCollections.observableArrayList(
-                "English",
-                "Chinese",
-                "French",
-                "German",
-                "Italian",
-                "Portuguese",
-                "Russian",
-                "Spanish"
-        );
-        ComboBox<String> combobox = new ComboBox<>(language);
-        combobox.setValue("English");
-        combobox.setOnAction(e->handleLanguageCombo(combobox.getValue()));
-        return combobox;
-    }
+            ObservableList<String> language =FXCollections.observableArrayList(
+                    "English",
+                    "Chinese",
+                    "French",
+                    "German",
+                    "Italian",
+                    "Portuguese",
+                    "Russian",
+                    "Spanish"
+            );
+            ComboBox<String> combobox = new ComboBox<>(language);
+            combobox.setValue("English");
+            combobox.setOnAction(e->handleLanguageCombo(combobox.getValue()));
+            return combobox;
+        }
 
     //BUTTON FUNCTIONS____________________________________________________________________________________________
 
@@ -338,7 +346,8 @@ public class UserScreen extends Application
          * and redraws the UI
          */
         private void reset() {
-            printToScreen("you done fucked up");
+            myTurtle.setX(turtlePane.getWidth()/2);
+            myTurtle.setY(turtlePane.getHeight()/2);
         }
         //NEEDS TO BE IMPLEMENTED!!!!!!
 
@@ -441,16 +450,12 @@ public class UserScreen extends Application
         return properties;
     }
 
-    /* Returns XSize of scene
+    /* Returns XSize of turtle pane
      */
     public int getXSize(){return (int)turtlePane.getWidth();}
 
-    /* Returns YSize of scene
+    /* Returns YSize of turtle pane
      */
     public int getYSize(){return (int)turtlePane.getHeight();}
 
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
 }

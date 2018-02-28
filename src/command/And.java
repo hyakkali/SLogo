@@ -26,4 +26,5 @@ public class And implements Command {
 	public double execute(Controller controller) {
 		return (this.test1 != 0 && this.test2 != 0) ? 1 : 0;
 	}
+
 }
