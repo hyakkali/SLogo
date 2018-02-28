@@ -35,9 +35,9 @@ public class Turtle extends ImageView{
 	 */
 	private double yStartLineLocation;
 	
-	private final double LINE_START_X = 520.0;
+	private final double LINE_START_X = 320.0;
 	
-	private final double LINE_START_Y = 425.0;
+	private final double LINE_START_Y = 275.0;
 	
 	/**
 	 * Color of the next line to be drawn
@@ -64,11 +64,9 @@ public class Turtle extends ImageView{
 	 * image of the turtle to the default image.
 	 */
 	public Turtle(){
-		super(); //sets image found in url
+		super();
 		initializeImages();
 		this.setImage("Turtle");
-		this.setLayoutX(200.0);
-		this.setLayoutY(150.0);
 		this.setRotate(0.0);
 		this.setFitHeight(turtleHeight);
 		this.setFitWidth(turtleWidth);
@@ -77,7 +75,6 @@ public class Turtle extends ImageView{
 		this.lines = new Stack<>();
 	}
 	
-	//turtle commands
 	/**
 	 * 
 	 * @param angle Heading of the turtle
