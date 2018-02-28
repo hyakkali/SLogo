@@ -36,16 +36,12 @@ public class Executor {
         while (!input.isEmpty()) {
         		System.out.println(syntaxParser.getSymbol(input.peek()));
             if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
-                if (myParameters.isEmpty()) {
-                    myParameters.add(commandFactory.command(languageParser.getSymbol(input.pop())).execute(myController));
+                Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters).execute(myController);
+                // only clear the parameters if we just used any
+                if (myParameters.size() > 0) {
+                		myParameters.clear();
                 }
-                else {
-                		//System.out.println(languageParser.getSymbol(input.peek()));
-                    Command command = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters);
-                    Double temp = command.execute(myController);
-                    myParameters.clear();
-                    myParameters.add(temp);
-                }
+                myParameters.add(temp);
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("Constant")) {
                 Double value = Double.parseDouble(input.pop());
