@@ -12,10 +12,10 @@ import java.util.Stack;
 public class SLogoModel {
 
     SLogoData myData;
-    Executor myExecutor;
-    CommandFactory myFactory;
-    Controller myController;
-    LanguageFactory myLanguageFactory;
+    private Executor myExecutor;
+    private CommandFactory myFactory;
+    private Controller myController;
+    private LanguageFactory myLanguageFactory;
 
     public SLogoModel(Controller ctrl) {
         myFactory = new CommandFactory();
