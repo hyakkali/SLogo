@@ -291,6 +291,7 @@ public class UserScreen extends Application
         private void consoleHandler( KeyCode k) {
             if (k.equals(KeyCode.ENTER)) {
                 mySLogoModel.parse(console.getText());
+                console.clear();
             }
             if (k.equals(KeyCode.UP)) {
                 this.displayPrev(console);
