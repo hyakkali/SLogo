@@ -52,7 +52,7 @@ public class UserScreen extends Application
     private TextArea commands;
     private TextArea console;
     private Pane turtlePane;
-    private String language;
+    private String language = "English";
 
 
 //INITIALIZATION RELATED FUNCTIONS
@@ -337,7 +337,7 @@ public class UserScreen extends Application
          * resetButton
          */
         private Button getResetButton() {
-            Button b = new Button(descriptions.getString("Reset"));
+            Button b = new Button(descriptions.getString("Forward"));
             b.setOnAction(e -> this.reset());
             return b;
         }

@@ -18,6 +18,7 @@ public class SLogoModel {
     public SLogoModel(Controller ctrl) {
         myFactory = new CommandFactory();
         registerCommands(myFactory);
+        
         myExecutor = new Executor(ctrl, myFactory);
     }
 
@@ -48,6 +49,7 @@ public class SLogoModel {
     public void parse(String input) {
         Stack<String> inputStack = new Stack<String>();
         for (String str : input.split("\\s+")) {
+        		System.out.println(str + "\n");
             inputStack.push(str);
         }
         myExecutor.parseText(inputStack, myData);

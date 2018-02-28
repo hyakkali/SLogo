@@ -4,6 +4,7 @@ import resources.constants.Constants;
 import resources.languages.Language;
 import commandFactory.CommandFactory;
 import main.Controller;
+import command.*;
 
 import java.util.Stack;
 
@@ -33,12 +34,15 @@ public class Executor {
         ArrayList<Double> myParameters = new ArrayList<>();
         Parser languageParser = new Parser(myLang);
         while (!input.isEmpty()) {
+        		System.out.println(syntaxParser.getSymbol(input.peek()));
             if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
                 if (myParameters.isEmpty()) {
                     myParameters.add(commandFactory.command(languageParser.getSymbol(input.pop())).execute(myController));
                 }
                 else {
-                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters).execute(myController);
+                		//System.out.println(languageParser.getSymbol(input.peek()));
+                    Command command = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters);
+                    Double temp = command.execute(myController);
                     myParameters.clear();
                     myParameters.add(temp);
                 }
@@ -75,12 +79,11 @@ public class Executor {
                 }
                 parseText(tempStack, myData);
             }
-            else {
-                if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
+            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
-                }
+            } else {
+            		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
-            throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
         }
 
     }

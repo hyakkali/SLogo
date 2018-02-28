@@ -30,11 +30,14 @@ public class CommandFactory {
 	
 	public Command command(String commandName, Object...args) {
 		try {
+			System.out.println(String.format("commandName is %s from CF FUCK YEAH MOTHERFUCKER", commandName));
 			Class<?> commandClass = (Class<?>) commands.get(commandName);
-			Constructor<?> commandConstructor = commandClass.getConstructor(args.getClass());
-			return (Command) commandConstructor.newInstance(args);
+			Constructor<?> commandConstructor = commandClass.getConstructor(Double.class);
+			return (Command) commandConstructor.newInstance((Double) args[0]);
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			// TODO handle exception 
+			e.printStackTrace();
+			
 		}
 		return null;
 	}
