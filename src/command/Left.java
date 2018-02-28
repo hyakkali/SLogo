@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 
 /**
  * Move the turtle to the left.

@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds if either of two numbers is non-zero
  * @author dylanpowers

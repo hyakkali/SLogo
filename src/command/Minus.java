@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Returns the negative of a number
  * @author dylanpowers

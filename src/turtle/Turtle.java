@@ -37,7 +37,7 @@ public class Turtle extends ImageView{
 	
 	private final double LINE_START_X = 320.0;
 	
-	private final double LINE_START_Y = 275.0;
+	private final double LINE_START_Y = 325.0;
 	
 	/**
 	 * Color of the next line to be drawn
@@ -56,8 +56,8 @@ public class Turtle extends ImageView{
 	 */
 	private Image turtleImage;
 	
-	private final int turtleHeight = 40;
-	private final int turtleWidth = 40;
+	private final int TURTLE_HEIGHT = 40;
+	private final int TURTLE_WIDTH = 40;
 
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
@@ -68,8 +68,8 @@ public class Turtle extends ImageView{
 		initializeImages();
 		this.setImage("Turtle");
 		this.setRotate(0.0);
-		this.setFitHeight(turtleHeight);
-		this.setFitWidth(turtleWidth);
+		this.setFitHeight(TURTLE_HEIGHT);
+		this.setFitWidth(TURTLE_WIDTH);
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
@@ -81,11 +81,11 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
+		setStartLineLocation();
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		this.setLayoutX(this.getLayoutX()+xAmount);
-		this.setLayoutY(this.getLayoutY()-yAmount);
-		setStartLineLocation();
+		this.setX(this.getX()+xAmount);
+		this.setY(this.getY()-yAmount);
 		drawLine(xAmount,yAmount);
 	}
 	
@@ -101,8 +101,8 @@ public class Turtle extends ImageView{
 	 * Resets location of the turtle to (0,0)
 	 */
 	public void resetLocation() {
-		this.setLayoutX(0.0);
-		this.setLayoutY(0.0);
+		this.setX(0.0);
+		this.setY(0.0);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class Turtle extends ImageView{
 	 * @param xCoordinate X coordinate of the turtle
 	 */
 	public void setXPosition(double xCoordinate) {
-		this.setLayoutX(xCoordinate);
+		this.setX(xCoordinate);
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class Turtle extends ImageView{
 	 * @param yCoordinate Y coordinate of the turtle
 	 */
 	public void setYPosition(double yCoordinate) {
-		this.setLayoutY(yCoordinate);
+		this.setY(yCoordinate);
 	}
 	
 	/**
@@ -254,18 +254,8 @@ public class Turtle extends ImageView{
 	 * Sets the start X and start Y coordinate for the next line to be drawn
 	 */
 	private void setStartLineLocation() {
-		if(penBoolean) { //if pen is down
-			if(!lines.empty()) { //if pen down and there are lines in stack
-				xStartLineLocation = lines.peek().getEndX();
-				yStartLineLocation = lines.peek().getEndY();
-			} else {
-				xStartLineLocation = LINE_START_X;
-				yStartLineLocation = LINE_START_Y;	
-			}
-		} else {
-			xStartLineLocation = this.getLayoutX();
-			yStartLineLocation = this.getLayoutY();
-		}
+		xStartLineLocation = this.getX()+(TURTLE_WIDTH/2);
+		yStartLineLocation = this.getY()+TURTLE_HEIGHT;	
 	}
 
 	/**

@@ -3,7 +3,7 @@ package backend;
 import resources.constants.Constants;
 import resources.languages.Language;
 import commandFactory.CommandFactory;
-import main.Controller;
+import controller.Controller;
 import command.*;
 
 import java.util.Stack;

@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 
 /**
  * Interface that all commands (ex. Forward, Backward, PenDown, etc.) must implement.

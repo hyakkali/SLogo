@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 
 /**
  * Gives the user the turtle's y-coordinate from the center of the screen

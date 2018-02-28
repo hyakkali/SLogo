@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Returns the remainder of two numbers
  * @author dylanpowers

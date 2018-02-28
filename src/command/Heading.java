@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 
 /**
  * Gets the turtle's heading in degrees
