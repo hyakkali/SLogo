@@ -1,4 +1,4 @@
-package user_interface;
+package userinterface;
 /**
  * Interface for View interacting with Model.
  * @author dylanpowers
