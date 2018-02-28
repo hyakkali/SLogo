@@ -1,6 +1,8 @@
 package userinterface;
 
 import backend.SLogoModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
@@ -28,7 +31,7 @@ public class UserScreen extends Application
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 60;
+    private static final int FRAMES_PER_SECOND = 1;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
@@ -45,7 +48,7 @@ public class UserScreen extends Application
     private HashMap<String, Object> vars = new HashMap<String, Object>();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private History history = new History();
-    private Turtle myTurtle = new Turtle();
+    private Turtle myTurtle;
     private SLogoModel mySLogoModel;
     private TextArea variables;
     private Button resetButton;
@@ -53,12 +56,16 @@ public class UserScreen extends Application
     private TextArea console;
     private Pane turtlePane;
     private String language = "English";
+    
+    private Timeline animation;
 
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(){}
+        public UserScreen(Turtle turtle){
+        		this.myTurtle = turtle;
+        }
 
        /* Add slogomodel to the view
         */
@@ -68,7 +75,7 @@ public class UserScreen extends Application
          * in the slogo project and add to the scene which returns to
          * start --this calls the menu related functions
          */
-        private Scene setScene(int width, int length) {
+        public Scene setScene(int width, int length) {
             Group root = new Group();
             myScene = new Scene(root, width, length);
 
@@ -83,9 +90,10 @@ public class UserScreen extends Application
             turtlePane.setPrefWidth(500);
 
             turtles.add(myTurtle);
-            for (Turtle turtle : turtles) {
-                turtlePane.getChildren().add(turtle);
-            }
+            turtlePane.getChildren().add(myTurtle);
+//            for (Turtle turtle : turtles) {
+//                turtlePane.getChildren().add(turtle);
+//            }
 
             form.setRight(right);
             form.setBottom(bottom);
@@ -93,8 +101,24 @@ public class UserScreen extends Application
             form.setPrefSize(XSIZE, YSIZE);
 
             root.getChildren().add(form);
+            
+            beginAnimationLoop();
 
             return myScene;
+        }
+        
+        public void beginAnimationLoop() {
+	    		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+	    				e -> step(SECOND_DELAY));
+	    		animation = new Timeline();
+	    		animation.setCycleCount(Timeline.INDEFINITE);
+	    		animation.getKeyFrames().add(frame);
+	    		animation.play();  
+        }
+        
+        public void step(double elapsedTime) {
+//        		System.out.println("step to the right!");
+        		myTurtle.updateState();
         }
 
         /* creates the scene within the stage by calling setScene

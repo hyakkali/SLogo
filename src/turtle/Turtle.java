@@ -63,7 +63,7 @@ public class Turtle extends ImageView{
 		super(); //sets image found in url
 		initializeImages();
 		this.setImage("Turtle");
-		this.setLayoutX(100.0);
+		this.setLayoutX(200.0);
 		this.setLayoutY(150.0);
 		this.setRotate(0.0);
 		this.setFitHeight(turtleHeight);
@@ -83,10 +83,17 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
+		System.out.println("turtle moving");
+		System.out.println(this.getLayoutY());
+//		System.out.println(amount);
+//		System.out.println(angle);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
+//		System.out.println("x"+xAmount);
+//		System.out.println(yAmount);
 		this.setLayoutX(this.getLayoutX()+xAmount);
 		this.setLayoutY(this.getLayoutY()+yAmount);
+		System.out.println(this.getLayoutY());
 		setStartLineLocation();
 		drawLine(xAmount,yAmount);
 	}
@@ -223,7 +230,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the x direction
 	 */ 
 	private double calculateXAmount(double angle, double amount) {
-		return amount*Math.cos(Math.toRadians(angle));
+		return amount*Math.sin(Math.toRadians(angle));
 	}
 	
 	/**
@@ -233,7 +240,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the y direction
 	 */ 
 	private double calculateYAmount(double angle, double amount) {
-		return amount*Math.sin(Math.toRadians(angle));
+		return amount*Math.cos(Math.toRadians(angle));
 	} 
 	
 	/**
@@ -291,6 +298,14 @@ public class Turtle extends ImageView{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
 		}
+	}
+	
+	public void updateState() {
+//		System.out.println("updating");
+		System.out.println("update"+this.getLayoutY());
+		this.setLayoutX(this.getLayoutX());
+		this.setLayoutY(this.getLayoutY());
+		this.setRotate(this.getRotate());
 	}
 	
 }
