@@ -13,7 +13,7 @@ public class SetHeading implements Command {
 	
 	/**
 	 * Specifies amount to move the turtle right.
-	 * @param amount the amount to move.
+	 *  amount the amount to move.
 	 */
 	public SetHeading(Double heading) {
 		this.heading = heading;
