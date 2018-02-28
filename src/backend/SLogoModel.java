@@ -18,7 +18,7 @@ public class SLogoModel {
     public SLogoModel(Controller ctrl) {
         myFactory = new CommandFactory();
         registerCommands(myFactory);
-        
+        this.myController = ctrl;
         myExecutor = new Executor(ctrl, myFactory);
     }
 
@@ -52,7 +52,12 @@ public class SLogoModel {
         		System.out.println(str + "\n");
             inputStack.push(str);
         }
-        myExecutor.parseText(inputStack, myData);
+        try {
+            myExecutor.parseText(inputStack, myData);
+        }
+        catch (Exception e){
+        		myController.displayError("Improper command! Try again!");
+        }
     }
 
     public void setController(Controller ctrl) {
