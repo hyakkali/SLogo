@@ -1,6 +1,8 @@
 package userinterface;
 
 import backend.SLogoModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
@@ -30,7 +33,7 @@ public class UserScreen extends Application
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 60;
+    private static final int FRAMES_PER_SECOND = 1;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
@@ -47,7 +50,7 @@ public class UserScreen extends Application
     private HashMap<String, Object> vars = new HashMap<String, Object>();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private History history = new History();
-    private Turtle myTurtle = new Turtle();
+    private Turtle myTurtle;
     private SLogoModel mySLogoModel;
     private TextArea variables;
     private Button resetButton;
@@ -56,6 +59,7 @@ public class UserScreen extends Application
     private Pane turtlePane;
     private String language = "English";
     private List<Line> lines;
+    private Timeline animation;
 
 
 //INITIALIZATION RELATED FUNCTIONS
@@ -71,7 +75,7 @@ public class UserScreen extends Application
          * in the slogo project and add to the scene which returns to
          * start --this calls the menu related functions
          */
-        private Scene setScene(int width, int length) {
+        public Scene setScene(int width, int length) {
             Group root = new Group();
             myScene = new Scene(root, width, length);
 
@@ -86,9 +90,10 @@ public class UserScreen extends Application
             turtlePane.setPrefWidth(500);
 
             turtles.add(myTurtle);
-            for (Turtle turtle : turtles) {
-                turtlePane.getChildren().add(turtle);
-            }
+            turtlePane.getChildren().add(myTurtle);
+//            for (Turtle turtle : turtles) {
+//                turtlePane.getChildren().add(turtle);
+//            }
 
             form.setRight(right);
             form.setBottom(bottom);
@@ -96,8 +101,23 @@ public class UserScreen extends Application
             form.setPrefSize(XSIZE, YSIZE);
 
             root.getChildren().add(form);
+            
+            beginAnimationLoop();
 
             return myScene;
+        }
+        
+        public void beginAnimationLoop() {
+	    		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+	    				e -> step(SECOND_DELAY));
+	    		animation = new Timeline();
+	    		animation.setCycleCount(Timeline.INDEFINITE);
+	    		animation.getKeyFrames().add(frame);
+	    		animation.play();  
+        }
+        
+        public void step(double elapsedTime) {
+            drawLine();        		
         }
 
         /* creates the scene within the stage by calling setScene
@@ -111,14 +131,7 @@ public class UserScreen extends Application
             stage.show();
 
             reset();
-
-            //attach "game loop" to timeline to play it
-    //        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-    //                e -> step(SECOND_DELAY));
-    //        Timeline animation = new Timeline();
-    //        animation.setCycleCount(Timeline.INDEFINITE);
-    //        animation.getKeyFrames().add(frame);
-    //        animation.play();
+            
         }
 
     //PROPERTY INIT FUNCTIONS_________________________________________________________________________
@@ -211,8 +224,8 @@ public class UserScreen extends Application
         private void setupCommandsList() {
             commands.appendText("Inherent Commands: \n\n");
             for (String cmd : descriptions.keySet()) {
-                commands.appendText(cmd + "\n");
-                commands.appendText(descriptions.getString(cmd) + properties.getString(cmd) + "\n\n");
+                commands.appendText(cmd.toUpperCase() + "\n");
+                commands.appendText( descriptions.getString(cmd) + "\n\n");
             }
             commands.appendText("User Defined Commands: \n\n");
         }
@@ -277,6 +290,7 @@ public class UserScreen extends Application
         private void consoleHandler( KeyCode k) {
             if (k.equals(KeyCode.ENTER)) {
                 mySLogoModel.parse(console.getText());
+                console.clear();
             }
             if (k.equals(KeyCode.UP)) {
                 this.displayPrev(console);
@@ -356,6 +370,7 @@ public class UserScreen extends Application
         private void reset() {
             myTurtle.setLayoutX(turtlePane.getWidth()/2);
             myTurtle.setLayoutY(turtlePane.getHeight()/2);
+
         }
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
@@ -364,13 +379,13 @@ public class UserScreen extends Application
          * properties table for images to set new images on the turtle
          */
         private ComboBox getImageCombo() {
-        ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
-        ComboBox<String> combobox = new ComboBox<>(language);
-        combobox.setValue("Turtle");
-        combobox.setPromptText("Turtle Image");
-        combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
-        return combobox;
-    }
+            ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
+            ComboBox<String> combobox = new ComboBox<>(language);
+            combobox.setValue("Turtle");
+            combobox.setPromptText("Turtle Image");
+            combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
+            return combobox;
+        }
 
     //COLOR SETTING FUNCTIONS_____________________________________________________________________________________
 
@@ -383,7 +398,7 @@ public class UserScreen extends Application
             combobox.setValue("BLACK");
             combobox.setPromptText("LineColor");
             Color c = Color.web(colors.getString(combobox.getValue()));
-            combobox.setOnAction(e->myTurtle.setPenColor(c));
+            combobox.setOnAction(e->myTurtle.setPenColor(Color.web(colors.getString(combobox.getValue()))));
             return combobox;
         }
 
@@ -432,7 +447,10 @@ public class UserScreen extends Application
          */
         private void drawLine() {
             Line toDraw = myTurtle.getLastLine();
-            turtlePane.getChildren().add(toDraw);
+            if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
+                System.out.println("user"+toDraw.getFill());
+                turtlePane.getChildren().add(toDraw);
+            }
         }
 
     //ERROR FUNCTIONS____________________________________________________________________________________________

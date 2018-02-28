@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import command.Command;
-import command.Forward;
 /**
  * Utilizes the Factory design pattern to create objects that implement the Command interface.
  * @author dylanpowers
