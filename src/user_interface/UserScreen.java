@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import main.Controller;
-import main.TurtleViewController;
 import turtle.Turtle;
 
 import java.io.File;

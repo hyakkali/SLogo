@@ -12,7 +12,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Turtle turtle = new Turtle();
 		UserScreen view = new UserScreen();
-		Controller controller = new TurtleViewController(view, turtle);
+		Controller controller = new Controller(view, turtle);
 		SLogoModel model = new SLogoModel(controller);
 	}
 	
