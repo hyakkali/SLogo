@@ -51,6 +51,9 @@ public class Turtle extends ImageView{
 	 * Image object of the turtle
 	 */
 	private Image turtleImage;
+	
+	private final int turtleHeight = 40;
+	private final int turtleWidth = 40;
 
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
@@ -60,11 +63,11 @@ public class Turtle extends ImageView{
 		super(); //sets image found in url
 		initializeImages();
 		this.setImage("Turtle");
-		this.setFitWidth(20);
-		this.setFitHeight(20);
-		this.setLayoutX(0.0);
-		this.setLayoutY(0.0);
+		this.setLayoutX(100.0);
+		this.setLayoutY(150.0);
 		this.setRotate(0.0);
+		this.setFitHeight(turtleHeight);
+		this.setFitWidth(turtleWidth);
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new Stack<>();
@@ -271,6 +274,13 @@ public class Turtle extends ImageView{
 			lines.push(newLine);
 		}
 	}
+	
+	/**
+	 * Clears all the lines that were drawn by the turtle
+	 */
+	public void clearLines() {
+		lines.clear();
+	}
 
 	private void initializeImages()
 	{
@@ -281,13 +291,6 @@ public class Turtle extends ImageView{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
 		}
-	}
-	
-	/**
-	 * Clears all the lines that were drawn by the turtle
-	 */
-	public void clearLines() {
-		lines.clear();
 	}
 	
 }

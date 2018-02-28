@@ -4,6 +4,7 @@ import resources.constants.Constants;
 import resources.languages.Language;
 import commandFactory.CommandFactory;
 import main.Controller;
+import command.*;
 
 import java.util.Stack;
 
@@ -32,31 +33,19 @@ public class Executor {
     protected void parseText(Stack<String> input, SLogoData myData) {
         ArrayList<Double> myParameters = new ArrayList<>();
         Parser languageParser = new Parser(myLang);
-     //  System.out.println(languageParser.getSymbols().toString());
         while (!input.isEmpty()) {
-          //  System.out.println((syntaxParser.getSymbol(input.peek())));
+        		System.out.println(syntaxParser.getSymbol(input.peek()));
             if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
-                System.out.print("hi");
-                if (myParameters.isEmpty()) {
-                    myParameters.add(commandFactory.command(languageParser.getSymbol(input.pop())).execute(myController));
+                Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters).execute(myController);
+                // only clear the parameters if we just used any
+                if (myParameters.size() > 0) {
+                		myParameters.clear();
                 }
-                else if (myParameters.size() == 1){
-                    System.out.print("One Param Command");
-                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters.get(0)).execute(myController);
-                    myParameters.clear();
-                    myParameters.add(temp);
-                }
-                else {
-                    System.out.print("Two Param Command");
-                    Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters.get(0), myParameters.get(1)).execute(myController);
-                    myParameters.clear();
-                    myParameters.add(temp);
-                }
+                myParameters.add(temp);
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("Constant")) {
                 Double value = Double.parseDouble(input.pop());
                 myParameters.add(value);
-                System.out.println(value);
             }
 
 
@@ -67,12 +56,13 @@ public class Executor {
                     myParameters.add(v.getValue());
                 }
                 else {
-                    Variable newVar = new Variable(var, 0.0); //Where do I put the value into the variable
-                    myData.addVariable(newVar);
+                    throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndefinedVariableError"));
                 }
             }
+
+
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
-                Stack<String> tempStack = new Stack<>();
+                Stack<String> tempStack = new Stack<String>();
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListEnd")) {
                         tempStack.add(s);
@@ -85,12 +75,11 @@ public class Executor {
                 }
                 parseText(tempStack, myData);
             }
-            else {
-                if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
+            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
-                }
+            } else {
+            		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
-           // throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
         }
 
     }

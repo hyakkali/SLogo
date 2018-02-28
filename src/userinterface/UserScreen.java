@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -20,6 +22,7 @@ import javafx.stage.Stage;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
+
 import java.util.*;
 
 public class UserScreen extends Application
@@ -51,7 +54,7 @@ public class UserScreen extends Application
     private TextArea commands;
     private TextArea console;
     private Pane turtlePane;
-    private String language;
+    private String language = "English";
     private List<Line> lines;
 
 
@@ -175,16 +178,16 @@ public class UserScreen extends Application
          * which contains the console
          */
         private HBox createBottomMenu() {
-        HBox interactives = new HBox();
-        console = getConsole();
-        interactives.setPrefHeight(YSIZE / 9 * 2);
-        interactives.setStyle("-fx-background-color: #008000");
-        interactives.setPadding(new Insets(20, 10, 20, 10));
-        interactives.setAlignment(Pos.TOP_LEFT);
-        interactives.setSpacing(10);
-        interactives.getChildren().addAll(console);
-        return interactives;
-    }
+            HBox interactives = new HBox();
+            console = getConsole();
+            interactives.setPrefHeight(YSIZE / 9 * 2);
+            interactives.setStyle("-fx-background-color: #008000");
+            interactives.setPadding(new Insets(20, 10, 20, 10));
+            interactives.setAlignment(Pos.TOP_LEFT);
+            interactives.setSpacing(10);
+            interactives.getChildren().addAll(console);
+            return interactives;
+        }
 
     //COMMAND FUNCTIONS//__________________________________________________________________________________________
 
@@ -217,9 +220,10 @@ public class UserScreen extends Application
         /* Appends user defined command to the list of callable commands
          */
         public void addPreviousCommand(String s)
-    {
-        commands.appendText(s+"\n\n");
-    }
+        {
+            commands.appendText(s+"\n\n");
+            history.add(s);
+        }
 
     //VARIABLE FUNCTIONS__________________________________________________________________________________________
 
@@ -272,7 +276,7 @@ public class UserScreen extends Application
          */
         private void consoleHandler( KeyCode k) {
             if (k.equals(KeyCode.ENTER)) {
-               mySLogoModel.parse(console.getText());
+                mySLogoModel.parse(console.getText());
             }
             if (k.equals(KeyCode.UP)) {
                 this.displayPrev(console);
@@ -337,7 +341,11 @@ public class UserScreen extends Application
          * resetButton
          */
         private Button getResetButton() {
-            Button b = new Button(descriptions.getString("Reset"));
+            Button b = new Button();
+            ImageView rimage= new ImageView(new Image("File:images/reset.png"));
+            rimage.setFitWidth(30);
+            rimage.setFitHeight(30);
+            b.setGraphic(rimage);
             b.setOnAction(e -> this.reset());
             return b;
         }
@@ -346,8 +354,8 @@ public class UserScreen extends Application
          * and redraws the UI
          */
         private void reset() {
-            myTurtle.setX(turtlePane.getWidth()/2);
-            myTurtle.setY(turtlePane.getHeight()/2);
+            myTurtle.setLayoutX(turtlePane.getWidth()/2);
+            myTurtle.setLayoutY(turtlePane.getHeight()/2);
         }
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
@@ -423,9 +431,9 @@ public class UserScreen extends Application
          * whenever the locatoun of turtle is changed
          */
         private void drawLine() {
-        Line toDraw = myTurtle.getLastLine();
-        turtlePane.getChildren().add(toDraw);
-    }
+            Line toDraw = myTurtle.getLastLine();
+            turtlePane.getChildren().add(toDraw);
+        }
 
     //ERROR FUNCTIONS____________________________________________________________________________________________
 

@@ -13,7 +13,7 @@ public class Main extends Application{
 		// TODO Auto-generated method stub
 		Turtle turtle = new Turtle();
         UserScreen view =  new UserScreen();
-        Controller controller = new TurtleViewController(view, turtle);
+        Controller controller = new Controller(view, turtle);
         SLogoModel smodel = new SLogoModel(controller);
         view.start(primaryStage);
 		view.addSlogo(smodel);
@@ -25,3 +25,4 @@ public class Main extends Application{
 	}
 
 }
+
