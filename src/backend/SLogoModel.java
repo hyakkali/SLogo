@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import commandFactory.CommandFactory;
 import resources.constants.Constants;
 import resources.languages.Language;
+import resources.languages.LanguageFactory;
 import main.Controller;
 import java.util.Stack;
 
@@ -14,16 +15,18 @@ public class SLogoModel {
     Executor myExecutor;
     CommandFactory myFactory;
     Controller myController;
+    LanguageFactory myLanguageFactory;
 
     public SLogoModel(Controller ctrl) {
         myFactory = new CommandFactory();
         registerCommands(myFactory);
         myExecutor = new Executor(ctrl, myFactory);
+        myLanguageFactory = new LanguageFactory();
     }
 
     private void registerCommands(CommandFactory cmdFact) {
         try {
-            for (String key : Language.ENGLISH.getKeys()) {
+            for (String key : myLanguageFactory.getLanguage("English").getKeys()) {
                 Class<?> regClass = Class.forName(key);
                 cmdFact.registerCommand(key, regClass);
             }
