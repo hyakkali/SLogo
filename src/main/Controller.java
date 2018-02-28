@@ -1,8 +1,7 @@
 package main;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
-import user_interface.UserScreen;
-import backend.SLogoModel;
+import userinterface.UserScreen;
 
 /**
  * 
