@@ -35,6 +35,10 @@ public class Turtle extends ImageView{
 	 */
 	private double yStartLineLocation;
 	
+	private final double LINE_START_X = 520.0;
+	
+	private final double LINE_START_Y = 425.0;
+	
 	/**
 	 * Color of the next line to be drawn
 	 */
@@ -261,8 +265,8 @@ public class Turtle extends ImageView{
 				xStartLineLocation = lines.peek().getEndX();
 				yStartLineLocation = lines.peek().getEndY();
 			} else {
-				xStartLineLocation = this.getLayoutX();
-				yStartLineLocation = this.getLayoutY();	
+				xStartLineLocation = LINE_START_X;
+				yStartLineLocation = LINE_START_Y;	
 			}
 		} else {
 			xStartLineLocation = this.getLayoutX();
@@ -277,7 +281,7 @@ public class Turtle extends ImageView{
 	 */
 	private void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
-			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation+yAmount);
+			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
 			newLine.setFill(penColor);
 			lines.push(newLine);
 		}
