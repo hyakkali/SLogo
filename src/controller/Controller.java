@@ -1,4 +1,4 @@
-package main;
+package controller;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;

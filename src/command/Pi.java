@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Returns Pi (3.1415926535897932384626...)
  * @author dylanpowers

@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Returns the product of two numbers
  * @author dylanpowers

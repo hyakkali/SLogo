@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 
 /**
  * Tells the user if the pen is down or not

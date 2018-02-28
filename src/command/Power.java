@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Raises a given base to a given exponent.
  * @author dylanpowers

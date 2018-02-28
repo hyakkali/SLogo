@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Returns a random number strictly less than a given maximum
  * @author dylanpowers

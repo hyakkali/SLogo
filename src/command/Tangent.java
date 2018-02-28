@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds the tangent of a given angle
  * @author dylanpowers

@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Gets and returns the sum of expr1 and expr2
  * @author dylanpowers
