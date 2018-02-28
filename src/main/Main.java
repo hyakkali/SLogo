@@ -4,7 +4,7 @@ import backend.SLogoModel;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import turtle.Turtle;
-import userInterface.UserScreen;
+import user_interface.UserScreen;
 
 public class Main extends Application{
 

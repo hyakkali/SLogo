@@ -1,4 +1,4 @@
-package userInterface;
+package user_interface;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
