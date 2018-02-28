@@ -147,8 +147,6 @@ public class Turtle extends ImageView{
 	 * 
 	 */
 	public void setImage(String k) {
-		System.out.print("why arent you updating");
-		this.setX(100);
 		this.setImage(images.get(k));
 	}
 	

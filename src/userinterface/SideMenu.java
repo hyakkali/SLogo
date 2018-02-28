@@ -1,6 +1,4 @@
-package user_interface;
-
-import java.util.*;
+package userinterface;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
