@@ -117,8 +117,6 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-//        		System.out.println("step to the right!");
-        		myTurtle.updateState();
             drawLine();        		
         }
 
@@ -392,10 +390,10 @@ public class UserScreen extends Application
         private ComboBox getLineCombo() {
             ObservableList<String> color =FXCollections.observableArrayList(new ArrayList<String>(colors.keySet()));
             ComboBox<String> combobox = new ComboBox<>(color);
-            combobox.setValue("BLACK");
+//            combobox.setValue("BLACK");
             combobox.setPromptText("LineColor");
-            Color c = Color.web(colors.getString(combobox.getValue()));
-            combobox.setOnAction(e->myTurtle.setPenColor(c));
+//            Color c = Color.web(colors.getString(combobox.getValue()));
+            combobox.setOnAction(e->myTurtle.setPenColor(Color.web(colors.getString(combobox.getValue()))));
             return combobox;
         }
 
@@ -444,8 +442,8 @@ public class UserScreen extends Application
          */
         private void drawLine() {
         Line toDraw = myTurtle.getLastLine();
-//        System.out.println(toDraw);
         if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
+            System.out.println("user"+toDraw.getFill());
             turtlePane.getChildren().add(toDraw);
         }
     }

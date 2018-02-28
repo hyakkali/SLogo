@@ -81,13 +81,10 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		System.out.println("turtle moving");
-		System.out.println(this.getLayoutY());
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setLayoutX(this.getLayoutX()+xAmount);
 		this.setLayoutY(this.getLayoutY()-yAmount);
-		System.out.println(this.getLayoutY());
 		setStartLineLocation();
 		drawLine(xAmount,yAmount);
 	}
@@ -279,7 +276,7 @@ public class Turtle extends ImageView{
 	private void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
-			newLine.setFill(penColor);
+			newLine.setStroke(penColor);
 			lines.push(newLine);
 		}
 	}
@@ -299,20 +296,6 @@ public class Turtle extends ImageView{
 		{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
-		}
-	}
-	
-	public void updateState() {
-		this.setLayoutX(this.getLayoutX());
-		this.setLayoutY(this.getLayoutY());
-		this.setRotate(this.getRotate());
-		System.out.println(this.getLayoutX());
-		if(!lines.empty()) {
-			Line line = this.lines.peek();
-			line.setStartX(line.getStartX());
-			line.setStartY(line.getStartY());
-			line.setEndX(line.getEndX());
-			line.setEndY(line.getEndY());
 		}
 	}
 	
