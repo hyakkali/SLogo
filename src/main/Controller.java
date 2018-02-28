@@ -131,20 +131,12 @@ public class Controller {
 	
 	//misc 
 	/**
-	 * Triggers view to print result to the screen
-	 * @param result String result of a math operation
+	 * Triggers view to print text to the screen
+	 * @param result Text to be displayed on screen
 	 * 
 	 */
-	public void displayResult(String result) {
-		view.printToScreen(result);
-	}
-	
-	/**
-	 * 
-	 * @param error String containing error message
-	 */
-	public void displayError(String error) {
-		view.printErrorToScreen(error);
+	public void displayText(String text) {
+		view.printToScreen(text);
 	}
 	
 	/**

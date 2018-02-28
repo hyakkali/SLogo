@@ -56,7 +56,7 @@ public class SLogoModel {
             myExecutor.parseText(inputStack, myData);
         }
         catch (Exception e){
-        		myController.displayError("Improper command! Try again!");
+        		myController.displayText("Improper command! Try again!");
         }
     }
 
