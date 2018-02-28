@@ -140,6 +140,14 @@ public class Controller {
 	}
 	
 	/**
+	 * 
+	 * @param error String containing error message
+	 */
+	public void displayError(String error) {
+		view.printErrorToScreen(error);
+	}
+	
+	/**
 	 * @return Current heading of the turtle
 	 */
 	public double getTurtleHeading() {

@@ -255,7 +255,7 @@ public class Turtle extends ImageView{
 	 */
 	private void setStartLineLocation() {
 		if(penBoolean) { //if pen is down
-			if(!lines.empty()) {
+			if(!lines.empty()) { //if pen down and there are lines in stack
 				xStartLineLocation = lines.peek().getEndX();
 				yStartLineLocation = lines.peek().getEndY();
 			} else {
