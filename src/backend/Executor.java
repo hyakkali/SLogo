@@ -55,9 +55,15 @@ public class Executor {
                     myParameters.add(v.getValue());
                 }
                 else {
-                    Variable newVar = new Variable(var, 0.0);
-                    myData.addVariable(newVar);
-                    myParameters.add(newVar.getMyID());
+                		if (myParameters.isEmpty()) {
+                			Variable newVar = new Variable(var, 0.0);
+                			myParameters.add(newVar.getValue());
+                		}
+                		else {
+                			Variable newVar = new Variable(var, 0.0);
+                         myData.addVariable(newVar);
+                         myParameters.add(newVar.getMyID());
+                		}
                 }
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
