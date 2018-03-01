@@ -78,7 +78,7 @@ public class Executor {
                 input.pop();
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListStart")) {
-                        tempStack.add(s);
+                        tempStack.push(s);
                         input.remove(s);
                     }
                     else {
@@ -86,8 +86,7 @@ public class Executor {
                         break;
                     }
                 }
-                Stack<String> reversedStack = reverseStack(tempStack);
-                parseText(reversedStack, myData);
+                parseText(tempStack, myData);
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
@@ -96,14 +95,4 @@ public class Executor {
             }
         }
     }
-    
-    private Stack<String> reverseStack(Stack<String> oldStack) {
-    		Stack<String> reversedStack = new Stack<String>();
-    		List<String> stackList = new ArrayList<String>(oldStack);
-    		for (String s: stackList) {
-    			reversedStack.add(s);
-    		}
-    		return reversedStack;
-    }
-
 }
