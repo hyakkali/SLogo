@@ -1,5 +1,7 @@
 package turtle;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -23,7 +25,7 @@ public class Turtle extends ImageView{
 	/**
 	 * Stack of lines drawn by the turtle
 	 */
-	private Stack<Line> lines;
+	private List<Line> lines;
 	
 	/**
 	 * Start X coordinate for the next line
@@ -34,10 +36,6 @@ public class Turtle extends ImageView{
 	 * Start Y coordinate for the next line
 	 */
 	private double yStartLineLocation;
-	
-	private final double LINE_START_X = 320.0;
-	
-	private final double LINE_START_Y = 325.0;
 	
 	/**
 	 * Color of the next line to be drawn
@@ -72,7 +70,7 @@ public class Turtle extends ImageView{
 		this.setFitWidth(TURTLE_WIDTH);
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
-		this.lines = new Stack<>();
+		this.lines = new ArrayList<>();
 	}
 	
 	/**
@@ -82,6 +80,7 @@ public class Turtle extends ImageView{
 	 */
 	public void move(double angle, double amount) {
 		setStartLineLocation();
+		System.out.println("moving");
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setX(this.getX()+xAmount);
@@ -185,11 +184,8 @@ public class Turtle extends ImageView{
 	 * 
 	 * @return Last line object that was drawn
 	 */
-	public Line getLastLine(){
-		if(!lines.empty()) {
-			return lines.peek();
-		}
-		return null;
+	public List<Line> getLines(){
+		return this.lines;
 	}
 	
 	/**
@@ -264,10 +260,11 @@ public class Turtle extends ImageView{
 	 * @param yAmount Amount pixel change in y direction
 	 */
 	private void drawLine(double xAmount, double yAmount) {
+		System.out.println("draw!");
 		if(penBoolean) {
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
 			newLine.setStroke(penColor);
-			lines.push(newLine);
+			lines.add(newLine);
 		}
 	}
 	

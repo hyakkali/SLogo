@@ -31,7 +31,7 @@ public class UserScreen extends Application
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 1;
+    private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
@@ -441,10 +441,11 @@ public class UserScreen extends Application
          * whenever the locatoun of turtle is changed
          */
         private void drawLine() {
-        Line toDraw = myTurtle.getLastLine();
-        if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
-            System.out.println("user"+toDraw.getFill());
-            turtlePane.getChildren().add(toDraw);
+        List<Line> toDraw = myTurtle.getLines();
+        for (Line line: toDraw) {
+            if(line!=null&&!turtlePane.getChildren().contains(line)) {
+                turtlePane.getChildren().add(line);
+            }
         }
     }
 
