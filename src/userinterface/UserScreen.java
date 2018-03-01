@@ -59,7 +59,7 @@ public class UserScreen extends Application
     private TextArea console;
     private Pane turtlePane;
     private String language = "English";
-    private List<Line> lines;
+    private List<Line> lines = new ArrayList<Line>();
     private Timeline animation;
 
 
@@ -290,10 +290,13 @@ public class UserScreen extends Application
          *  when the user types in the console
          */
         private void consoleHandler( KeyEvent k) {
+
             if (k.getCode().equals(KeyCode.ENTER)) {
-                mySLogoModel.parse(console.getText());
                 k.consume();
+                String textHolder=console.getText();
                 console.setText("");
+                mySLogoModel.parse(textHolder);
+              //  mySlogoModel.
             }
 
             else if (k.getCode().equals(KeyCode.UP)) {
@@ -329,7 +332,6 @@ public class UserScreen extends Application
         private void handleLanguageCombo(String s) {
             setupProperties(s);
             setupCommandsList();
-            resetButton.setText(properties.getString("Reset"));
         }
 
         /* Initializes the location size and options
@@ -375,7 +377,8 @@ public class UserScreen extends Application
         private void reset() {
             myTurtle.setLayoutX(turtlePane.getWidth()/2);
             myTurtle.setLayoutY(turtlePane.getHeight()/2);
-
+            if(lines!=null)
+                turtlePane.getChildren().removeAll(lines);
         }
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
@@ -453,7 +456,7 @@ public class UserScreen extends Application
         private void drawLine() {
             Line toDraw = myTurtle.getLastLine();
             if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
-                System.out.println("user"+toDraw.getFill());
+                lines.add(toDraw);
                 turtlePane.getChildren().add(toDraw);
             }
         }
@@ -465,6 +468,7 @@ public class UserScreen extends Application
         */
         public void printToScreen(String s){
             //look into getting an error type and error specific
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText(s);
