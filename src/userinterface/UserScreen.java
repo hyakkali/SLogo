@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -230,11 +231,10 @@ public class UserScreen extends Application
             commands.appendText("User Defined Commands: \n\n");
         }
 
-        /* Appends user defined command to the list of callable commands
+        /* Appends a previously run command to the history
          */
         public void addPreviousCommand(String s)
         {
-            commands.appendText(s+"\n\n");
             history.add(s);
         }
 
@@ -274,28 +274,32 @@ public class UserScreen extends Application
          * set to instance variable console
          */
         private TextArea getConsole() {
-            TextArea console = new TextArea();
+            console = new TextArea();
             console.prefWidth(XSIZE / 7 * 4);
             console.setPrefWidth(XSIZE);
             console.setPrefHeight(YSIZE);
             console.setEditable(true);
             console.setWrapText(true);
-            console.setOnKeyPressed(e -> consoleHandler(e.getCode()));
+            console.setOnKeyPressed(e -> consoleHandler(e));
+            console.setText("enter");
+            console.positionCaret(1);
             return console;
         }
 
         /* Defines the actions to be taken
          *  when the user types in the console
          */
-        private void consoleHandler( KeyCode k) {
-            if (k.equals(KeyCode.ENTER)) {
+        private void consoleHandler( KeyEvent k) {
+            if (k.getCode().equals(KeyCode.ENTER)) {
                 mySLogoModel.parse(console.getText());
-                console.clear();
+                k.consume();
+                console.setText("");
             }
-            if (k.equals(KeyCode.UP)) {
+
+            else if (k.getCode().equals(KeyCode.UP)) {
                 this.displayPrev(console);
             }
-            if (k.equals(KeyCode.DOWN)) {
+            else if (k.getCode().equals(KeyCode.DOWN)) {
                 this.displayNext(console);
             }
         }
@@ -306,6 +310,7 @@ public class UserScreen extends Application
         private void displayNext(TextArea console) {
             if(history.hasNext())
                 console.setText(history.moveForward());
+
         }
 
         /* cycles back through command list and
