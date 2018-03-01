@@ -1,5 +1,6 @@
 package controller;
 import javafx.scene.paint.Color;
+import turtle.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
@@ -16,10 +17,12 @@ public class Controller {
 
 	private UserScreen view;
 	private Turtle turtle;
+	private Pen pen;
 
-	public Controller(UserScreen view, Turtle turtle){
+	public Controller(UserScreen view, Turtle turtle, Pen pen){
 		this.view = view;
 		this.turtle = turtle;
+		this.pen = pen;
 	}
 
 	/**
@@ -72,7 +75,7 @@ public class Controller {
 	 * @param penBoolean Boolean of true or false
 	 */
 	public void togglePen(boolean penBoolean) {
-		turtle.togglePenUpOrDown(penBoolean);
+		pen.togglePenUpOrDown(penBoolean);
 	}
 
 	/**
@@ -80,7 +83,7 @@ public class Controller {
 	 * @param color Color of the pen
 	 */
 	public void setViewPenColor(Color color) {
-		turtle.setPenColor(color);
+		pen.setPenColor(color);
 	}
 
 	/**
@@ -164,7 +167,7 @@ public class Controller {
 	 * @return Whether or not pen is down
 	 */
 	public boolean getIsPen() {
-		return turtle.getPenBoolean();
+		return pen.getPenBoolean();
 	}
 
 	/**
