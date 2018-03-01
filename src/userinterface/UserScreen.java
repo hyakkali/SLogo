@@ -11,7 +11,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -56,16 +59,14 @@ public class UserScreen extends Application
     private TextArea console;
     private Pane turtlePane;
     private String language = "English";
-    
+    private List<Line> lines;
     private Timeline animation;
 
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(Turtle turtle){
-        		this.myTurtle = turtle;
-        }
+        public UserScreen(Turtle t){myTurtle =t;}
 
        /* Add slogomodel to the view
         */
@@ -117,7 +118,7 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-        		myTurtle.getRotate();
+//        		System.out.println(myTurtle.getRotate());
             drawLine();        		
         }
 
@@ -131,7 +132,7 @@ public class UserScreen extends Application
             stage.setTitle(TITLE);
             stage.show();
 
-            reset();
+//            reset();
             
         }
 
@@ -192,16 +193,16 @@ public class UserScreen extends Application
          * which contains the console
          */
         private HBox createBottomMenu() {
-        HBox interactives = new HBox();
-        console = getConsole();
-        interactives.setPrefHeight(YSIZE / 9 * 2);
-        interactives.setStyle("-fx-background-color: #008000");
-        interactives.setPadding(new Insets(20, 10, 20, 10));
-        interactives.setAlignment(Pos.TOP_LEFT);
-        interactives.setSpacing(10);
-        interactives.getChildren().addAll(console);
-        return interactives;
-    }
+            HBox interactives = new HBox();
+            console = getConsole();
+            interactives.setPrefHeight(YSIZE / 9 * 2);
+            interactives.setStyle("-fx-background-color: #008000");
+            interactives.setPadding(new Insets(20, 10, 20, 10));
+            interactives.setAlignment(Pos.TOP_LEFT);
+            interactives.setSpacing(10);
+            interactives.getChildren().addAll(console);
+            return interactives;
+        }
 
     //COMMAND FUNCTIONS//__________________________________________________________________________________________
 
@@ -225,18 +226,18 @@ public class UserScreen extends Application
         private void setupCommandsList() {
             commands.appendText("Inherent Commands: \n\n");
             for (String cmd : descriptions.keySet()) {
-                commands.appendText(cmd + "\n");
-                commands.appendText(descriptions.getString(cmd) + properties.getString(cmd) + "\n\n");
+                commands.appendText(cmd.toUpperCase() + "\n");
+                commands.appendText( descriptions.getString(cmd) + "\n\n");
             }
             commands.appendText("User Defined Commands: \n\n");
         }
 
-        /* Appends user defined command to the list of callable commands
+        /* Appends a previously run command to the history
          */
         public void addPreviousCommand(String s)
-    {
-        commands.appendText(s+"\n\n");
-    }
+        {
+            history.add(s);
+        }
 
     //VARIABLE FUNCTIONS__________________________________________________________________________________________
 
@@ -274,28 +275,32 @@ public class UserScreen extends Application
          * set to instance variable console
          */
         private TextArea getConsole() {
-            TextArea console = new TextArea();
+            console = new TextArea();
             console.prefWidth(XSIZE / 7 * 4);
             console.setPrefWidth(XSIZE);
             console.setPrefHeight(YSIZE);
             console.setEditable(true);
             console.setWrapText(true);
-            console.setOnKeyPressed(e -> consoleHandler(e.getCode()));
+            console.setOnKeyPressed(e -> consoleHandler(e));
+            console.setText("enter");
+            console.positionCaret(1);
             return console;
         }
 
         /* Defines the actions to be taken
          *  when the user types in the console
          */
-        private void consoleHandler( KeyCode k) {
-            if (k.equals(KeyCode.ENTER)) {
+        private void consoleHandler( KeyEvent k) {
+            if (k.getCode().equals(KeyCode.ENTER)) {
                 mySLogoModel.parse(console.getText());
-                console.clear();
+                k.consume();
+                console.setText("");
             }
-            if (k.equals(KeyCode.UP)) {
+
+            else if (k.getCode().equals(KeyCode.UP)) {
                 this.displayPrev(console);
             }
-            if (k.equals(KeyCode.DOWN)) {
+            else if (k.getCode().equals(KeyCode.DOWN)) {
                 this.displayNext(console);
             }
         }
@@ -306,6 +311,7 @@ public class UserScreen extends Application
         private void displayNext(TextArea console) {
             if(history.hasNext())
                 console.setText(history.moveForward());
+
         }
 
         /* cycles back through command list and
@@ -355,7 +361,11 @@ public class UserScreen extends Application
          * resetButton
          */
         private Button getResetButton() {
-            Button b = new Button(descriptions.getString("Forward"));
+            Button b = new Button();
+            ImageView rimage= new ImageView(new Image("File:images/reset.png"));
+            rimage.setFitWidth(30);
+            rimage.setFitHeight(30);
+            b.setGraphic(rimage);
             b.setOnAction(e -> this.reset());
             return b;
         }
@@ -364,10 +374,11 @@ public class UserScreen extends Application
          * and redraws the UI
          */
         private void reset() {
-            myTurtle.setX(turtlePane.getWidth()/2);
-            myTurtle.setY(turtlePane.getHeight()/2);
+        		myTurtle.setToOrigin();
+//            myTurtle.setLayoutX(turtlePane.getWidth()/2);
+//            myTurtle.setLayoutY(turtlePane.getHeight()/2);
+
         }
-        //NEEDS TO BE IMPLEMENTED!!!!!!
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
 
@@ -375,13 +386,13 @@ public class UserScreen extends Application
          * properties table for images to set new images on the turtle
          */
         private ComboBox getImageCombo() {
-        ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
-        ComboBox<String> combobox = new ComboBox<>(language);
-        combobox.setValue("Turtle");
-        combobox.setPromptText("Turtle Image");
-        combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
-        return combobox;
-    }
+            ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
+            ComboBox<String> combobox = new ComboBox<>(language);
+            combobox.setValue("Turtle");
+            combobox.setPromptText("Turtle Image");
+            combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
+            return combobox;
+        }
 
     //COLOR SETTING FUNCTIONS_____________________________________________________________________________________
 
@@ -391,9 +402,9 @@ public class UserScreen extends Application
         private ComboBox getLineCombo() {
             ObservableList<String> color =FXCollections.observableArrayList(new ArrayList<String>(colors.keySet()));
             ComboBox<String> combobox = new ComboBox<>(color);
-//            combobox.setValue("BLACK");
+            combobox.setValue("BLACK");
             combobox.setPromptText("LineColor");
-//            Color c = Color.web(colors.getString(combobox.getValue()));
+            Color c = Color.web(colors.getString(combobox.getValue()));
             combobox.setOnAction(e->myTurtle.setPenColor(Color.web(colors.getString(combobox.getValue()))));
             return combobox;
         }
@@ -443,12 +454,12 @@ public class UserScreen extends Application
          */
         private void drawLine() {
         List<Line> toDraw = myTurtle.getLines();
-        for (Line line: toDraw) {
-            if(line!=null&&!turtlePane.getChildren().contains(line)) {
-                turtlePane.getChildren().add(line);
+            for (Line line: toDraw) {
+                if(line!=null&&!turtlePane.getChildren().contains(line)) {
+                    turtlePane.getChildren().add(line);
+                }
             }
         }
-    }
 
     //ERROR FUNCTIONS____________________________________________________________________________________________
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import command.Command;
+import command.CommandException;
 /**
  * Utilizes the Factory design pattern to create objects that implement the Command interface.
  * @author dylanpowers
@@ -34,12 +35,12 @@ public class CommandFactory {
 	 * 				The name of the command to be run
 	 * @param args
 	 * 				Any necessary arguments - will be an array of size zero, one, or two
+	 * @throws CommandException to represent a bad command
 	 * @return a Command object that has been initialized
 	 */
-	public Command command(String commandName, ArrayList<Double>args) {
-			//System.out.println(String.format("commandName is %s from CF FUCK YEAH MOTHERFUCKER", commandName));
-			Class<?> commandClass = (Class<?>) commands.get(commandName);
-			return appropriateCommand(commandClass, args);
+	public Command command(String commandName, ArrayList<Double>args) throws NullPointerException {
+		Class<?> commandClass = (Class<?>) commands.get(commandName);
+		return appropriateCommand(commandClass, args);
 	}
 	
 	/**
@@ -58,16 +59,13 @@ public class CommandFactory {
         		} else if (args.size() == 1) {
         			Constructor<?> cons = clazz.getConstructor(Double.class);
         			return (Command) cons.newInstance(args.get(0));
-        		} else if (args.size() == 2) {
+        		} else {
         			Constructor<?> cons = clazz.getConstructor(Double.class, Double.class);
         			return (Command) cons.newInstance(args.get(0), args.get(1));
-        		} else {
-        			throw new NoSuchMethodException();
         		}
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-		// TODO handle exception 
-			e.printStackTrace();
-			return null;
+			// we don't want to throw 2 alerts, and this exception is a nested exception, so just return null
+			throw new CommandException(CommandException.BAD_PARAMS);
 		}
 	}
 }

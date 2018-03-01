@@ -35,12 +35,19 @@ public class Executor {
         while (!input.isEmpty()) {
         		System.out.println(syntaxParser.getSymbol(input.peek()));
             if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
-                Double temp = commandFactory.command(languageParser.getSymbol(input.pop()), myParameters).execute(myController);
-                // only clear the parameters if we just used any
-                if (myParameters.size() > 0) {
-                		myParameters.clear();
-                }
-                myParameters.add(temp);
+            		// name of command
+            		String commandName = input.pop();
+            		try {
+                    Double temp = commandFactory.command(languageParser.getSymbol(commandName), myParameters).execute(myController);
+                    // only clear the parameters if we just used any
+                    if (myParameters.size() > 0) {
+                    		myParameters.clear();
+                    }
+                    myParameters.add(temp);
+            		} catch (NullPointerException e) {
+            			// if command does not exist, tell the user that
+            			throw new CommandException(CommandException.NON_EXISTENT, commandName);
+            		}
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("Constant")) {
                 Double value = Double.parseDouble(input.pop());
@@ -85,10 +92,9 @@ public class Executor {
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
             } else {
-            		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
+                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
         }
-
     }
     
     private Stack<String> reverseStack(Stack<String> oldStack) {
