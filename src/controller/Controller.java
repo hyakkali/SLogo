@@ -176,9 +176,5 @@ public class Controller {
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
 	}
-	
-	public List<Variable> getMyVariables() {
-		return view.getMyModel().getMyData().getMyVariables();
-	}
 
 }
