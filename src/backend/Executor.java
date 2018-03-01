@@ -57,6 +57,7 @@ public class Executor {
                 }
                 else {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndefinedVariableError"));
+
                 }
             }
 
@@ -78,10 +79,9 @@ public class Executor {
             else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
             } else {
-            		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
+                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
         }
-
     }
 
 }

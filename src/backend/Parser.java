@@ -30,7 +30,7 @@ public class Parser{
                 return entry.getKey();
             }
         }
-        return null;
+        return Constants.INVALID_SYMBOL;
     }
     /**
      * add the valid keys for specified language into the list
@@ -48,7 +48,10 @@ public class Parser{
         return regex.matcher(text).matches();
     }
 
-
+    public List<Entry<String, Pattern>> getSymbols()
+    {
+        return mySymbols;
+    }
 
 
 }

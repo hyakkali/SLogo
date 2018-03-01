@@ -2,6 +2,9 @@ package resources.languages;
 
 public class LanguageFactory {
 
+    public LanguageFactory() {
+    }
+
     public static Language getLanguage(String lang) {
         switch (lang) {
             case "Chinese": return Language.CHINESE;

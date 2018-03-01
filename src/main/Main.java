@@ -16,8 +16,8 @@ public class Main extends Application{
         UserScreen view =  new UserScreen(turtle);
         Controller controller = new Controller(view, turtle);
         SLogoModel smodel = new SLogoModel(controller);
-        view.addSlogo(smodel);
         view.start(primaryStage);
+		view.addSlogo(smodel);
         primaryStage.setScene(view.setScene(800,600));
         primaryStage.show();
 	}

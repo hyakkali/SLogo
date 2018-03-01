@@ -53,6 +53,8 @@ public class SLogoModel {
         		System.out.println(str + "\n");
             inputStack.push(str);
         }
+        myExecutor.parseText(inputStack, myData);
+            myController.addPreviouslyRunCommand(input);
         try {
             myExecutor.parseText(inputStack, myData);
         }
