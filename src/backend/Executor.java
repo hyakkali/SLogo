@@ -51,7 +51,7 @@ public class Executor {
 
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
-                if (myData.getMyVariables() != null) {
+                if (!myData.getMyVariables().isEmpty()) {
                     Variable v = myData.getVariable(var);
                     myParameters.add(v.getValue());
                 }
