@@ -24,20 +24,18 @@ public class SLogoModel {
     }
 
     private void registerCommands(CommandFactory cmdFact) {
-        try {
-            for (String key : Language.ENGLISH.getKeys()) {
-            		// create full qualified name to load in
-            		String qualifiedName = "command." + key;
-            		System.out.println(String.format("Class name: %s", qualifiedName));
+        for (String key : Language.ENGLISH.getKeys()) {
+            try {
+                	// create full qualified name to load in
+                	String qualifiedName = "command." + key;
+                	System.out.println(String.format("Class name: %s", qualifiedName));
                 Class<?> regClass = Class.forName(qualifiedName);
                 cmdFact.registerCommand(key, regClass);
+            } catch (ClassNotFoundException e) {
+            		// class name does not exist
+            		throw new CommandException(e);
             }
-        }
-        catch (ClassNotFoundException e){
-            // TODO Make this exception handling better
-        		System.out.println("Error is here dumbass\n");
-        		e.printStackTrace();
-        		System.out.println("I said here\n");
+            
         }
     }
 

@@ -17,7 +17,8 @@ public class SetPosition implements Command {
 	 * @param x x coordinate to move to
 	 * @param y y coordinate to move to
 	 */
-	public SetPosition(Double x, Double y) {
+	public SetPosition(Double y, Double x) {
+		// because of the way the parser works, y is fed in first and x is fed in second
 		this.x = x;
 		this.y = y;
 	}

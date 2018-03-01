@@ -14,7 +14,8 @@ public class Quotient implements Command {
 	/**
 	 * Initialize values of expr1 and expr2
 	 */
-	public Quotient(Double expr1, Double expr2) {
+	public Quotient(Double expr2, Double expr1) {
+		// because of the way the parser works, expr2 is fed in first and expr1 is fed in second
 		this.expr1 = expr1;
 		this.expr2 = expr2;
 	}
