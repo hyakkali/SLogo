@@ -5,7 +5,7 @@ import resources.languages.Language;
 import commandFactory.CommandFactory;
 import controller.Controller;
 import command.*;
-
+import java.util.List;
 import java.util.Stack;
 
 import java.util.ArrayList;
@@ -66,10 +66,11 @@ public class Executor {
                 		}
                 }
             }
-            else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
+            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
                 Stack<String> tempStack = new Stack<>();
+                input.pop();
                 for (String s: input) {
-                    if (!syntaxParser.getSymbol(s).equals("ListEnd")) {
+                    if (!syntaxParser.getSymbol(s).equals("ListStart")) {
                         tempStack.add(s);
                         input.remove(s);
                     }
@@ -78,15 +79,25 @@ public class Executor {
                         break;
                     }
                 }
-                parseText(tempStack, myData);
+                Stack<String> reversedStack = reverseStack(tempStack);
+                parseText(reversedStack, myData);
             }
-            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
+            else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
             } else {
             		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
         }
 
+    }
+    
+    private Stack<String> reverseStack(Stack<String> oldStack) {
+    		Stack<String> reversedStack = new Stack<String>();
+    		List<String> stackList = new ArrayList<String>(oldStack);
+    		for (String s: stackList) {
+    			reversedStack.add(s);
+    		}
+    		return reversedStack;
     }
 
 }
