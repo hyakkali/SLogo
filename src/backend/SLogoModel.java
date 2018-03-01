@@ -47,7 +47,7 @@ public class SLogoModel {
 
     @SuppressWarnings("serial")
     public void parse(String input) {
-        Stack<String> inputStack = new Stack<String>();
+        Stack<String> inputStack = new Stack<>();
         for (String str : input.split("\\s+")) {
             System.out.println(str + "\n");
             inputStack.push(str);

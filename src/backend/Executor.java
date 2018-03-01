@@ -79,13 +79,13 @@ public class Executor {
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListStart")) {
                         tempStack.add(s);
-                        input.remove(s);
                     }
                     else {
                         input.remove(s);
                         break;
                     }
                 }
+                input.removeAll(tempStack);
                 parseText(tempStack, myData);
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
