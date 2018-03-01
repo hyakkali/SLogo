@@ -39,13 +39,13 @@ public class SLogoData {
         myVariables.add(newVar);
     }
 
-    protected Variable getVariable(String name) {
-        for (Variable var:myVariables) {
+    public Variable getVariable(String name) {
+        for (Variable var : myVariables) {
             if (var.getName().equals(name)) {
                 return var;
             }
         }
-        throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UninitializedVariableError") + name);
+        return null;
     }
 
     public List<Variable> getMyVariables() {

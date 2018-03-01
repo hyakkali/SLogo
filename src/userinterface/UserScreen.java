@@ -34,7 +34,7 @@ public class UserScreen extends Application
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 1;
+    private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
@@ -118,6 +118,7 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
+//        		System.out.println(myTurtle.getRotate());
             drawLine();        		
         }
 
@@ -131,7 +132,7 @@ public class UserScreen extends Application
             stage.setTitle(TITLE);
             stage.show();
 
-            reset();
+//            reset();
             
         }
 
@@ -454,10 +455,12 @@ public class UserScreen extends Application
          * whenever the locatoun of turtle is changed
          */
         private void drawLine() {
-            Line toDraw = myTurtle.getLastLine();
-            if(toDraw!=null&&!turtlePane.getChildren().contains(toDraw)) {
-                lines.add(toDraw);
-                turtlePane.getChildren().add(toDraw);
+            for(Line l:myTurtle.getLines())
+            {
+                if(!turtlePane.getChildren().contains(l)){
+                    turtlePane.getChildren().add(l);
+                    lines.add(l);
+                }
             }
         }
 
@@ -491,5 +494,9 @@ public class UserScreen extends Application
     /* Returns YSize of turtle pane
      */
     public int getYSize(){return (int)turtlePane.getHeight();}
+
+    public SLogoModel getMyModel() {
+        return mySLogoModel;
+    }
 
 }

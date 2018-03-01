@@ -11,7 +11,6 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 		Turtle turtle = new Turtle();
         UserScreen view =  new UserScreen(turtle);
         Controller controller = new Controller(view, turtle);

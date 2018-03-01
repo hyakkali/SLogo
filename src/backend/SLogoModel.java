@@ -7,6 +7,7 @@ import controller.Controller;
 import resources.languages.Language;
 
 import java.util.Stack;
+import java.util.List;
 import command.*;
 
 public class SLogoModel {
@@ -20,24 +21,22 @@ public class SLogoModel {
         myFactory = new CommandFactory();
         registerCommands(myFactory);
         this.myController = ctrl;
+        myData = new SLogoData();
         myExecutor = new Executor(ctrl, myFactory);
     }
 
     private void registerCommands(CommandFactory cmdFact) {
-        try {
-            for (String key : Language.ENGLISH.getKeys()) {
-            		// create full qualified name to load in
-            		String qualifiedName = "command." + key;
-            		System.out.println(String.format("Class name: %s", qualifiedName));
+        for (String key : Language.ENGLISH.getKeys()) {
+            try {
+                	// create full qualified name to load in
+                	String qualifiedName = "command." + key;
+                	System.out.println(String.format("Class name: %s", qualifiedName));
                 Class<?> regClass = Class.forName(qualifiedName);
                 cmdFact.registerCommand(key, regClass);
+            } catch (ClassNotFoundException e) {
+            		// class name does not exist
+            		throw new CommandException(e);
             }
-        }
-        catch (ClassNotFoundException e){
-            // TODO Make this exception handling better
-        		System.out.println("Error is here dumbass\n");
-        		e.printStackTrace();
-        		System.out.println("I said here\n");
         }
     }
 
@@ -50,7 +49,7 @@ public class SLogoModel {
     public void parse(String input) {
         Stack<String> inputStack = new Stack<String>();
         for (String str : input.split("\\s+")) {
-        		System.out.println(str + "\n");
+            System.out.println(str + "\n");
             inputStack.push(str);
         }
         myExecutor.parseText(inputStack, myData);
@@ -59,11 +58,16 @@ public class SLogoModel {
             myExecutor.parseText(inputStack, myData);
         }
         catch (Exception e){
-        		myController.displayText("Improper command! Try again!");
+        		e.printStackTrace();
+//            myController.displayText("Improper command! Try again!");
         }
     }
 
     public void setController(Controller ctrl) {
         myController = ctrl;
+    }
+
+    public SLogoData getMyData() {
+        return myData;
     }
 }

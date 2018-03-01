@@ -18,7 +18,6 @@ public class Executor {
     private Controller myController;
     private CommandFactory commandFactory;
 
-
     protected Executor(Controller ctrl, CommandFactory myFactory) {
         syntaxParser = new Parser(Language.SYNTAX);
         myController = ctrl;
@@ -51,13 +50,20 @@ public class Executor {
 
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
-                if (myData.getMyVariables() != null) {
+                if (myData.getVariable(var) != null) {
                     Variable v = myData.getVariable(var);
                     myParameters.add(v.getValue());
                 }
                 else {
-                    throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndefinedVariableError"));
-
+                		if (myParameters.isEmpty()) {
+                			Variable newVar = new Variable(var, 0.0);
+                			myParameters.add(newVar.getValue());
+                		}
+                		else {
+                			Variable newVar = new Variable(var, 0.0);
+                         myData.addVariable(newVar);
+                         myParameters.add(newVar.getMyID());
+                		}
                 }
             }
 
