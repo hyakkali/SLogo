@@ -39,7 +39,7 @@ public class SLogoData {
         myVariables.add(newVar);
     }
 
-    protected Variable getVariable(String name) {
+    public Variable getVariable(String name) {
         for (Variable var:myVariables) {
             if (var.getName().equals(name)) {
                 return var;

@@ -30,7 +30,7 @@ public class Parser{
                 return entry.getKey();
             }
         }
-        return null;
+        return Constants.INVALID_SYMBOL;
     }
     /**
      * add the valid keys for specified language into the list
