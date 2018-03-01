@@ -16,6 +16,10 @@ public class Turtle extends ImageView{
 	private HashMap<String, Image> images;
 
 	private final double ORIGIN = 250.0;
+	
+	private final double HALF_PI_SHIFT = 90.0;
+
+	private final double PI_SHIFT = 180.0;
 
 	/**
 	 * String of path to an image file
@@ -107,20 +111,20 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		if(xCoord==1 && yCoord==0) {
-			this.setRotate(90);
-		} else if(xCoord==-1 && yCoord==0) {
-			this.setRotate(270);
-		} else if(xCoord==0 && yCoord==1) {
+		if(xCoord>=1 && yCoord==0) {
+			this.setRotate(HALF_PI_SHIFT);
+		} else if(xCoord<=-1 && yCoord==0) {
+			this.setRotate(PI_SHIFT+HALF_PI_SHIFT);
+		} else if(xCoord==0 && yCoord>=1) {
 			this.setRotate(0);
-		} else if(xCoord==0 && yCoord==-1) {
-			this.setRotate(180);
-		} else if(xCoord<0 && yCoord <0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else if(xCoord==0 && yCoord<=-1) {
+			this.setRotate(PI_SHIFT);
+		} else if(xCoord<0 && yCoord<0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else if(xCoord<0 && yCoord>0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+180);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+PI_SHIFT);
 		} else if(xCoord>0 && yCoord<0) {
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
 		}
