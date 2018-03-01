@@ -5,15 +5,18 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+
 public class SideMenu
 {
 
     private VBox interactives = new VBox();
     private ResourceBundle properties;
 
-    public SideMenu(ResourceBundle p)
+    public SideMenu(UserScreen u)
     {
-        properties = p;
+
+        //properties = p;
         Button resetButton = getResetButton();
         interactives.setPrefWidth(200);
         interactives.setStyle("-fx-background-color: #008000");
@@ -32,6 +35,12 @@ public class SideMenu
     {
         return interactives;
     }
+
+//        calculateOnShipments(l, new Function<UserScreen, Void>() {
+//            public void apply(UserScreen s) { // The object
+//
+//            }
+//    }
 
 
 

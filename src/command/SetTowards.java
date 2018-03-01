@@ -16,7 +16,8 @@ public class SetTowards implements Command {
 	 * @param x x coordinate that turtle should face
 	 * @param y y coordinate that turtle should face
 	 */
-	public SetTowards(Double x, Double y) {
+	public SetTowards(Double y, Double x) {
+		// because of the way the parser works, y is fed in first and x is fed in second
 		this.x = x;
 		this.y = y;
 	}

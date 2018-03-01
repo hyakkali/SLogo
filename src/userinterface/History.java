@@ -7,7 +7,7 @@ public class History {
   private int pointer;
   public History()
   {
-      pointer=0;
+      pointer=0;history.add("");
   }
 
   public boolean hasNext()
@@ -21,13 +21,19 @@ public class History {
   }
   public void add(String s)
   {
-      history.add(s);
-      pointer = history.size();
+      //switch indicies if its already there
+          history.set(history.size()-1,s);
+          history.add("");
+          pointer = history.size()-1;
+          //System.out.print(pointer);
   }
   public String moveForward()
   {
-      if( pointer< history.size()-1)
-        pointer++;
+
+      if( pointer < history.size()-1)
+          pointer++;
+      System.out.print(pointer);
+
       return history.get(pointer);
   }
 
@@ -35,6 +41,8 @@ public class History {
     {
         if( pointer > 0)
             pointer--;
+        System.out.print(pointer);
+
         return history.get(pointer);
     }
 }

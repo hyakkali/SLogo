@@ -48,7 +48,10 @@ public class Parser{
         return regex.matcher(text).matches();
     }
 
-
+    public List<Entry<String, Pattern>> getSymbols()
+    {
+        return mySymbols;
+    }
 
 
 }

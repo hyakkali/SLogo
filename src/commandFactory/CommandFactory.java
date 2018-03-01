@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import command.Command;
+import command.CommandException;
 /**
  * Utilizes the Factory design pattern to create objects that implement the Command interface.
  * @author dylanpowers
@@ -37,9 +38,13 @@ public class CommandFactory {
 	 * @return a Command object that has been initialized
 	 */
 	public Command command(String commandName, ArrayList<Double>args) {
-			//System.out.println(String.format("commandName is %s from CF FUCK YEAH MOTHERFUCKER", commandName));
-			Class<?> commandClass = (Class<?>) commands.get(commandName);
-			return appropriateCommand(commandClass, args);
+		// check if command has been registered
+		if (!commands.containsKey(commandName)) {
+			// if not, it does not exist
+			throw new CommandException(CommandException.NON_EXISTENT, commandName);
+		}
+		Class<?> commandClass = (Class<?>) commands.get(commandName);
+		return appropriateCommand(commandClass, args);
 	}
 	
 	/**
@@ -62,12 +67,11 @@ public class CommandFactory {
         			Constructor<?> cons = clazz.getConstructor(Double.class, Double.class);
         			return (Command) cons.newInstance(args.get(0), args.get(1));
         		} else {
-        			throw new NoSuchMethodException();
+        			// invalid number of parameters
+        			throw new CommandException(CommandException.BAD_PARAMS);
         		}
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-		// TODO handle exception 
-			e.printStackTrace();
-			return null;
+			throw new CommandException(e);
 		}
 	}
 }

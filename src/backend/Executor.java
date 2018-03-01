@@ -66,8 +66,10 @@ public class Executor {
                 		}
                 }
             }
+
+
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
-                Stack<String> tempStack = new Stack<>();
+                Stack<String> tempStack = new Stack<String>();
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListEnd")) {
                         tempStack.add(s);
@@ -83,10 +85,9 @@ public class Executor {
             else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
                     throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
             } else {
-            		throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
+                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
             }
         }
-
     }
 
 }
