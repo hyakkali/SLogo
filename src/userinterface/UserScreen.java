@@ -131,7 +131,7 @@ public class UserScreen extends Application
             stage.setTitle(TITLE);
             stage.show();
 
-            reset();
+//            reset();
             
         }
 

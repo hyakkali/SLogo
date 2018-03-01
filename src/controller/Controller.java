@@ -94,7 +94,7 @@ public class Controller {
 	 * Sets turtle back to (0,0)
 	 */
 	public void resetTurtlePosition() {
-		turtle.resetLocation();
+		turtle.setToOrigin();
 	}
 
 	/**
