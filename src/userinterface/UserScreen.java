@@ -117,6 +117,7 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
+        		myTurtle.getRotate();
             drawLine();        		
         }
 

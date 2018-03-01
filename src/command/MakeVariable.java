@@ -9,7 +9,7 @@ public class MakeVariable implements Command {
     private Double myVariableID;
     private Double myVal;
 
-    public MakeVariable(double myVarID, double value) {
+    public MakeVariable(Double myVarID, Double value) {
         this.myVariableID = myVarID;
         this.myVal = value;
     }
