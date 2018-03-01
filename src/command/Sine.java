@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds the sine of a given degree value
  * @author dylanpowers

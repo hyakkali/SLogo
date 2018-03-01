@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds the inverse tangent of a given angle
  * @author dylanpowers

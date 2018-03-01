@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds if a given expression is greater than another expression
  * @author dylanpowers
