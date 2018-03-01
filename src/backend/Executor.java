@@ -78,7 +78,7 @@ public class Executor {
                 input.pop();
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListStart")) {
-                        tempStack.add(s);
+                        tempStack.push(s);
                         input.remove(s);
                     }
                     else {
