@@ -118,7 +118,7 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-        		myTurtle.getRotate();
+//        		System.out.println(myTurtle.getRotate());
             drawLine();        		
         }
 
@@ -132,7 +132,7 @@ public class UserScreen extends Application
             stage.setTitle(TITLE);
             stage.show();
 
-            reset();
+//            reset();
             
         }
 

@@ -94,7 +94,7 @@ public class Controller {
 	 * Sets turtle back to (0,0)
 	 */
 	public void resetTurtlePosition() {
-		turtle.resetLocation();
+		turtle.setToOrigin();
 	}
 
 	/**
@@ -175,10 +175,6 @@ public class Controller {
 
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
-	}
-	
-	public List<Variable> getMyVariables() {
-		return view.getMyModel().getMyData().getMyVariables();
 	}
 
 }

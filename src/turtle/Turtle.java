@@ -15,34 +15,36 @@ import javafx.scene.shape.Line;
  * Turtle object that lies in the View part of the project.
  */
 public class Turtle extends ImageView{
-	
+
 	/**
 	 * Boolean for whether or not pen is down
 	 */
 	private boolean penBoolean;
-		
+
 	/**
 	 * Stack of lines drawn by the turtle
 	 */
 	private List<Line> lines;
-	
+
 	/**
 	 * Start X coordinate for the next line
 	 */
 	private double xStartLineLocation;
-	
+
 	/**
 	 * Start Y coordinate for the next line
 	 */
 	private double yStartLineLocation;
-	
+
 	/**
 	 * Color of the next line to be drawn
 	 */
 	private Color penColor;
 
 	private HashMap<String, Image> images;
-	
+
+	private final double ORIGIN = 250.0;
+
 	/**
 	 * String of path to an image file
 	 */
@@ -52,7 +54,7 @@ public class Turtle extends ImageView{
 	 * Image object of the turtle
 	 */
 	private Image turtleImage;
-	
+
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
 
@@ -67,13 +69,14 @@ public class Turtle extends ImageView{
 		this.setLayoutX(100.0);
 		this.setLayoutY(150.0);
 		this.setRotate(0.0);
+		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
 		this.lines = new ArrayList<>();
 	}
-	
+
 	/**
 	 * 
 	 * @param angle Heading of the turtle
@@ -87,7 +90,7 @@ public class Turtle extends ImageView{
 		this.setY(this.getY()-yAmount);
 		drawLine(xAmount,yAmount);
 	}
-	
+
 	/**
 	 * 
 	 * @param heading Amount of degrees to rotate turtle
@@ -95,15 +98,15 @@ public class Turtle extends ImageView{
 	public void rotate(double heading) { //can be ccwise or cwise
 		this.setRotate(this.getRotate()+heading);
 	}
-	
+
 	/**
 	 * Resets location of the turtle to (0,0)
 	 */
-	public void resetLocation() {
-		this.setX(0.0);
-		this.setY(0.0);
+	public void setToOrigin() {
+		this.setX(ORIGIN);
+		this.setY(ORIGIN);
 	}
-	
+
 	/**
 	 * 
 	 * @param xCoordinate X coordinate of the turtle
@@ -111,7 +114,7 @@ public class Turtle extends ImageView{
 	public void setXPosition(double xCoordinate) {
 		this.setX(xCoordinate);
 	}
-	
+
 	/**
 	 * 
 	 * @param yCoordinate Y coordinate of the turtle
@@ -119,7 +122,7 @@ public class Turtle extends ImageView{
 	public void setYPosition(double yCoordinate) {
 		this.setY(yCoordinate);
 	}
-	
+
 	/**
 	 * 
 	 * @param heading Heading of the turtle
@@ -127,17 +130,22 @@ public class Turtle extends ImageView{
 	public void setHeading(double heading) {
 		this.setRotate(heading);
 	}
-	
+
 	/**
 	 * 
 	 * @param xCoord X coordinate
 	 * @param yCoord Y coordinate
 	 */
 	public void setTowards(double xCoord, double yCoord) {
-		double currHeading = this.getRotate() % 360; //coterminal angle
-		this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
+		double currHeading = this.getRotate();
+		System.out.println("y"+yCoord);
+		if(yCoord<0) {
+			this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
+		}else {
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
+		}
 	}
-	
+
 	/**
 	 * Sets image of the turtle
 	 * @param k String mapping to an image
@@ -146,7 +154,7 @@ public class Turtle extends ImageView{
 	public void setImage(String k) {
 		this.setImage(images.get(k));
 	}
-	
+
 	/**
 	 * 
 	 * @param bool True or false boolean
@@ -154,7 +162,7 @@ public class Turtle extends ImageView{
 	public void togglePenUpOrDown(boolean bool) {
 		penBoolean = bool;
 	}
-	
+
 	/**
 	 * 
 	 * @param bool True or false boolean
@@ -162,7 +170,7 @@ public class Turtle extends ImageView{
 	public void toggleTurtle(boolean bool) {
 		this.setVisible(bool);
 	}
-	
+
 	/**
 	 * 
 	 * @param color Color of the line
@@ -170,7 +178,7 @@ public class Turtle extends ImageView{
 	public void setPenColor(Color color) {
 		penColor = color;
 	}
-	
+
 	//getters
 	/**
 	 * 
@@ -179,7 +187,7 @@ public class Turtle extends ImageView{
 	public String getImageURL() {
 		return imageURL;
 	}
-	
+
 	/**
 	 * 
 	 * @return Last line object that was drawn
@@ -187,7 +195,7 @@ public class Turtle extends ImageView{
 	public List<Line> getLines(){
 		return this.lines;
 	}
-	
+
 	/**
 	 * 
 	 * @return Color of the last line drawn
@@ -195,7 +203,7 @@ public class Turtle extends ImageView{
 	public Color getPenColor() {
 		return penColor;
 	}
-	
+
 	/**
 	 * 
 	 * @return Boolean if pen is down or not
@@ -203,7 +211,7 @@ public class Turtle extends ImageView{
 	public boolean getPenBoolean() {
 		return penBoolean;
 	}
-	
+
 	/**
 	 * 
 	 * @return Boolean if turtle is visible or not
@@ -211,7 +219,7 @@ public class Turtle extends ImageView{
 	public boolean getTurtleBoolean() {
 		return this.isVisible();
 	}
-	
+
 	//math
 	/**
 	 * 
@@ -222,7 +230,7 @@ public class Turtle extends ImageView{
 	private double calculateXAmount(double angle, double amount) {
 		return amount*Math.sin(Math.toRadians(angle));
 	}
-	
+
 	/**
 	 * 
 	 * @param angle Heading of the turtle
@@ -232,7 +240,7 @@ public class Turtle extends ImageView{
 	private double calculateYAmount(double angle, double amount) {
 		return amount*Math.cos(Math.toRadians(angle));
 	} 
-	
+
 	/**
 	 * 
 	 * @param xCoord X Coordinate
@@ -240,11 +248,12 @@ public class Turtle extends ImageView{
 	 * @return Degree measure turtle needs to rotate to face (xCoord,yCoord)
 	 */
 	private double calculateAngle(double xCoord, double yCoord) {
-		double currHeading = this.getRotate() % 360.0; //get coterminal angle
-		double newHeading = Math.atan(yCoord/xCoord);
+		double currHeading = this.getRotate();
+		double newHeading = Math.toDegrees(Math.acos(xCoord/Math.sqrt(yCoord*yCoord+xCoord*xCoord)));
+		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
-	
+
 	//lines
 	/**
 	 * Sets the start X and start Y coordinate for the next line to be drawn
@@ -266,7 +275,7 @@ public class Turtle extends ImageView{
 			lines.add(newLine);
 		}
 	}
-	
+
 	/**
 	 * Clears all the lines that were drawn by the turtle
 	 */
@@ -274,8 +283,7 @@ public class Turtle extends ImageView{
 		lines.clear();
 	}
 
-	private void initializeImages()
-	{
+	private void initializeImages() {
 		images= new HashMap<String, Image>();
 		ResourceBundle imageFile = ResourceBundle.getBundle("resources.languages/TurtleImages");
 		for(String k:imageFile.keySet())
@@ -284,5 +292,5 @@ public class Turtle extends ImageView{
 			images.put(k,turtle);
 		}
 	}
-	
+
 }
