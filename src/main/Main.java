@@ -4,8 +4,8 @@ import backend.SLogoModel;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import turtle.LinePen;
-import turtle.Pen;
+import pen.LinePen;
+import pen.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 

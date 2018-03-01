@@ -1,6 +1,6 @@
 package controller;
 import javafx.scene.paint.Color;
-import turtle.Pen;
+import pen.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
