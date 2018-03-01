@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds the natural logarithm of a number.
  * @author dylanpowers

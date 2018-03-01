@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Finds if two numbers are equal to each other
  * @author dylanpowers

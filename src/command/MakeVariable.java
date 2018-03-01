@@ -2,7 +2,7 @@ package command;
 
 import backend.Variable;
 import java.util.List;
-import main.Controller;
+import controller.Controller;
 
 public class MakeVariable implements Command {
 

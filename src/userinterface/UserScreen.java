@@ -257,7 +257,7 @@ public class UserScreen extends Application
         }
 
         /* adds the variables from controller to the hashmap
-         *  and rewrites the variables to the textarea
+         * and rewrites the variables to the textarea
          */
         public void addVariable(String v) {
 //            vars.put(v.getName(),v.getValue());

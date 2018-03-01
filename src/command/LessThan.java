@@ -1,6 +1,6 @@
 package command;
 
-import main.Controller;
+import controller.Controller;
 /**
  * Find if a given number is less than another given number.
  * @author dylanpowers

@@ -3,8 +3,9 @@ package backend;
 import java.util.ArrayList;
 
 import commandFactory.CommandFactory;
+import controller.Controller;
 import resources.languages.Language;
-import main.Controller;
+
 import java.util.Stack;
 import java.util.List;
 import command.*;
