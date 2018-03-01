@@ -1,7 +1,9 @@
 package main;
+import backend.Variable;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
+import backend.SLogoData;
 
 /**
  * 
@@ -132,7 +134,7 @@ public class Controller {
 	//misc 
 	/**
 	 * Triggers view to print text to the screen
-	 * @param result Text to be displayed on screen
+	 * @param text to be displayed on screen
 	 * 
 	 */
 	public void displayText(String text) {
@@ -173,5 +175,8 @@ public class Controller {
 	public boolean getIsTurtle() {
 		return turtle.getTurtleBoolean();
 	}
+
+
+	public SLogoData getMyData() {return view.getMyModel().getMyData();}
 
 }

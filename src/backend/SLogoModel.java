@@ -6,6 +6,7 @@ import commandFactory.CommandFactory;
 import resources.languages.Language;
 import main.Controller;
 import java.util.Stack;
+import java.util.List;
 import command.*;
 
 public class SLogoModel {
@@ -62,5 +63,9 @@ public class SLogoModel {
 
     public void setController(Controller ctrl) {
         myController = ctrl;
+    }
+
+    public SLogoData getMyData() {
+        return myData;
     }
 }

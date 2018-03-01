@@ -478,4 +478,8 @@ public class UserScreen extends Application
      */
     public int getYSize(){return (int)turtlePane.getHeight();}
 
+    public SLogoModel getMyModel() {
+        return mySLogoModel;
+    }
+
 }

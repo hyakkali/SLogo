@@ -56,8 +56,9 @@ public class Executor {
                     myParameters.add(v.getValue());
                 }
                 else {
-                    Variable newVar = new Variable(var, 0.0); //Where do I put the value into the variable
+                    Variable newVar = new Variable(var, 0.0);
                     myData.addVariable(newVar);
+                    myParameters.add(newVar.getMyID());
                 }
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
