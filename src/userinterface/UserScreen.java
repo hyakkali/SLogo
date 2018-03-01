@@ -1,6 +1,9 @@
 package userinterface;
 
 import backend.SLogoModel;
+import backend.Variable;
+import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,6 +24,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import resources.languages.Language;
@@ -34,23 +39,25 @@ public class UserScreen extends Application
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 60;
+    private static final int FRAMES_PER_SECOND = 10;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
+    private boolean rave=false;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Scene myScene;
+    private Stage myStage;
 
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
     private ResourceBundle properties;
     private ResourceBundle colors;
 
-    private HashMap<String, Object> vars = new HashMap<String, Object>();
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private History history = new History();
+    private HashMap<String, String> userCommands = new HashMap<String,String >();
     private Turtle myTurtle;
     private SLogoModel mySLogoModel;
     private TextArea variables;
@@ -58,9 +65,13 @@ public class UserScreen extends Application
     private TextArea commands;
     private TextArea console;
     private Pane turtlePane;
+    private Group root;
     private String language = "English";
     private List<Line> lines = new ArrayList<Line>();
     private Timeline animation;
+
+    private final WebView browser = new WebView();
+    private final WebEngine webEngine = browser.getEngine();
 
 
 //INITIALIZATION RELATED FUNCTIONS
@@ -77,7 +88,7 @@ public class UserScreen extends Application
          * start --this calls the menu related functions
          */
         public Scene setScene(int width, int length) {
-            Group root = new Group();
+             root = new Group();
             myScene = new Scene(root, width, length);
 
             setupProperties("English");
@@ -119,7 +130,19 @@ public class UserScreen extends Application
         
         public void step(double elapsedTime) {
 //        		System.out.println(myTurtle.getRotate());
-            drawLine();        		
+            drawLine();
+
+            if(rave)
+            {
+                int a = (int)(Math.random()*colors.keySet().size());
+                int b=0;
+                for(String s : colors.keySet()) {
+                    if(b==a)
+                        break;
+                    changeBackground(s);
+                    b++;
+                }
+            }
         }
 
         /* creates the scene within the stage by calling setScene
@@ -127,13 +150,11 @@ public class UserScreen extends Application
          */
         public void start(Stage stage) {
             myScene = setScene(XSIZE, YSIZE); // get the scene
+            myStage=stage;
             stage.setResizable(false);
             stage.setScene(myScene);
             stage.setTitle(TITLE);
             stage.show();
-
-//            reset();
-            
         }
 
     //PROPERTY INIT FUNCTIONS_________________________________________________________________________
@@ -184,7 +205,9 @@ public class UserScreen extends Application
             interactives.setPadding(new Insets(20, 10, 20, 10));
             interactives.setAlignment(Pos.CENTER);
             interactives.setSpacing(10);
-            interactives.getChildren().addAll(language, background, imageCombo, lineCombo, commands, variables, resetButton);
+            interactives.getChildren().addAll(language, background, imageCombo,
+                    lineCombo, commands, variables, resetButton, getSetCommand(),getHelpButton(),
+                    getExtraHelpButton());
 
             return interactives;
         }
@@ -234,7 +257,7 @@ public class UserScreen extends Application
 
         /* Appends a previously run command to the history
          */
-        public void addPreviousCommand(String s)
+        private void addPreviousCommand(String s)
         {
             history.add(s);
         }
@@ -252,20 +275,18 @@ public class UserScreen extends Application
             textArea.setEditable(false);
             textArea.setWrapText(false);
             textArea.appendText("Current Variables: \n\n");
-            for (String var : vars.keySet()) {
-                textArea.appendText(var + ": " + vars.get(var).toString() + "\n\n");
-            }
+
             return textArea;
         }
 
         /* adds the variables from controller to the hashmap
          * and rewrites the variables to the textarea
          */
-        public void addVariable(String v) {
-//            vars.put(v.getName(),v.getValue());
-//            variables.clear();
-//            for(String var : vars.keySet())
-//                variables.appendText(var + ": " +vars.get(var).toString()+"\n\n");
+        private void addVariable() {
+            variables.clear();
+            variables.appendText("Current Variables: \n");
+            for(Variable var : mySLogoModel.getMyData().getMyVariables())
+                variables.appendText(var.getName() + ":       " +var.getValue()+"\n\n");
         }
 
     //CONSOLE FUNCTIONS__________________________________________________________________________________________
@@ -295,9 +316,12 @@ public class UserScreen extends Application
             if (k.getCode().equals(KeyCode.ENTER)) {
                 k.consume();
                 String textHolder=console.getText();
+                if(userCommands.containsKey(textHolder))
+                    mySLogoModel.parse(userCommands.get(textHolder));
+                else
+                    mySLogoModel.parse(textHolder);
                 console.setText("");
-                mySLogoModel.parse(textHolder);
-              //  mySlogoModel.
+                addVariable();
             }
 
             else if (k.getCode().equals(KeyCode.UP)) {
@@ -372,14 +396,65 @@ public class UserScreen extends Application
             return b;
         }
 
+        private Button getSetCommand() {
+            Button b = new Button("CMD");
+            b.setOnAction(e -> importCMD());
+            return b;
+        }
+
+        private Hyperlink getHelpButton() {
+            Hyperlink h = new Hyperlink();
+            h.setText("?");
+            h.setTextFill(Color.BLACK);
+            h.setOnAction(e->getHostServices().showDocument("https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commands.php"));
+            return h;
+        }
+
+        private Hyperlink getExtraHelpButton() {
+            Hyperlink h = new Hyperlink();
+            h.setText("!?");
+            h.setTextFill(Color.BLACK);
+            h.setOnAction(e->getHostServices().showDocument("https://www.lifeoptimizer.org/2010/05/27/being-a-better-you/"));
+            return h;
+        }
+
         /* Resets the turtle location, variables, draw pane
          * and redraws the UI
          */
         private void reset() {
-            myTurtle.setLayoutX(turtlePane.getWidth()/2);
-            myTurtle.setLayoutY(turtlePane.getHeight()/2);
-            if(lines!=null)
-                turtlePane.getChildren().removeAll(lines);
+            myTurtle.setToOrigin();
+            myTurtle.setHeading(0);
+            for(Line l: lines)
+            {
+                turtlePane.getChildren().remove(l);
+            }
+            lines.clear();
+            myTurtle.clearLines();
+        }
+
+        private void importCMD() {
+            final Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(myStage);
+            VBox dBox = new VBox(20);
+            TextArea cmd = new TextArea();
+            cmd.setPromptText("Enter your Command name");
+            TextArea code = new TextArea();
+            code.setPromptText("Enter code");
+            Button enter = new Button ("enter");
+            enter.setOnAction(e->{this.addCommand(cmd.getText(),code.getText()); dialog.close();});
+            dBox.getChildren().addAll(cmd,code, enter);
+            Scene dialogScene = new Scene(dBox, 300, 200);
+            dialog.setScene(dialogScene);
+            dialog.show();
+        }
+
+        private void addCommand(String cmd, String code)
+        {
+            if(!userCommands.containsKey(cmd)) {
+                userCommands.put(cmd, code);
+                commands.appendText(cmd + "\n\n");
+            }
         }
 
     //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
@@ -416,10 +491,11 @@ public class UserScreen extends Application
          */
         private ComboBox getBackgroundCombo() {
             ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
+            options.add("Rave EPILEPSY WARNING");
             ComboBox<String> combobox = new ComboBox<>(options);
             combobox.setValue("WHITE");
             combobox.setPromptText("Background Color");
-            combobox.setOnAction(e->changeBackground(combobox.getValue()));
+            combobox.setOnAction(e-> {rave=false; changeBackground(combobox.getValue());});
             return combobox;
         }
 
@@ -448,7 +524,10 @@ public class UserScreen extends Application
          * to decode the input value from the combobox
          */
         private void changeBackground(String value) {
-            turtlePane.setStyle("-fx-background-color: " +colors.getString(value));
+           if(!value.equals("Rave EPILEPSY WARNING")) {
+               turtlePane.setStyle("-fx-background-color: " + colors.getString(value));
+           }
+           else rave=true;
         }
 
         /* called to update the form to show the path

@@ -43,7 +43,8 @@ public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
 
-	private final double ORIGIN = 250.0;
+	private final double ORIGIN = 250;
+
 
 	/**
 	 * String of path to an image file
@@ -66,8 +67,6 @@ public class Turtle extends ImageView{
 		super();
 		initializeImages();
 		this.setImage("Turtle");
-		this.setLayoutX(100.0);
-		this.setLayoutY(150.0);
 		this.setRotate(0.0);
 		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
@@ -260,7 +259,7 @@ public class Turtle extends ImageView{
 	 */
 	private void setStartLineLocation() {
 		xStartLineLocation = this.getX()+(TURTLE_WIDTH/2);
-		yStartLineLocation = this.getY()+TURTLE_HEIGHT;	
+		yStartLineLocation = this.getY()+TURTLE_HEIGHT;
 	}
 
 	/**

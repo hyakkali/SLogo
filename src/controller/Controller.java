@@ -122,14 +122,6 @@ public class Controller {
 	}
 
 	/**
-	 * 
-	 * @param variable String name of any variable that has been instantiated
-	 */
-	public void addExistingVariable(String variable) {
-		view.addVariable(variable);
-	}
-
-	/**
 	 * Triggers view to print text to the screen
 	 * @param text to be displayed on screen
 	 * 
