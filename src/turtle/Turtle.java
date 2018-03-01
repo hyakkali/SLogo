@@ -136,10 +136,21 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		System.out.println("y"+yCoord);
-		if(yCoord<0) {
-			this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
-		}else {
+		if(xCoord==1 && yCoord==0) {
+			this.setRotate(90);
+		} else if(xCoord==-1 && yCoord==0) {
+			this.setRotate(270);
+		} else if(xCoord==0 && yCoord==1) {
+			this.setRotate(0);
+		} else if(xCoord==0 && yCoord==-1) {
+			this.setRotate(180);
+		} else if(xCoord<0 && yCoord <0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else if(xCoord<0 && yCoord>0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+180);
+		} else if(xCoord>0 && yCoord<0) {
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
 		}
 	}
