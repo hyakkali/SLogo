@@ -374,8 +374,9 @@ public class UserScreen extends Application
          * and redraws the UI
          */
         private void reset() {
-            myTurtle.setLayoutX(turtlePane.getWidth()/2);
-            myTurtle.setLayoutY(turtlePane.getHeight()/2);
+        		myTurtle.setToOrigin();
+//            myTurtle.setLayoutX(turtlePane.getWidth()/2);
+//            myTurtle.setLayoutY(turtlePane.getHeight()/2);
 
         }
 
