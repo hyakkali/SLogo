@@ -18,7 +18,6 @@ public class Executor {
     private Controller myController;
     private CommandFactory commandFactory;
 
-
     protected Executor(Controller ctrl, CommandFactory myFactory) {
         syntaxParser = new Parser(Language.SYNTAX);
         myController = ctrl;
@@ -52,7 +51,9 @@ public class Executor {
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
                 if (!myData.getMyVariables().isEmpty()) {
+                		System.out.println(myData.getMyVariables().get(0).getValue());
                     Variable v = myData.getVariable(var);
+                    
                     myParameters.add(v.getValue());
                 }
                 else {

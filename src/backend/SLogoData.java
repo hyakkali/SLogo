@@ -45,6 +45,7 @@ public class SLogoData {
                 return var;
             }
         }
+//        return null;
         throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UninitializedVariableError") + name);
     }
 
