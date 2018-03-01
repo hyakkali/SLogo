@@ -28,6 +28,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pen.Pen;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
@@ -59,6 +60,7 @@ public class UserScreen extends Application
     private History history = new History();
     private HashMap<String, String> userCommands = new HashMap<String,String >();
     private Turtle myTurtle;
+    private Pen pen;
     private SLogoModel mySLogoModel;
     private TextArea variables;
     private Button resetButton;
@@ -77,7 +79,10 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(Turtle t){myTurtle =t;}
+        public UserScreen(Turtle t, Pen pen){
+        		this.myTurtle =t;
+        		this.pen = pen;
+        	}
 
        /* Add slogomodel to the view
         */
@@ -432,6 +437,7 @@ public class UserScreen extends Application
             myTurtle.clearLines();
         }
 
+
         private void importCMD() {
             final Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
@@ -482,7 +488,7 @@ public class UserScreen extends Application
             combobox.setValue("BLACK");
             combobox.setPromptText("LineColor");
             Color c = Color.web(colors.getString(combobox.getValue()));
-            combobox.setOnAction(e->myTurtle.setPenColor(Color.web(colors.getString(combobox.getValue()))));
+            combobox.setOnAction(e->pen.setPenColor(Color.web(colors.getString(combobox.getValue()))));
             return combobox;
         }
 
@@ -534,11 +540,12 @@ public class UserScreen extends Application
          * whenever the locatoun of turtle is changed
          */
         private void drawLine() {
-            for(Line l:myTurtle.getLines())
+            for(Line l:pen.getLines())
             {
                 if(!turtlePane.getChildren().contains(l)){
                     turtlePane.getChildren().add(l);
                     lines.add(l);
+
                 }
             }
         }

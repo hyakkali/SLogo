@@ -1,13 +1,10 @@
 package turtle;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import pen.Pen;
 
 /**
  * 
@@ -15,31 +12,6 @@ import javafx.scene.shape.Line;
  * Turtle object that lies in the View part of the project.
  */
 public class Turtle extends ImageView{
-
-	/**
-	 * Boolean for whether or not pen is down
-	 */
-	private boolean penBoolean;
-
-	/**
-	 * Stack of lines drawn by the turtle
-	 */
-	private List<Line> lines;
-
-	/**
-	 * Start X coordinate for the next line
-	 */
-	private double xStartLineLocation;
-
-	/**
-	 * Start Y coordinate for the next line
-	 */
-	private double yStartLineLocation;
-
-	/**
-	 * Color of the next line to be drawn
-	 */
-	private Color penColor;
 
 	private HashMap<String, Image> images;
 
@@ -58,12 +30,14 @@ public class Turtle extends ImageView{
 
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
+	
+	private Pen pen;
 
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
 	 * image of the turtle to the default image.
 	 */
-	public Turtle(){
+	public Turtle(Pen pen){
 		super();
 		initializeImages();
 		this.setImage("Turtle");
@@ -71,9 +45,8 @@ public class Turtle extends ImageView{
 		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
-		this.penBoolean = true;
-		this.penColor = Color.BLACK;
-		this.lines = new ArrayList<>();
+		this.pen = pen;
+		setToOrigin();
 	}
 
 	/**
@@ -82,12 +55,12 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		setStartLineLocation();
+		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setX(this.getX()+xAmount);
 		this.setY(this.getY()-yAmount);
-		drawLine(xAmount,yAmount);
+		pen.drawLine(xAmount, yAmount);
 	}
 
 	/**
@@ -137,10 +110,21 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		System.out.println("y"+yCoord);
-		if(yCoord<0) {
-			this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
-		}else {
+		if(xCoord==1 && yCoord==0) {
+			this.setRotate(90);
+		} else if(xCoord==-1 && yCoord==0) {
+			this.setRotate(270);
+		} else if(xCoord==0 && yCoord==1) {
+			this.setRotate(0);
+		} else if(xCoord==0 && yCoord==-1) {
+			this.setRotate(180);
+		} else if(xCoord<0 && yCoord <0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else if(xCoord<0 && yCoord>0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+180);
+		} else if(xCoord>0 && yCoord<0) {
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
 		}
 	}
@@ -158,57 +142,16 @@ public class Turtle extends ImageView{
 	 * 
 	 * @param bool True or false boolean
 	 */
-	public void togglePenUpOrDown(boolean bool) {
-		penBoolean = bool;
-	}
-
-	/**
-	 * 
-	 * @param bool True or false boolean
-	 */
 	public void toggleTurtle(boolean bool) {
 		this.setVisible(bool);
 	}
 
 	/**
 	 * 
-	 * @param color Color of the line
-	 */
-	public void setPenColor(Color color) {
-		penColor = color;
-	}
-
-	//getters
-	/**
-	 * 
 	 * @return Current path to the image file being used 
 	 */
 	public String getImageURL() {
 		return imageURL;
-	}
-
-	/**
-	 * 
-	 * @return Last line object that was drawn
-	 */
-	public List<Line> getLines(){
-		return this.lines;
-	}
-
-	/**
-	 * 
-	 * @return Color of the last line drawn
-	 */
-	public Color getPenColor() {
-		return penColor;
-	}
-
-	/**
-	 * 
-	 * @return Boolean if pen is down or not
-	 */
-	public boolean getPenBoolean() {
-		return penBoolean;
 	}
 
 	/**
@@ -253,34 +196,10 @@ public class Turtle extends ImageView{
 		return currHeading-newHeading;
 	}
 
-	//lines
-	/**
-	 * Sets the start X and start Y coordinate for the next line to be drawn
-	 */
-	private void setStartLineLocation() {
-		xStartLineLocation = this.getX()+(TURTLE_WIDTH/2);
-		yStartLineLocation = this.getY()+TURTLE_HEIGHT;
-	}
-
-	/**
-	 * 
-	 * @param xAmount Amount pixel change in x direction
-	 * @param yAmount Amount pixel change in y direction
-	 */
-	private void drawLine(double xAmount, double yAmount) {
-		if(penBoolean) {
-			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
-			newLine.setStroke(penColor);
-			lines.add(newLine);
-		}
-	}
 
 	/**
 	 * Clears all the lines that were drawn by the turtle
 	 */
-	public void clearLines() {
-		lines.clear();
-	}
 
 	private void initializeImages() {
 		images= new HashMap<String, Image>();

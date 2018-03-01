@@ -35,14 +35,10 @@ public class CommandFactory {
 	 * 				The name of the command to be run
 	 * @param args
 	 * 				Any necessary arguments - will be an array of size zero, one, or two
+	 * @throws CommandException to represent a bad command
 	 * @return a Command object that has been initialized
 	 */
-	public Command command(String commandName, ArrayList<Double>args) {
-		// check if command has been registered
-		if (!commands.containsKey(commandName)) {
-			// if not, it does not exist
-			throw new CommandException(CommandException.NON_EXISTENT, commandName);
-		}
+	public Command command(String commandName, ArrayList<Double>args) throws NullPointerException {
 		Class<?> commandClass = (Class<?>) commands.get(commandName);
 		return appropriateCommand(commandClass, args);
 	}
@@ -63,15 +59,13 @@ public class CommandFactory {
         		} else if (args.size() == 1) {
         			Constructor<?> cons = clazz.getConstructor(Double.class);
         			return (Command) cons.newInstance(args.get(0));
-        		} else if (args.size() == 2) {
+        		} else {
         			Constructor<?> cons = clazz.getConstructor(Double.class, Double.class);
         			return (Command) cons.newInstance(args.get(0), args.get(1));
-        		} else {
-        			// invalid number of parameters
-        			throw new CommandException(CommandException.BAD_PARAMS);
         		}
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-			throw new CommandException(e);
+			// we don't want to throw 2 alerts, and this exception is a nested exception, so just return null
+			throw new CommandException(CommandException.BAD_PARAMS);
 		}
 	}
 }
