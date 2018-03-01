@@ -50,10 +50,8 @@ public class Executor {
 
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
-                if (!myData.getMyVariables().isEmpty()) {
-                		System.out.println(myData.getMyVariables().get(0).getValue());
+                if (myData.getVariable(var) != null) {
                     Variable v = myData.getVariable(var);
-                    
                     myParameters.add(v.getValue());
                 }
                 else {
