@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import pen.Pen;
 
 /**
  * 
