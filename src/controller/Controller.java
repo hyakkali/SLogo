@@ -40,6 +40,14 @@ public class Controller {
 	public void setTurtleYLocation(double yCoord) {
 		turtle.setYPosition(yCoord);
 	}
+	
+	/**
+	 * 
+	 * @param id Double id to identify a turtle
+	 */
+	public void setTurtleID(double id) {
+		turtle.setID(id);
+	}
 
 	/**
 	 * @param amount Amount of pixels to move turtle
