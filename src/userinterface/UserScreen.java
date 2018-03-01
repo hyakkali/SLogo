@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
+import turtle.Pen;
 import turtle.Turtle;
 
 import java.util.*;
@@ -52,6 +53,7 @@ public class UserScreen extends Application
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private History history = new History();
     private Turtle myTurtle;
+    private Pen pen;
     private SLogoModel mySLogoModel;
     private TextArea variables;
     private Button resetButton;
@@ -66,7 +68,10 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(Turtle t){myTurtle =t;}
+        public UserScreen(Turtle t, Pen pen){
+        		this.myTurtle =t;
+        		this.pen = pen;
+        	}
 
        /* Add slogomodel to the view
         */
@@ -405,7 +410,7 @@ public class UserScreen extends Application
             combobox.setValue("BLACK");
             combobox.setPromptText("LineColor");
             Color c = Color.web(colors.getString(combobox.getValue()));
-            combobox.setOnAction(e->myTurtle.setPenColor(Color.web(colors.getString(combobox.getValue()))));
+            combobox.setOnAction(e->pen.setPenColor(Color.web(colors.getString(combobox.getValue()))));
             return combobox;
         }
 
@@ -453,7 +458,7 @@ public class UserScreen extends Application
          * whenever the locatoun of turtle is changed
          */
         private void drawLine() {
-        List<Line> toDraw = myTurtle.getLines();
+        List<Line> toDraw = pen.getLines();
             for (Line line: toDraw) {
                 if(line!=null&&!turtlePane.getChildren().contains(line)) {
                     turtlePane.getChildren().add(line);

@@ -4,6 +4,8 @@ import backend.SLogoModel;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import turtle.LinePen;
+import turtle.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 
@@ -11,9 +13,10 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Turtle turtle = new Turtle();
-        UserScreen view =  new UserScreen(turtle);
-        Controller controller = new Controller(view, turtle);
+		Pen pen = new LinePen();
+		Turtle turtle = new Turtle(pen);
+        UserScreen view =  new UserScreen(turtle, pen);
+        Controller controller = new Controller(view, turtle, pen);
         SLogoModel smodel = new SLogoModel(controller);
         view.start(primaryStage);
 		view.addSlogo(smodel);
