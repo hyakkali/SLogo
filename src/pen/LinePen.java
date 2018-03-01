@@ -29,10 +29,6 @@ public class LinePen extends Pen{
 		lines.clear();
 	}
 	
-	/**
-	 * 
-	 * @return List of line objects
-	 */
 	public List<Line> getLines() {
 		return lines;
 	}

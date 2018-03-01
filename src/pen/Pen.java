@@ -44,6 +44,10 @@ public abstract class Pen {
 	 */
 	public abstract void clearLines();
 	
+	/**
+	 * 
+	 * @return List of line objects
+	 */
 	public abstract List<Line> getLines();
 	
 	/**
