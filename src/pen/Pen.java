@@ -17,6 +17,8 @@ public abstract class Pen {
 	 */
 	protected Color penColor;
 	
+	protected double penWidth;
+	
 	/**
 	 * Start X coordinate for the next line
 	 */
@@ -56,6 +58,10 @@ public abstract class Pen {
 	 */
 	public void setPenColor(Color color) {
 		penColor = color;
+	}
+	
+	public void setWidth(double width) {
+		penWidth = width;
 	}
 	
 	/**

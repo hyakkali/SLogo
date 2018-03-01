@@ -93,6 +93,10 @@ public class Controller {
 	public void setViewPenColor(Color color) {
 		pen.setPenColor(color);
 	}
+	
+	public void setPenWidth(double width) {
+		pen.setWidth(width);
+	}
 
 	/**
 	 * Removes all the lines that the turtle has drawn

@@ -20,6 +20,7 @@ public class LinePen extends Pen{
 		if(penBoolean) {
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
 			newLine.setStroke(penColor);
+			newLine.setStrokeWidth(penWidth);
 			lines.add(newLine);
 		}
 	}
