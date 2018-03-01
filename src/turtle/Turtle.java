@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -80,7 +79,6 @@ public class Turtle extends ImageView{
 	 */
 	public void move(double angle, double amount) {
 		setStartLineLocation();
-		System.out.println("moving");
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setX(this.getX()+xAmount);
@@ -260,7 +258,6 @@ public class Turtle extends ImageView{
 	 * @param yAmount Amount pixel change in y direction
 	 */
 	private void drawLine(double xAmount, double yAmount) {
-		System.out.println("draw!");
 		if(penBoolean) {
 			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
 			newLine.setStroke(penColor);

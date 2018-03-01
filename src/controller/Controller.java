@@ -38,7 +38,6 @@ public class Controller {
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		System.out.println("forward!!!!");
 		turtle.move(turtle.getRotate(), amount);
 	}
 	
