@@ -50,16 +50,20 @@ public class Executor {
 
             else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
                 String var = input.pop();
-                if (!myData.getMyVariables().isEmpty()) {
-                		System.out.println(myData.getMyVariables().get(0).getValue());
+                if (myData.getVariable(var) != null) {
                     Variable v = myData.getVariable(var);
-                    
                     myParameters.add(v.getValue());
                 }
                 else {
-                    Variable newVar = new Variable(var, 0.0);
-                    myData.addVariable(newVar);
-                    myParameters.add(newVar.getMyID());
+                		if (myParameters.isEmpty()) {
+                			Variable newVar = new Variable(var, 0.0);
+                			myParameters.add(newVar.getValue());
+                		}
+                		else {
+                			Variable newVar = new Variable(var, 0.0);
+                         myData.addVariable(newVar);
+                         myParameters.add(newVar.getMyID());
+                		}
                 }
             }
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {

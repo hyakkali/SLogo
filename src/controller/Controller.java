@@ -3,6 +3,8 @@ import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
+import java.util.List;
+import backend.Variable;
 
 
 /**
@@ -173,6 +175,10 @@ public class Controller {
 
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
+	}
+	
+	public List<Variable> getMyVariables() {
+		return view.getMyModel().getMyData().getMyVariables();
 	}
 
 }
