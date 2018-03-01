@@ -40,11 +40,12 @@ public class SLogoData {
     }
 
     public Variable getVariable(String name) {
-        for (Variable var:myVariables) {
+        for (Variable var : myVariables) {
             if (var.getName().equals(name)) {
                 return var;
             }
         }
+//        return null;
         throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UninitializedVariableError") + name);
     }
 

@@ -3,6 +3,8 @@ import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
+import java.util.List;
+import backend.Variable;
 
 
 /**
@@ -11,15 +13,15 @@ import backend.SLogoData;
  * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
  */
 public class Controller {
-	
+
 	private UserScreen view;
 	private Turtle turtle;
-	
+
 	public Controller(UserScreen view, Turtle turtle){
 		this.view = view;
 		this.turtle = turtle;
 	}
-	
+
 	/**
 	 * 
 	 * @param xCoord Desired Y Coordinate of the turtle
@@ -27,7 +29,7 @@ public class Controller {
 	public void setTurtleXLocation(double xCoord) {
 		turtle.setXPosition(xCoord);
 	}
-	
+
 	/**
 	 * 
 	 * @param yCoord Desired Y Coordinate of the turtle
@@ -35,29 +37,28 @@ public class Controller {
 	public void setTurtleYLocation(double yCoord) {
 		turtle.setYPosition(yCoord);
 	}
-	
+
 	/**
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		System.out.println("forward!!!!");
 		turtle.move(turtle.getRotate(), amount);
 	}
-	
+
 	/**
 	 * @param heading Amount of degrees to rotate turtle
 	 */
 	public void rotateTurtle(double heading) {
 		turtle.rotate(heading);
 	}
-	
+
 	/**
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
 		turtle.setHeading(heading);
 	}
-	
+
 	/**
 	 * @param xCoord X coordinate to set turtle towards
 	 * @param yCoord Y coordinate to set turtle towards
@@ -65,7 +66,7 @@ public class Controller {
 	public void setTurtleTowards(double xCoord, double yCoord) {
 		turtle.setTowards(xCoord,yCoord);
 	}
-	
+
 	/**
 	 * Toggles the pen 
 	 * @param penBoolean Boolean of true or false
@@ -73,7 +74,7 @@ public class Controller {
 	public void togglePen(boolean penBoolean) {
 		turtle.togglePenUpOrDown(penBoolean);
 	}
-	
+
 	/**
 	 * 
 	 * @param color Color of the pen
@@ -81,7 +82,7 @@ public class Controller {
 	public void setViewPenColor(Color color) {
 		turtle.setPenColor(color);
 	}
-	
+
 	/**
 	 * Removes all the lines that the turtle has drawn
 	 */
@@ -95,7 +96,7 @@ public class Controller {
 	public void resetTurtlePosition() {
 		turtle.resetLocation();
 	}
-	
+
 	/**
 	 * Toggles display of turtle
 	 * @param showTurtle Boolean of true or false
@@ -103,9 +104,7 @@ public class Controller {
 	public void toggleTurtleDisplay(boolean showTurtle) {
 		turtle.toggleTurtle(showTurtle);
 	}
-	
-	//display commands
-	
+
 	/**
 	 * 
 	 * @param color Background color of the interface
@@ -113,8 +112,7 @@ public class Controller {
 	public void setViewBackgroundColor(Color color) {
 		view.setBackgroundColor(color);
 	}
-	
-	//non-command display methods
+
 	/**
 	 * 
 	 * @param command Original command String that user typed in
@@ -122,7 +120,7 @@ public class Controller {
 	public void addPreviouslyRunCommand(String command) {
 		view.addPreviousCommand(command);
 	}
-	
+
 	/**
 	 * 
 	 * @param variable String name of any variable that has been instantiated
@@ -130,8 +128,7 @@ public class Controller {
 	public void addExistingVariable(String variable) {
 		view.addVariable(variable);
 	}
-	
-	//misc 
+
 	/**
 	 * Triggers view to print text to the screen
 	 * @param text to be displayed on screen
@@ -140,35 +137,35 @@ public class Controller {
 	public void displayText(String text) {
 		view.printToScreen(text);
 	}
-	
+
 	/**
 	 * @return Current heading of the turtle
 	 */
 	public double getTurtleHeading() {
 		return turtle.getRotate();
 	}
-	
+
 	/**
 	 * @return X coordinate of the turtle
 	 */
 	public double getTurtleXLocation() {
 		return turtle.getLayoutX();
 	}
-	
+
 	/**
 	 * @return Y coordinate of the turtle
 	 */
 	public double getTurtleYLocation() {
 		return turtle.getLayoutY();
 	}
-	
+
 	/**
 	 * @return Whether or not pen is down
 	 */
 	public boolean getIsPen() {
 		return turtle.getPenBoolean();
 	}
-	
+
 	/**
 	 * @return Whether or not turtle is visible
 	 */
@@ -176,7 +173,12 @@ public class Controller {
 		return turtle.getTurtleBoolean();
 	}
 
-
-	public SLogoData getMyData() {return view.getMyModel().getMyData();}
+	public SLogoData getMyData() {
+		return view.getMyModel().getMyData();
+	}
+	
+	public List<Variable> getMyVariables() {
+		return view.getMyModel().getMyData().getMyVariables();
+	}
 
 }

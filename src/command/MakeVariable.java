@@ -9,8 +9,8 @@ public class MakeVariable implements Command {
     private Double myVariableID;
     private Double myVal;
 
-    public MakeVariable(double myVarID, double value) {
-        this.myVariableID = myVarID;
+    public MakeVariable(Double value, Double ID) {
+        this.myVariableID = ID;
         this.myVal = value;
     }
 
@@ -20,11 +20,13 @@ public class MakeVariable implements Command {
         List<Variable> myVariables = controller.getMyData().getMyVariables();
         for (Variable v : myVariables) {
             if (v.getMyID() == this.myVariableID) {
+            	System.out.println("Do you get here?");
                 v.setValue(this.myVal);
                 retVal = this.myVal;
                 break;
             }
         }
+        System.out.println("retVal" + retVal);
         return retVal;
     }
 }
