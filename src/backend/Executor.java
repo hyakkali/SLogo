@@ -56,13 +56,13 @@ public class Executor {
                     myParameters.add(v.getValue());
                 }
                 else {
-                    throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("UndefinedVariableError"));
+                    Variable newVar = new Variable(var, 0.0);
+                    myData.addVariable(newVar);
+                    myParameters.add(newVar.getMyID());
                 }
             }
-
-
             else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
-                Stack<String> tempStack = new Stack<String>();
+                Stack<String> tempStack = new Stack<>();
                 for (String s: input) {
                     if (!syntaxParser.getSymbol(s).equals("ListEnd")) {
                         tempStack.add(s);
