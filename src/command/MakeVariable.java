@@ -20,7 +20,6 @@ public class MakeVariable implements Command {
         List<Variable> myVariables = controller.getMyData().getMyVariables();
         for (Variable v : myVariables) {
             if (v.getMyID() == this.myVariableID) {
-            	System.out.println("Do you get here?");
                 v.setValue(this.myVal);
                 retVal = this.myVal;
                 break;
