@@ -132,8 +132,13 @@ public class Turtle extends ImageView{
 	 * @param yCoord Y coordinate
 	 */
 	public void setTowards(double xCoord, double yCoord) {
-		double currHeading = this.getRotate() % 360; //coterminal angle
-		this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
+		double currHeading = this.getRotate();
+		System.out.println("y"+yCoord);
+		if(yCoord<0) {
+			this.setRotate(currHeading+calculateAngle(xCoord,yCoord));
+		}else {
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
+		}
 	}
 	
 	/**
@@ -238,8 +243,9 @@ public class Turtle extends ImageView{
 	 * @return Degree measure turtle needs to rotate to face (xCoord,yCoord)
 	 */
 	private double calculateAngle(double xCoord, double yCoord) {
-		double currHeading = this.getRotate() % 360.0; //get coterminal angle
-		double newHeading = Math.atan(yCoord/xCoord);
+		double currHeading = this.getRotate();
+		double newHeading = Math.toDegrees(Math.acos(xCoord/Math.sqrt(yCoord*yCoord+xCoord*xCoord)));
+		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
 	
