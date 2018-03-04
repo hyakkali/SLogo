@@ -36,7 +36,7 @@ public class Turtle extends ImageView{
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
 	
-	private Pen pen;
+	public Pen pen;
 
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
