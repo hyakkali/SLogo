@@ -23,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import pen.Pen;
 import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
