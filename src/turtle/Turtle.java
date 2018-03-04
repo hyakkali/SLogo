@@ -16,11 +16,11 @@ public class Turtle extends ImageView{
 	private HashMap<String, Image> images;
 
 	private final double ORIGIN = 250.0;
-	
+
 	private final double HALF_PI_SHIFT = 90.0;
 
 	private final double PI_SHIFT = 180.0;
-	
+
 	private double turtleID;
 
 	/**
@@ -35,7 +35,7 @@ public class Turtle extends ImageView{
 
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
-	
+
 	public Pen pen;
 
 	/**
@@ -81,7 +81,7 @@ public class Turtle extends ImageView{
 		this.setX(ORIGIN);
 		this.setY(ORIGIN);
 	}
-	
+
 	public void setID(double id) {
 		turtleID = id;
 	}

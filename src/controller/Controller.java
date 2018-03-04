@@ -40,7 +40,7 @@ public class Controller {
 	public void setTurtleYLocation(double yCoord) {
 		turtle.setYPosition(yCoord);
 	}
-	
+
 	/**
 	 * 
 	 * @param id Double id to identify a turtle
@@ -93,7 +93,7 @@ public class Controller {
 	public void setViewPenColor(Color color) {
 		pen.setPenColor(color);
 	}
-	
+
 	public void setPenWidth(double width) {
 		pen.setWidth(width);
 	}
@@ -102,8 +102,8 @@ public class Controller {
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-//		turtle.clearLines();
-//		view.removeLines();
+		//		turtle.clearLines();
+		//		view.removeLines();
 	}
 
 	/**
