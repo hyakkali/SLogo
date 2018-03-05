@@ -32,6 +32,8 @@ public class Turtle extends ImageView{
 	 * Image object of the turtle
 	 */
 	private Image turtleImage;
+	
+	private boolean isActive;
 
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
@@ -51,6 +53,7 @@ public class Turtle extends ImageView{
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
+		this.isActive = true;
 		setToOrigin();
 	}
 
@@ -88,6 +91,10 @@ public class Turtle extends ImageView{
 		turtleID = id;
 	}
 
+	public void setActive(boolean bool) {
+		this.isActive = bool;
+	}
+	
 	/**
 	 * 
 	 * @param xCoordinate X coordinate of the turtle
@@ -161,6 +168,10 @@ public class Turtle extends ImageView{
 	 */
 	public String getImageURL() {
 		return imageURL;
+	}
+	
+	public boolean getActive() {
+		return this.isActive;
 	}
 
 	/**

@@ -118,9 +118,11 @@ public class UserScreen extends Application
 	    							if(activeTurtles.contains(turtle)) {
 		    							inactiveTurtles.add(turtle);
 		    							activeTurtles.remove(turtle);
+		    							turtle.setActive(false);
 	    							} else {
 		    							inactiveTurtles.remove(turtle);
 		    							activeTurtles.add(turtle);
+		    							turtle.setActive(true);
 	    							}
 	    						} else if(event.getClickCount()==1) {
 		    						turtle.requestFocus();
@@ -349,7 +351,8 @@ public class UserScreen extends Application
         		MenuItem mItem4 = new MenuItem("Color: "+turtle.pen.getPenColor());
         		MenuItem mItem5 = new MenuItem("Up/Down: "+turtle.pen.getPenBoolean());
         		MenuItem mItem6 = new MenuItem("Thickness: "+turtle.pen.getPenWidth());
-        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6);
+        		MenuItem mItem7 = new MenuItem("Active: "+turtle.getActive());
+        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7);
         		return menu;
         }
 
