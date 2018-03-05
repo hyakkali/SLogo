@@ -34,17 +34,18 @@ import resources.languages.LanguageFactory;
 import turtle.Turtle;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class UserScreen extends Application
 {
     private static final String DEFAULT_RESOURCES = "resources.languages/";
+    private static final String helpURL = "https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commands.php";
     private static final String TITLE = "Slogo";
 
     private static final int FRAMES_PER_SECOND = 10;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
-    private boolean rave=false;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -57,21 +58,18 @@ public class UserScreen extends Application
     private ResourceBundle colors;
 
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
-    private History history = new History();
     private HashMap<String, String> userCommands = new HashMap<String,String >();
+    private HashMap<Variable,Turtle> varsList = new HashMap<Variable,Turtle>();
     private Turtle myTurtle;
     private Pen pen;
     private SLogoModel mySLogoModel;
-    private TextArea variables;
-    private Button resetButton;
+    private VariableList variables;
     private TextArea commands;
-    private TextArea console;
     private Pane turtlePane;
-    private Group root;
     private String language = "English";
     private List<Line> lines = new ArrayList<Line>();
     private Timeline animation;
-
+    private String[] languageOptions ={"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish"};
     private final WebView browser = new WebView();
     private final WebEngine webEngine = browser.getEngine();
 
@@ -93,7 +91,7 @@ public class UserScreen extends Application
          * start --this calls the menu related functions
          */
         public Scene setScene(int width, int length) {
-             root = new Group();
+             Group root = new Group();
             myScene = new Scene(root, width, length);
 
             setupProperties("English");
@@ -136,18 +134,6 @@ public class UserScreen extends Application
         public void step(double elapsedTime) {
 //        		System.out.println(myTurtle.getRotate());
             drawLine();
-
-            if(rave)
-            {
-                int a = (int)(Math.random()*colors.keySet().size());
-                int b=0;
-                for(String s : colors.keySet()) {
-                    if(b==a)
-                        break;
-                    changeBackground(s);
-                    b++;
-                }
-            }
         }
 
         /* creates the scene within the stage by calling setScene
@@ -195,15 +181,25 @@ public class UserScreen extends Application
          * and a reset button
          */
         private VBox createSideMenu() {
+
             VBox interactives = new VBox();
 
-            resetButton = getResetButton();
+            Button resetButton = MenuBuilder.buildButton("File:images/reset.png",e->reset());
+            Button helpButton = MenuBuilder.buildButton("File:images/help.png", e->getHostServices().showDocument(helpURL));
+            HBox buttons= new HBox(resetButton,helpButton);
+            buttons.setSpacing(20);
+            buttons.setAlignment(Pos.CENTER);
+
             commands = getCommandsList();
-            variables = getVariableList();
-            ComboBox imageCombo = getImageCombo();
-            ComboBox lineCombo = getLineCombo();
-            ComboBox background = getBackgroundCombo();
-            ComboBox language = getLanguageCombo();
+            variables = new VariableList(XSIZE,YSIZE);
+
+            ObservableList<String> images =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
+            ObservableList<String> languages =FXCollections.observableArrayList(languageOptions);
+
+            ComboBox imageCombo = MenuBuilder.buildCombo("Turtle Image",images,e-> changeTurtleImage(e));
+            ComboBox lineCombo = MenuBuilder.buildCombo("Line Color", colors, e->setPenColor(e));
+            ComboBox background = MenuBuilder.buildCombo("Background Color", colors, e->changeBackground(e));
+            ComboBox language = MenuBuilder.buildCombo("Language", languages, e->changeLanguage(e));
 
             interactives.setPrefWidth(200);
             interactives.setStyle("-fx-background-color: #008000");
@@ -211,8 +207,7 @@ public class UserScreen extends Application
             interactives.setAlignment(Pos.CENTER);
             interactives.setSpacing(10);
             interactives.getChildren().addAll(language, background, imageCombo,
-                    lineCombo, commands, variables, resetButton, getSetCommand(),getHelpButton(),
-                    getExtraHelpButton());
+                    lineCombo, commands, variables, buttons);
 
             return interactives;
         }
@@ -222,7 +217,7 @@ public class UserScreen extends Application
          */
         private HBox createBottomMenu() {
             HBox interactives = new HBox();
-            console = getConsole();
+            Console console = new Console(XSIZE,YSIZE,i->parse(i));
             interactives.setPrefHeight(YSIZE / 9 * 2);
             interactives.setStyle("-fx-background-color: #008000");
             interactives.setPadding(new Insets(20, 10, 20, 10));
@@ -262,9 +257,8 @@ public class UserScreen extends Application
 
         /* Appends a previously run command to the history
          */
-        private void addPreviousCommand(String s)
-        {
-            history.add(s);
+        public void addPreviousCommand(String s) {
+            //useablecmds.add(s);
         }
 
     //VARIABLE FUNCTIONS__________________________________________________________________________________________
@@ -272,237 +266,14 @@ public class UserScreen extends Application
         /* Creates properties of the variable textarea
          * and initialized the values from the vars hashmap
          */
-        private TextArea getVariableList() {
-            TextArea textArea = new TextArea();
-            textArea.prefWidth(XSIZE / 7 * 4);
-            textArea.setPrefWidth(XSIZE / 7 * 4);
-            textArea.setPrefHeight(YSIZE / 7 * 2);
-            textArea.setEditable(false);
-            textArea.setWrapText(false);
-            textArea.appendText("Current Variables: \n\n");
 
-            return textArea;
-        }
 
         /* adds the variables from controller to the hashmap
          * and rewrites the variables to the textarea
          */
         private void addVariable() {
-            variables.clear();
-            variables.appendText("Current Variables: \n");
-            for(Variable var : mySLogoModel.getMyData().getMyVariables())
-                variables.appendText(var.getName() + ":       " +var.getValue()+"\n\n");
-        }
-
-    //CONSOLE FUNCTIONS__________________________________________________________________________________________
-
-        /* Defines the orientation and and onAction properties
-         * for the text console and sends the reference to be
-         * set to instance variable console
-         */
-        private TextArea getConsole() {
-            console = new TextArea();
-            console.prefWidth(XSIZE / 7 * 4);
-            console.setPrefWidth(XSIZE);
-            console.setPrefHeight(YSIZE);
-            console.setEditable(true);
-            console.setWrapText(true);
-            console.setOnKeyPressed(e -> consoleHandler(e));
-            console.setText("enter");
-            console.positionCaret(1);
-            return console;
-        }
-
-        /* Defines the actions to be taken
-         *  when the user types in the console
-         */
-        private void consoleHandler( KeyEvent k) {
-
-            if (k.getCode().equals(KeyCode.ENTER)) {
-                k.consume();
-                String textHolder=console.getText();
-                if(userCommands.containsKey(textHolder))
-                    mySLogoModel.parse(userCommands.get(textHolder));
-                else
-                    mySLogoModel.parse(textHolder);
-                console.setText("");
-                addVariable();
-            }
-
-            else if (k.getCode().equals(KeyCode.UP)) {
-                this.displayPrev(console);
-            }
-            else if (k.getCode().equals(KeyCode.DOWN)) {
-                this.displayNext(console);
-            }
-        }
-
-        /* cycles forward through command list and
-         * sets text value of console to next command
-         */
-        private void displayNext(TextArea console) {
-            if(history.hasNext())
-                console.setText(history.moveForward());
-
-        }
-
-        /* cycles back through command list and
-         * sets text value of console to prev command
-         */
-        private void displayPrev(TextArea console) {
-            if(history.hasPrev())
-                console.setText(history.moveBack());
-        }
-
-    //LANGUAGE FUNCTIONS_________________________________________________________________________________________
-
-        /* Defines the onAction of the language combo box
-         * re-initializes the properties files and updates menu
-         */
-        private void handleLanguageCombo(String s) {
-            setupProperties(s);
-            setupCommandsList();
-        }
-
-        /* Initializes the location size and options
-         * in the language combobox and sends reference
-         * to be added to the side menu
-         */
-        private ComboBox getLanguageCombo() {
-            ObservableList<String> language =FXCollections.observableArrayList(
-                    "English",
-                    "Chinese",
-                    "French",
-                    "German",
-                    "Italian",
-                    "Portuguese",
-                    "Russian",
-                    "Spanish"
-            );
-            ComboBox<String> combobox = new ComboBox<>(language);
-            combobox.setValue("English");
-            combobox.setOnAction(e->handleLanguageCombo(combobox.getValue()));
-            return combobox;
-        }
-
-    //BUTTON FUNCTIONS____________________________________________________________________________________________
-
-        /* Defines the creation an onAction event
-         * and returns reference to be set to instance
-         * resetButton
-         */
-        private Button getResetButton() {
-            Button b = new Button();
-            ImageView rimage= new ImageView(new Image("File:images/reset.png"));
-            rimage.setFitWidth(30);
-            rimage.setFitHeight(30);
-            b.setGraphic(rimage);
-            b.setOnAction(e -> this.reset());
-            return b;
-        }
-
-        private Button getSetCommand() {
-            Button b = new Button("CMD");
-            b.setOnAction(e -> importCMD());
-            return b;
-        }
-
-        private Hyperlink getHelpButton() {
-            Hyperlink h = new Hyperlink();
-            h.setText("?");
-            h.setTextFill(Color.BLACK);
-            h.setOnAction(e->getHostServices().showDocument("https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commands.php"));
-            return h;
-        }
-
-        private Hyperlink getExtraHelpButton() {
-            Hyperlink h = new Hyperlink();
-            h.setText("!?");
-            h.setTextFill(Color.BLACK);
-            h.setOnAction(e->getHostServices().showDocument("https://www.lifeoptimizer.org/2010/05/27/being-a-better-you/"));
-            return h;
-        }
-
-        /* Resets the turtle location, variables, draw pane
-         * and redraws the UI
-         */
-        private void reset() {
-            myTurtle.setToOrigin();
-            myTurtle.setHeading(0);
-            for(Line l: lines)
-            {
-                turtlePane.getChildren().remove(l);
-            }
-            lines.clear();
-            myTurtle.clearLines();
-        }
-
-
-        private void importCMD() {
-            final Stage dialog = new Stage();
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initOwner(myStage);
-            VBox dBox = new VBox(20);
-            TextArea cmd = new TextArea();
-            cmd.setPromptText("Enter your Command name");
-            TextArea code = new TextArea();
-            code.setPromptText("Enter code");
-            Button enter = new Button ("enter");
-            enter.setOnAction(e->{this.addCommand(cmd.getText(),code.getText()); dialog.close();});
-            dBox.getChildren().addAll(cmd,code, enter);
-            Scene dialogScene = new Scene(dBox, 300, 200);
-            dialog.setScene(dialogScene);
-            dialog.show();
-        }
-
-        private void addCommand(String cmd, String code)
-        {
-            if(!userCommands.containsKey(cmd)) {
-                userCommands.put(cmd, code);
-                commands.appendText(cmd + "\n\n");
-            }
-        }
-
-    //TURTLE IMAGE FUNCTIONS_______________________________________________________________________________________
-
-        /* Defines the combobox for turtle images and accesses the
-         * properties table for images to set new images on the turtle
-         */
-        private ComboBox getImageCombo() {
-            ObservableList<String> language =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
-            ComboBox<String> combobox = new ComboBox<>(language);
-            combobox.setValue("Turtle");
-            combobox.setPromptText("Turtle Image");
-            combobox.setOnAction(e->myTurtle.setImage(combobox.getValue()));
-            return combobox;
-        }
-
-    //COLOR SETTING FUNCTIONS_____________________________________________________________________________________
-
-       /* Defines the location and color options for setting the color
-        * of the lines the turtle draws and returns to VBox to add to menu
-        */
-        private ComboBox getLineCombo() {
-            ObservableList<String> color =FXCollections.observableArrayList(new ArrayList<String>(colors.keySet()));
-            ComboBox<String> combobox = new ComboBox<>(color);
-            combobox.setValue("BLACK");
-            combobox.setPromptText("LineColor");
-            Color c = Color.web(colors.getString(combobox.getValue()));
-            combobox.setOnAction(e->pen.setPenColor(Color.web(colors.getString(combobox.getValue()))));
-            return combobox;
-        }
-
-        /* Defines the locatoin and color opotions for setting the color
-         * of the background when the combobox is clicked
-         */
-        private ComboBox getBackgroundCombo() {
-            ObservableList<String> options = FXCollections.observableList(new ArrayList<String>(colors.keySet()));
-            options.add("Rave EPILEPSY WARNING");
-            ComboBox<String> combobox = new ComboBox<>(options);
-            combobox.setValue("WHITE");
-            combobox.setPromptText("Background Color");
-            combobox.setOnAction(e-> {rave=false; changeBackground(combobox.getValue());});
-            return combobox;
+            for(Variable v:mySLogoModel.getMyData().getMyVariables())
+                variables.addVariable(v);
         }
 
 //VIEW RELATED FUNCTIONS
@@ -516,7 +287,7 @@ public class UserScreen extends Application
 
     //FORM FUNCTIONS____________________________________________________________________________________________
 
-        /* Allows the controller to alter the
+        /* Allows the controller to alter the+
          * background of the UI calls changebackground
          */
         public void setBackgroundColor(Color c){
@@ -526,15 +297,6 @@ public class UserScreen extends Application
                 changeBackground(c.toString());
         }
 
-        /* Changes the background by accessung the properties table of colors
-         * to decode the input value from the combobox
-         */
-        private void changeBackground(String value) {
-           if(!value.equals("Rave EPILEPSY WARNING")) {
-               turtlePane.setStyle("-fx-background-color: " + colors.getString(value));
-           }
-           else rave=true;
-        }
 
         /* called to update the form to show the path
          * whenever the locatoun of turtle is changed
@@ -584,5 +346,113 @@ public class UserScreen extends Application
     public SLogoModel getMyModel() {
         return mySLogoModel;
     }
+//ACTIONS EVENTS
+    /* Resets the turtle location, variables, draw pane
+     * and redraws the UI
+     */
+    private void reset() {
+//        myTurtle.setToOrigin();
+//        myTurtle.setHeading(0);
+//        for(Line l: lines)
+//        {
+//            turtlePane.getChildren().remove(l);
+//        }
+//        lines.clear();
+//        pen.clearLines();
+        variables.addVariable(new Variable("Test",.9));
+
+    }
+
+    /* Defines the actions to be taken
+     *  when the user types in the console
+     */
+    private void parse( String  command) {
+            mySLogoModel.parse(command);
+            addVariable();
+    }
+
+    private void setPenColor(String color)
+    {
+        pen.setPenColor(Color.web(color));
+    }
+
+    /* Defines the onAction of the language combo box
+     * re-initializes the properties files and updates menu
+     */
+    private void changeLanguage(String s) {
+        setupProperties(s);
+        setupCommandsList();
+    }
+
+    /* Changes the background by accessung the properties table of colors
+     * to decode the input value from the combobox
+     */
+    private void changeBackground(String value) {
+        turtlePane.setStyle("-fx-background-color: " + value);
+    }
+
+    private void changeTurtleImage(String image)
+    {
+        myTurtle.setImage(image);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //TO BE UNUSED
+    //BUTTON FUNCTIONS____________________________________________________________________________________________
+
+//    /* Defines the creation an onAction event
+//     * and returns reference to be set to instance
+//     * resetButton
+//     */
+//
+//
+//    private Button getSetCommand() {
+//        Button b = new Button("CMD");
+//        b.setOnAction(e -> importCMD());
+//        return b;
+//    }
+//
+//
+//
+//    private Hyperlink getExtraHelpButton() {
+//        Hyperlink h = new Hyperlink();
+//        h.setText("!?");
+//        h.setTextFill(Color.BLACK);
+//        h.setOnAction(e->getHostServices().showDocument("https://www.lifeoptimizer.org/2010/05/27/being-a-better-you/"));
+//        return h;
+//    }
+//
+//    private void importCMD() {
+//        final Stage dialog = new Stage();
+//        dialog.initModality(Modality.APPLICATION_MODAL);
+//        dialog.initOwner(myStage);
+//        VBox dBox = new VBox(20);
+//        TextArea cmd = new TextArea();
+//        cmd.setPromptText("Enter your Command name");
+//        TextArea code = new TextArea();
+//        code.setPromptText("Enter code");
+//        Button enter = new Button ("enter");
+//        enter.setOnAction(e->{this.addCommand(cmd.getText(),code.getText()); dialog.close();});
+//        dBox.getChildren().addAll(cmd,code, enter);
+//        Scene dialogScene = new Scene(dBox, 300, 200);
+//        dialog.setScene(dialogScene);
+//        dialog.show();
+//    }
+//
+//    private void addCommand(String cmd, String code) {
+//        if(!userCommands.containsKey(cmd)) {
+//            userCommands.put(cmd, code);
+//            commands.appendText(cmd + "\n\n");
+//        }
+//    }
 
 }

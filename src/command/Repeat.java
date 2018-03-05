@@ -13,7 +13,7 @@ public class Repeat implements Command{
 	
 	@Override
 	public double execute(Controller controller) {
-		
+		return .01;
 	}
 	
 }
