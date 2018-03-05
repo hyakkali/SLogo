@@ -96,7 +96,7 @@ public abstract class Pen {
 	public Color getPenColor() {
 		return penColor;
 	}
-	
+
 	/**
 	 * 
 	 * @return Width of the pen
