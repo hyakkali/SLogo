@@ -17,7 +17,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		ArrayList<Turtle> turtles = new ArrayList<>();
 		for(int i=0;i<3;i++) { //3 for testing purposes
-			turtles.add(new Turtle(new LinePen()));
+			turtles.add(new Turtle(new LinePen(),i+1));
 		}
         UserScreen view =  new UserScreen(turtles);
         Controller controller = new Controller(view, turtles);

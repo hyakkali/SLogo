@@ -19,8 +19,6 @@ public class Turtle extends ImageView{
 
 	private final double HALF_PI_SHIFT = 90.0;
 
-	private final double PI_SHIFT = 180.0;
-
 	private double turtleID;
 
 	/**
@@ -44,7 +42,7 @@ public class Turtle extends ImageView{
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
 	 * image of the turtle to the default image.
 	 */
-	public Turtle(Pen pen){
+	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
 		this.setImage("Turtle");
@@ -54,6 +52,7 @@ public class Turtle extends ImageView{
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
 		this.isActive = true;
+		this.turtleID = Id;
 		setToOrigin();
 	}
 
@@ -129,15 +128,15 @@ public class Turtle extends ImageView{
 		if(xCoord>0 && yCoord==0) {
 			this.setRotate(HALF_PI_SHIFT);
 		} else if(xCoord<0 && yCoord==0) {
-			this.setRotate(PI_SHIFT+HALF_PI_SHIFT);
+			this.setRotate(3*HALF_PI_SHIFT);
 		} else if(xCoord==0 && yCoord>0) {
 			this.setRotate(0);
 		} else if(xCoord==0 && yCoord<0) {
-			this.setRotate(PI_SHIFT);
+			this.setRotate(2*HALF_PI_SHIFT);
 		} else if(xCoord<0 && yCoord<0){
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else if(xCoord<0 && yCoord>0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+PI_SHIFT);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+2*HALF_PI_SHIFT);
 		} else if(xCoord>0 && yCoord<0) {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else {
@@ -172,6 +171,10 @@ public class Turtle extends ImageView{
 	
 	public boolean getActive() {
 		return this.isActive;
+	}
+	
+	public double getID() {
+		return this.turtleID;
 	}
 
 	/**

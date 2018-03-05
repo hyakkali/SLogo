@@ -345,14 +345,15 @@ public class UserScreen extends Application
         
         private ObservableList<MenuItem> createContextMenuList(Turtle turtle) {
         		ObservableList<MenuItem> menu = FXCollections.observableArrayList();
+        		MenuItem mItem0 = new MenuItem("ID: "+Double.toString(turtle.getID()));
         		MenuItem mItem1 = new MenuItem("X: "+Double.toString(turtle.getX()));
         		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(turtle.getY()));
         		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(turtle.getRotate()%360.0));
         		MenuItem mItem4 = new MenuItem("Color: "+turtle.pen.getPenColor());
-        		MenuItem mItem5 = new MenuItem("Up/Down: "+turtle.pen.getPenBoolean());
+        		MenuItem mItem5 = new MenuItem("Pen Down: "+turtle.pen.getPenBoolean());
         		MenuItem mItem6 = new MenuItem("Thickness: "+turtle.pen.getPenWidth());
         		MenuItem mItem7 = new MenuItem("Active: "+turtle.getActive());
-        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7);
+        		menu.addAll(mItem0,mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7);
         		return menu;
         }
 
