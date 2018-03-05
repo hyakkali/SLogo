@@ -15,10 +15,9 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Pen pen = new LinePen();
 		ArrayList<Turtle> turtles = new ArrayList<>();
 		for(int i=0;i<3;i++) { //3 for testing purposes
-			turtles.add(new Turtle(pen));
+			turtles.add(new Turtle(new LinePen()));
 		}
         UserScreen view =  new UserScreen(turtles);
         Controller controller = new Controller(view, turtles);
