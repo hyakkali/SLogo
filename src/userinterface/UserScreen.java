@@ -51,6 +51,7 @@ public class UserScreen extends Application
     private static final int YSIZE = 600;
     
     private final double TURTLE_MOVE = 20.0;
+    private final double PEN_THICKNESS = 0.5;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -139,6 +140,14 @@ public class UserScreen extends Application
 						myTurtle.move(myTurtle.getRotate(), TURTLE_MOVE);
 					} else if(event.getCode()==KeyCode.B) {
 						myTurtle.move(myTurtle.getRotate(), -1*TURTLE_MOVE);
+					} else if(event.getCode()==KeyCode.D) {
+						myTurtle.pen.togglePenUpOrDown(true);
+					} else if(event.getCode()==KeyCode.U) {
+						myTurtle.pen.togglePenUpOrDown(false);
+					} else if(event.getCode()==KeyCode.S) {
+						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()-PEN_THICKNESS);
+					} else if(event.getCode()==KeyCode.T) {
+						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()+PEN_THICKNESS);
 					}
 				}
             	
