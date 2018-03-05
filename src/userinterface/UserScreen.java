@@ -108,9 +108,7 @@ public class UserScreen extends Application
             turtlePane = new Pane();
             turtlePane.setPrefHeight(500);
             turtlePane.setPrefWidth(500);
-            
-//            showContextMenu();
-            
+                        
             myTurtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
@@ -122,7 +120,7 @@ public class UserScreen extends Application
 					} else if(button==MouseButton.SECONDARY) {
 						ObservableList<MenuItem> menu = createContextMenuList();
 			        		ContextMenu cMenu = MenuBuilder.buildContext(menu);
-	        				cMenu.show(myTurtle, XSIZE/2, YSIZE/2);
+	        				cMenu.show(myTurtle, myTurtle.getX()+150, myTurtle.getY()+100);
 					}
 				}
             		
@@ -430,7 +428,7 @@ public class UserScreen extends Application
      */
     private void parse( String  command) {
             mySLogoModel.parse(command);
-            addVariable();
+//            addVariable();
     }
 
     private void setPenColor(String color)
