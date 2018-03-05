@@ -1,0 +1,29 @@
+Additional views that show:
+
+current state of a turtle (i.e., its ID, position, heading) and its pen (i.e., up/down, color, thickness) updated while the
+code is running. Feel free to include any other values you feel would be usefully associated with either.
+        Using the setright click action event and  a context menu with MenuItems
+
+
+palettes of images and colors with their associates numeric values that can be referred to within new SLogo commands
+ (i.e., it should be clear which images/colors are associated with which numbers so the SLogo language can refer to
+  them in code). At the start, there should be a default set of values assigned to numbers to choose from.
+
+
+Allow users to directly manipulate elements within the views so that are not simply displays:
+
+
+
+click to execute commands from the history or user-defined commands (provide a means to enter needed parameters)
+
+
+click to edit the value of user-defined variables
+
+
+click to toggle which turtles are currently active (active turtles should be graphically distinct from inactive ones)
+
+
+provide a way to move the current turtle(s) graphically (at least FD, BK, LT, and RT by a fixed amount)
+
+
+provide a way to change the pen's current properties graphically (up/down, thickness, etc.)

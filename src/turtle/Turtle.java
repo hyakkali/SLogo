@@ -15,7 +15,8 @@ public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
 
-	private final double ORIGIN = 250.0;
+	private final double ORIGIN = 250;
+
 
 	private final double HALF_PI_SHIFT = 90.0;
 
@@ -46,6 +47,8 @@ public class Turtle extends ImageView{
 		super();
 		initializeImages();
 		this.setImage("Turtle");
+		this.setRotate(0.0);
+		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
@@ -202,6 +205,11 @@ public class Turtle extends ImageView{
 		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
+
+
+	/**
+	 * Clears all the lines that were drawn by the turtle
+	 */
 
 	private void initializeImages() {
 		images= new HashMap<String, Image>();
