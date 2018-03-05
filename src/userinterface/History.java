@@ -21,11 +21,9 @@ public class History {
   }
   public void add(String s)
   {
-      //switch indicies if its already there
           history.set(history.size()-1,s);
           history.add("");
           pointer = history.size()-1;
-          //System.out.print(pointer);
   }
   public String moveForward()
   {

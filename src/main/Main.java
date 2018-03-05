@@ -15,7 +15,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Pen pen = new LinePen();
 		Turtle turtle = new Turtle(pen);
-        UserScreen view =  new UserScreen(turtle, pen);
+        UserScreen view =  new UserScreen(turtle);
         Controller controller = new Controller(view, turtle, pen);
         SLogoModel smodel = new SLogoModel(controller);
         view.start(primaryStage);

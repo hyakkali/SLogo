@@ -42,6 +42,14 @@ public class Controller {
 	}
 
 	/**
+	 * 
+	 * @param id Double id to identify a turtle
+	 */
+	public void setTurtleID(double id) {
+		turtle.setID(id);
+	}
+
+	/**
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
@@ -86,12 +94,16 @@ public class Controller {
 		pen.setPenColor(color);
 	}
 
+	public void setPenWidth(double width) {
+		pen.setWidth(width);
+	}
+
 	/**
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-//		turtle.clearLines();
-//		view.removeLines();
+		//		turtle.clearLines();
+		//		view.removeLines();
 	}
 
 	/**
@@ -123,14 +135,6 @@ public class Controller {
 	 */
 	public void addPreviouslyRunCommand(String command) {
 		view.addPreviousCommand(command);
-	}
-
-	/**
-	 * 
-	 * @param variable String name of any variable that has been instantiated
-	 */
-	public void addExistingVariable(String variable) {
-		view.addVariable(variable);
 	}
 
 	/**
