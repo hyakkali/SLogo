@@ -7,7 +7,6 @@ import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import pen.LinePen;
-import pen.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 
