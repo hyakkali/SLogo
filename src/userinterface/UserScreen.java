@@ -130,19 +130,19 @@ public class UserScreen extends Application
 
 				@Override
 				public void handle(KeyEvent event) {
-					if(event.getCode()==KeyCode.R) {
+					if(event.getCode()==KeyCode.D) {
 						myTurtle.setRotate(myTurtle.getRotate()+TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.L) {
+					} else if(event.getCode()==KeyCode.A) {
 						myTurtle.setRotate(myTurtle.getRotate()-TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.F) {
+					} else if(event.getCode()==KeyCode.W) {
 						myTurtle.move(myTurtle.getRotate(), TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.B) {
+					} else if(event.getCode()==KeyCode.S) {
 						myTurtle.move(myTurtle.getRotate(), -1*TURTLE_MOVE);
 					} else if(event.getCode()==KeyCode.D) {
 						myTurtle.pen.togglePenUpOrDown(true);
 					} else if(event.getCode()==KeyCode.U) {
 						myTurtle.pen.togglePenUpOrDown(false);
-					} else if(event.getCode()==KeyCode.S) {
+					} else if(event.getCode()==KeyCode.Y) {
 						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()-PEN_THICKNESS);
 					} else if(event.getCode()==KeyCode.T) {
 						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()+PEN_THICKNESS);
