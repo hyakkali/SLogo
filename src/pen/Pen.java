@@ -60,7 +60,7 @@ public abstract class Pen {
 		penColor = color;
 	}
 
-	public void setWidth(double width) {
+	public void setPenWidth(double width) {
 		penWidth = width;
 	}
 
