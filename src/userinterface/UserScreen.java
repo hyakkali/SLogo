@@ -9,6 +9,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -18,6 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -101,6 +105,25 @@ public class UserScreen extends Application
             turtlePane = new Pane();
             turtlePane.setPrefHeight(500);
             turtlePane.setPrefWidth(500);
+            
+//            showContextMenu();
+            
+            myTurtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					MouseButton button = event.getButton();
+					if(button==MouseButton.PRIMARY) {
+						//add set active or inactive
+					} else if(button==MouseButton.SECONDARY) {
+						ObservableList<MenuItem> menu = createContextMenuList();
+			        		ContextMenu cMenu = MenuBuilder.buildContext(menu);
+	        				cMenu.show(myTurtle, XSIZE/2, YSIZE/2);
+					}
+				}
+            		
+            });
+
 
             turtles.add(myTurtle);
             turtlePane.getChildren().add(myTurtle);
@@ -130,9 +153,10 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-//        		System.out.println(myTurtle.getRotate());
             drawLine();
         }
+        
+        
 
         /* creates the scene within the stage by calling setScene
          * defines/ initializes the state and begins stepping
@@ -224,6 +248,10 @@ public class UserScreen extends Application
             interactives.getChildren().addAll(console);
             return interactives;
         }
+        
+        
+        
+        
 
     //COMMAND FUNCTIONS//__________________________________________________________________________________________
 
@@ -278,6 +306,17 @@ public class UserScreen extends Application
          * in response to commands from backend
          */
         public void toggleTurtle(boolean t){myTurtle.setVisible(t);}
+        
+        private ObservableList<MenuItem> createContextMenuList() {
+        		ObservableList<MenuItem> menu = FXCollections.observableArrayList();
+        		MenuItem mItem1 = new MenuItem("X: "+Double.toString(myTurtle.getX()));
+        		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(myTurtle.getY()));
+        		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(myTurtle.getRotate()%360.0));
+        		MenuItem mItem4 = new MenuItem("Color: "+myTurtle.pen.getPenColor());
+        		MenuItem mItem5 = new MenuItem("Up/Down: "+myTurtle.pen.getPenBoolean());
+        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5);
+        		return menu;
+        }
 
     //FORM FUNCTIONS____________________________________________________________________________________________
 

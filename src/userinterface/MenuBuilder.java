@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -36,6 +38,12 @@ public class MenuBuilder {
         combobox.setOnAction(e->event.accept(combobox.getValue()));
         combobox.setPrefWidth(200);
         return combobox;
+    }
+    
+    public static ContextMenu buildContext(ObservableList<MenuItem> list) {
+    		ContextMenu cMenu = new ContextMenu();
+    		cMenu.getItems().addAll(list);
+    		return cMenu;
     }
 
     public static Button buildButton(String prompt, Consumer<Void> event)
