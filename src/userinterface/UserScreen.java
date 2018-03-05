@@ -314,7 +314,8 @@ public class UserScreen extends Application
         		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(myTurtle.getRotate()%360.0));
         		MenuItem mItem4 = new MenuItem("Color: "+myTurtle.pen.getPenColor());
         		MenuItem mItem5 = new MenuItem("Up/Down: "+myTurtle.pen.getPenBoolean());
-        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5);
+        		MenuItem mItem6 = new MenuItem("Thickness: "+myTurtle.pen.getPenWidth());
+        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6);
         		return menu;
         }
 
