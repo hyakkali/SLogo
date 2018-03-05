@@ -95,7 +95,7 @@ public class Controller {
 	}
 
 	public void setPenWidth(double width) {
-		pen.setWidth(width);
+		pen.setPenWidth(width);
 	}
 
 	/**
