@@ -15,7 +15,14 @@ public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
 
-	private final double ORIGIN = 250.0;
+	private final double ORIGIN = 250;
+
+
+	private final double HALF_PI_SHIFT = 90.0;
+
+	private final double PI_SHIFT = 180.0;
+
+	private double turtleID;
 
 	/**
 	 * String of path to an image file
@@ -29,8 +36,8 @@ public class Turtle extends ImageView{
 
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
-	
-	private Pen pen;
+
+	public Pen pen;
 
 	/**
 	 * Turtle constructor that sets X and Y coordinates and heading to 0, sets 
@@ -40,6 +47,8 @@ public class Turtle extends ImageView{
 		super();
 		initializeImages();
 		this.setImage("Turtle");
+		this.setRotate(0.0);
+		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
@@ -53,6 +62,7 @@ public class Turtle extends ImageView{
 	 */
 	public void move(double angle, double amount) {
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
+		System.out.println("moving!");
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setX(this.getX()+xAmount);
@@ -74,6 +84,10 @@ public class Turtle extends ImageView{
 	public void setToOrigin() {
 		this.setX(ORIGIN);
 		this.setY(ORIGIN);
+	}
+
+	public void setID(double id) {
+		turtleID = id;
 	}
 
 	/**
@@ -107,20 +121,20 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		if(xCoord==1 && yCoord==0) {
-			this.setRotate(90);
-		} else if(xCoord==-1 && yCoord==0) {
-			this.setRotate(270);
-		} else if(xCoord==0 && yCoord==1) {
+		if(xCoord>0 && yCoord==0) {
+			this.setRotate(HALF_PI_SHIFT);
+		} else if(xCoord<0 && yCoord==0) {
+			this.setRotate(PI_SHIFT+HALF_PI_SHIFT);
+		} else if(xCoord==0 && yCoord>0) {
 			this.setRotate(0);
-		} else if(xCoord==0 && yCoord==-1) {
-			this.setRotate(180);
-		} else if(xCoord<0 && yCoord <0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+		} else if(xCoord==0 && yCoord<0) {
+			this.setRotate(PI_SHIFT);
+		} else if(xCoord<0 && yCoord<0){
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else if(xCoord<0 && yCoord>0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+180);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+PI_SHIFT);
 		} else if(xCoord>0 && yCoord<0) {
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+90);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
 		}
@@ -192,6 +206,11 @@ public class Turtle extends ImageView{
 		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
+
+
+	/**
+	 * Clears all the lines that were drawn by the turtle
+	 */
 
 	private void initializeImages() {
 		images= new HashMap<String, Image>();
