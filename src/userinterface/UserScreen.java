@@ -49,6 +49,8 @@ public class UserScreen extends Application
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
+    
+    private final double TURTLE_MOVE = 20.0;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -129,14 +131,14 @@ public class UserScreen extends Application
 
 				@Override
 				public void handle(KeyEvent event) {
-					if(event.getCode()==KeyCode.RIGHT) {
-						myTurtle.setX(myTurtle.getX()+20);
-					} else if(event.getCode()==KeyCode.LEFT) {
-						myTurtle.setX(myTurtle.getX()-20);
-					} else if(event.getCode()==KeyCode.UP) {
-						myTurtle.setY(myTurtle.getY()-20);
-					} else if(event.getCode()==KeyCode.DOWN) {
-						myTurtle.setY(myTurtle.getY()+20);
+					if(event.getCode()==KeyCode.R) {
+						myTurtle.setRotate(myTurtle.getRotate()+TURTLE_MOVE);
+					} else if(event.getCode()==KeyCode.L) {
+						myTurtle.setRotate(myTurtle.getRotate()-TURTLE_MOVE);
+					} else if(event.getCode()==KeyCode.F) {
+						myTurtle.move(myTurtle.getRotate(), TURTLE_MOVE);
+					} else if(event.getCode()==KeyCode.B) {
+						myTurtle.move(myTurtle.getRotate(), -1*TURTLE_MOVE);
 					}
 				}
             	
