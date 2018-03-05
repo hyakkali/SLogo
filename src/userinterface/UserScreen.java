@@ -2,22 +2,18 @@ package userinterface;
 
 import backend.SLogoModel;
 import backend.Variable;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -29,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import resources.languages.Language;
@@ -37,7 +32,6 @@ import resources.languages.LanguageFactory;
 import turtle.Turtle;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class UserScreen extends Application
 {
@@ -66,8 +60,7 @@ public class UserScreen extends Application
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     private HashMap<String, String> userCommands = new HashMap<String,String >();
     private HashMap<Variable,Turtle> varsList = new HashMap<Variable,Turtle>();
-    private Turtle myTurtle;
-//    private Pen pen;
+//    private Turtle myTurtle;
     private SLogoModel mySLogoModel;
     private VariableList variables;
     private TextArea commands;
@@ -83,8 +76,8 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
-        public UserScreen(Turtle t){
-        		this.myTurtle = t;
+        public UserScreen(ArrayList<Turtle> t){
+        		this.turtles = t;
         	}
 
        /* Add slogomodel to the view
@@ -96,7 +89,7 @@ public class UserScreen extends Application
          * start --this calls the menu related functions
          */
         public Scene setScene(int width, int length) {
-             Group root = new Group();
+            Group root = new Group();
             myScene = new Scene(root, width, length);
 
             setupProperties("English");
@@ -108,55 +101,53 @@ public class UserScreen extends Application
             turtlePane = new Pane();
             turtlePane.setPrefHeight(500);
             turtlePane.setPrefWidth(500);
-                        
-            myTurtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-				@Override
-				public void handle(MouseEvent event) {
-					MouseButton button = event.getButton();
-					if(button==MouseButton.PRIMARY) {
-						myTurtle.requestFocus();
-						//add set active or inactive
-					} else if(button==MouseButton.SECONDARY) {
-						ObservableList<MenuItem> menu = createContextMenuList();
-			        		ContextMenu cMenu = MenuBuilder.buildContext(menu);
-	        				cMenu.show(myTurtle, myTurtle.getX()+150, myTurtle.getY()+100);
-					}
-				}
-            		
-            });
             
-            turtlePane.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-				@Override
-				public void handle(KeyEvent event) {
-					if(event.getCode()==KeyCode.D) {
-						myTurtle.setRotate(myTurtle.getRotate()+TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.A) {
-						myTurtle.setRotate(myTurtle.getRotate()-TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.W) {
-						myTurtle.move(myTurtle.getRotate(), TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.S) {
-						myTurtle.move(myTurtle.getRotate(), -1*TURTLE_MOVE);
-					} else if(event.getCode()==KeyCode.D) {
-						myTurtle.pen.togglePenUpOrDown(true);
-					} else if(event.getCode()==KeyCode.U) {
-						myTurtle.pen.togglePenUpOrDown(false);
-					} else if(event.getCode()==KeyCode.Y) {
-						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()-PEN_THICKNESS);
-					} else if(event.getCode()==KeyCode.T) {
-						myTurtle.pen.setPenWidth(myTurtle.pen.getPenWidth()+PEN_THICKNESS);
-					}
-				}
+            for (Turtle turtle : turtles) {
             	
-            });
+                turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
+	    				@Override
+	    				public void handle(MouseEvent event) {
+	    					MouseButton button = event.getButton();
+	    					if(button==MouseButton.PRIMARY) {
+	    						turtle.requestFocus();
+	    						//add set active or inactive
+	    					} else if(button==MouseButton.SECONDARY) {
+	    						ObservableList<MenuItem> menu = createContextMenuList(turtle);
+	    			        		ContextMenu cMenu = MenuBuilder.buildContext(menu);
+	    	        				cMenu.show(turtle, turtle.getX()+150, turtle.getY()+100);
+	    					}
+	    				}
+                		
+                });
+                
+                turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
-            turtles.add(myTurtle);
-            turtlePane.getChildren().add(myTurtle);
-//            for (Turtle turtle : turtles) {
-//                turtlePane.getChildren().add(turtle);
-//            }
+	    				@Override
+	    				public void handle(KeyEvent event) {
+	    					if(event.getCode()==KeyCode.D) {
+	    						turtle.setRotate(turtle.getRotate()+TURTLE_MOVE);
+	    					} else if(event.getCode()==KeyCode.A) {
+	    						turtle.setRotate(turtle.getRotate()-TURTLE_MOVE);
+	    					} else if(event.getCode()==KeyCode.W) {
+	    						turtle.move(turtle.getRotate(), TURTLE_MOVE);
+	    					} else if(event.getCode()==KeyCode.S) {
+	    						turtle.move(turtle.getRotate(), -1*TURTLE_MOVE);
+	    					} else if(event.getCode()==KeyCode.D) {
+	    						turtle.pen.togglePenUpOrDown(true);
+	    					} else if(event.getCode()==KeyCode.U) {
+	    						turtle.pen.togglePenUpOrDown(false);
+	    					} else if(event.getCode()==KeyCode.Y) {
+	    						turtle.pen.setPenWidth(turtle.pen.getPenWidth()-PEN_THICKNESS);
+	    					} else if(event.getCode()==KeyCode.T) {
+	    						turtle.pen.setPenWidth(turtle.pen.getPenWidth()+PEN_THICKNESS);
+	    					}
+	    				}
+                	
+                });
+            		
+            		turtlePane.getChildren().add(turtle);
+            }
 
             form.setRight(right);
             form.setBottom(bottom);
@@ -180,10 +171,10 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-            drawLine();
+        		for(Turtle turtle: turtles) {
+        			drawLine(turtle);
+        		}
         }
-        
-        
 
         /* creates the scene within the stage by calling setScene
          * defines/ initializes the state and begins stepping
@@ -332,16 +323,18 @@ public class UserScreen extends Application
          * make the turtle invisible on the form
          * in response to commands from backend
          */
-        public void toggleTurtle(boolean t){myTurtle.setVisible(t);}
+        public void toggleTurtle(boolean t, Turtle turtle){
+        		turtle.setVisible(t);
+        	}
         
-        private ObservableList<MenuItem> createContextMenuList() {
+        private ObservableList<MenuItem> createContextMenuList(Turtle turtle) {
         		ObservableList<MenuItem> menu = FXCollections.observableArrayList();
-        		MenuItem mItem1 = new MenuItem("X: "+Double.toString(myTurtle.getX()));
-        		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(myTurtle.getY()));
-        		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(myTurtle.getRotate()%360.0));
-        		MenuItem mItem4 = new MenuItem("Color: "+myTurtle.pen.getPenColor());
-        		MenuItem mItem5 = new MenuItem("Up/Down: "+myTurtle.pen.getPenBoolean());
-        		MenuItem mItem6 = new MenuItem("Thickness: "+myTurtle.pen.getPenWidth());
+        		MenuItem mItem1 = new MenuItem("X: "+Double.toString(turtle.getX()));
+        		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(turtle.getY()));
+        		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(turtle.getRotate()%360.0));
+        		MenuItem mItem4 = new MenuItem("Color: "+turtle.pen.getPenColor());
+        		MenuItem mItem5 = new MenuItem("Up/Down: "+turtle.pen.getPenBoolean());
+        		MenuItem mItem6 = new MenuItem("Thickness: "+turtle.pen.getPenWidth());
         		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6);
         		return menu;
         }
@@ -362,8 +355,8 @@ public class UserScreen extends Application
         /* called to update the form to show the path
          * whenever the locatoun of turtle is changed
          */
-        private void drawLine() {
-            for(Line l:myTurtle.pen.getLines())
+        private void drawLine(Turtle turtle) {
+            for(Line l:turtle.pen.getLines())
             {
                 if(!turtlePane.getChildren().contains(l)){
                     turtlePane.getChildren().add(l);
@@ -433,7 +426,9 @@ public class UserScreen extends Application
 
     private void setPenColor(String color)
     {
-        myTurtle.pen.setPenColor(Color.web(color));
+    		for(Turtle turtle: turtles) {
+    	        turtle.pen.setPenColor(Color.web(color));
+    		}
     }
 
     /* Defines the onAction of the language combo box
@@ -453,7 +448,9 @@ public class UserScreen extends Application
 
     private void changeTurtleImage(String image)
     {
-        myTurtle.setImage(image);
+    		for(Turtle turtle:turtles) {
+    	        turtle.setImage(image);
+    		}
     }
 
 
