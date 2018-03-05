@@ -114,6 +114,7 @@ public class UserScreen extends Application
 				public void handle(MouseEvent event) {
 					MouseButton button = event.getButton();
 					if(button==MouseButton.PRIMARY) {
+						myTurtle.requestFocus();
 						//add set active or inactive
 					} else if(button==MouseButton.SECONDARY) {
 						ObservableList<MenuItem> menu = createContextMenuList();
@@ -122,6 +123,23 @@ public class UserScreen extends Application
 					}
 				}
             		
+            });
+            
+            turtlePane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+				@Override
+				public void handle(KeyEvent event) {
+					if(event.getCode()==KeyCode.RIGHT) {
+						myTurtle.setX(myTurtle.getX()+20);
+					} else if(event.getCode()==KeyCode.LEFT) {
+						myTurtle.setX(myTurtle.getX()-20);
+					} else if(event.getCode()==KeyCode.UP) {
+						myTurtle.setY(myTurtle.getY()-20);
+					} else if(event.getCode()==KeyCode.DOWN) {
+						myTurtle.setY(myTurtle.getY()+20);
+					}
+				}
+            	
             });
 
 
