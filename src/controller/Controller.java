@@ -27,7 +27,7 @@ public class Controller {
 	 * @param xCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleXLocation(double xCoord) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.setXPosition(xCoord);
 		}
 	}
@@ -37,7 +37,7 @@ public class Controller {
 	 * @param yCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleYLocation(double yCoord) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.setYPosition(yCoord);
 		}
 	}
@@ -56,7 +56,7 @@ public class Controller {
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.move(turtle.getRotate(), amount);
 		}
 	}
@@ -65,7 +65,7 @@ public class Controller {
 	 * @param heading Amount of degrees to rotate turtle
 	 */
 	public void rotateTurtle(double heading) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.rotate(heading);
 		}
 	}
@@ -74,7 +74,7 @@ public class Controller {
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.setHeading(heading);
 		}
 	}
@@ -84,7 +84,7 @@ public class Controller {
 	 * @param yCoord Y coordinate to set turtle towards
 	 */
 	public void setTurtleTowards(double xCoord, double yCoord) {
-		for(Turtle turtle: turtles) {
+		for(Turtle turtle: view.activeTurtles) {
 			turtle.setTowards(xCoord,yCoord);
 		}
 	}

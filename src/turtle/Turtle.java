@@ -17,7 +17,6 @@ public class Turtle extends ImageView{
 
 	private final double ORIGIN = 250;
 
-
 	private final double HALF_PI_SHIFT = 90.0;
 
 	private final double PI_SHIFT = 180.0;

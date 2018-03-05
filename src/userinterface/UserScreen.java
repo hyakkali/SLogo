@@ -58,6 +58,9 @@ public class UserScreen extends Application
     private ResourceBundle colors;
 
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
+    public ArrayList<Turtle> activeTurtles = new ArrayList<Turtle>();
+    private ArrayList<Turtle> inactiveTurtles = new ArrayList<Turtle>();
+
     private HashMap<String, String> userCommands = new HashMap<String,String >();
     private HashMap<Variable,Turtle> varsList = new HashMap<Variable,Turtle>();
 //    private Turtle myTurtle;
@@ -78,6 +81,7 @@ public class UserScreen extends Application
 
         public UserScreen(ArrayList<Turtle> t){
         		this.turtles = t;
+        		this.activeTurtles = t; //all turtles are active at initialization
         	}
 
        /* Add slogomodel to the view
@@ -110,7 +114,12 @@ public class UserScreen extends Application
 	    				public void handle(MouseEvent event) {
 	    					MouseButton button = event.getButton();
 	    					if(button==MouseButton.PRIMARY) {
-	    						turtle.requestFocus();
+	    						if(event.getClickCount()==2) {
+	    							inactiveTurtles.add(turtle);
+	    							activeTurtles.remove(turtle);
+	    						} else if(event.getClickCount()==1) {
+		    						turtle.requestFocus();
+	    						}
 	    						//add set active or inactive
 	    					} else if(button==MouseButton.SECONDARY) {
 	    						ObservableList<MenuItem> menu = createContextMenuList(turtle);
@@ -171,7 +180,7 @@ public class UserScreen extends Application
         }
         
         public void step(double elapsedTime) {
-        		for(Turtle turtle: turtles) {
+        		for(Turtle turtle: activeTurtles) {
         			drawLine(turtle);
         		}
         }
