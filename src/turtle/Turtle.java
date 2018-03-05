@@ -62,6 +62,7 @@ public class Turtle extends ImageView{
 	 */
 	public void move(double angle, double amount) {
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
+		System.out.println("moving!");
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		this.setX(this.getX()+xAmount);

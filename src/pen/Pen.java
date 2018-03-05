@@ -32,6 +32,7 @@ public abstract class Pen {
 	public Pen() {
 		this.penBoolean = true;
 		this.penColor = Color.BLACK;
+		this.penWidth = 1.0;
 	}
 
 	/**
