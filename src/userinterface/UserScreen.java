@@ -115,8 +115,13 @@ public class UserScreen extends Application
 	    					MouseButton button = event.getButton();
 	    					if(button==MouseButton.PRIMARY) {
 	    						if(event.getClickCount()==2) {
-	    							inactiveTurtles.add(turtle);
-	    							activeTurtles.remove(turtle);
+	    							if(activeTurtles.contains(turtle)) {
+		    							inactiveTurtles.add(turtle);
+		    							activeTurtles.remove(turtle);
+	    							} else {
+		    							inactiveTurtles.remove(turtle);
+		    							activeTurtles.add(turtle);
+	    							}
 	    						} else if(event.getClickCount()==1) {
 		    						turtle.requestFocus();
 	    						}
