@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -46,6 +47,9 @@ public class UserScreen extends Application
     
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
+    
+    private final double ACTIVE_TURTLE = 0.0;
+    private final double INACTIVE_TURTLE = 0.5;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -58,6 +62,9 @@ public class UserScreen extends Application
     private ResourceBundle colors;
 
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
+    public ArrayList<Turtle> activeTurtles = new ArrayList<Turtle>();
+    private ArrayList<Turtle> inactiveTurtles = new ArrayList<Turtle>();
+
     private HashMap<String, String> userCommands = new HashMap<String,String >();
     private HashMap<Variable,Turtle> varsList = new HashMap<Variable,Turtle>();
 //    private Turtle myTurtle;
@@ -78,6 +85,7 @@ public class UserScreen extends Application
 
         public UserScreen(ArrayList<Turtle> t){
         		this.turtles = t;
+        		this.activeTurtles = t; //all turtles are active at initialization
         	}
 
        /* Add slogomodel to the view
@@ -110,7 +118,21 @@ public class UserScreen extends Application
 	    				public void handle(MouseEvent event) {
 	    					MouseButton button = event.getButton();
 	    					if(button==MouseButton.PRIMARY) {
-	    						turtle.requestFocus();
+	    						if(event.getClickCount()==2) {
+	    							if(activeTurtles.contains(turtle)) {
+		    							inactiveTurtles.add(turtle);
+		    							activeTurtles.remove(turtle);
+		    							turtle.setActive(false);
+		    							turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+	    							} else {
+		    							inactiveTurtles.remove(turtle);
+		    							activeTurtles.add(turtle);
+		    							turtle.setActive(true);
+		    							turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+	    							}
+	    						} else if(event.getClickCount()==1) {
+		    						turtle.requestFocus();
+	    						}
 	    						//add set active or inactive
 	    					} else if(button==MouseButton.SECONDARY) {
 	    						ObservableList<MenuItem> menu = createContextMenuList(turtle);
@@ -170,8 +192,14 @@ public class UserScreen extends Application
 	    		animation.play();  
         }
         
+        private ColorAdjust changeImageBrightness(double value) {
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setBrightness(value);
+			return colorAdjust;
+        }
+        
         public void step(double elapsedTime) {
-        		for(Turtle turtle: turtles) {
+        		for(Turtle turtle: activeTurtles) {
         			drawLine(turtle);
         		}
         }
@@ -329,13 +357,15 @@ public class UserScreen extends Application
         
         private ObservableList<MenuItem> createContextMenuList(Turtle turtle) {
         		ObservableList<MenuItem> menu = FXCollections.observableArrayList();
+        		MenuItem mItem0 = new MenuItem("ID: "+Double.toString(turtle.getID()));
         		MenuItem mItem1 = new MenuItem("X: "+Double.toString(turtle.getX()));
         		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(turtle.getY()));
         		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(turtle.getRotate()%360.0));
         		MenuItem mItem4 = new MenuItem("Color: "+turtle.pen.getPenColor());
-        		MenuItem mItem5 = new MenuItem("Up/Down: "+turtle.pen.getPenBoolean());
+        		MenuItem mItem5 = new MenuItem("Pen Down: "+turtle.pen.getPenBoolean());
         		MenuItem mItem6 = new MenuItem("Thickness: "+turtle.pen.getPenWidth());
-        		menu.addAll(mItem1,mItem2,mItem3,mItem4,mItem5,mItem6);
+        		MenuItem mItem7 = new MenuItem("Active: "+turtle.getActive());
+        		menu.addAll(mItem0,mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7);
         		return menu;
         }
 
