@@ -20,22 +20,32 @@ public class MenuBuilder {
     /* Defines the location and color options for setting the color
      * of the lines the turtle draws and returns to VBox to add to menu
      */
-    public static ComboBox buildCombo(String prompt, ResourceBundle options,Consumer<String> event)
-    {
+    public static ComboBox buildCombo(String prompt, ResourceBundle options,Consumer<String> event) {
 
         ObservableList<String> list = FXCollections.observableArrayList(new ArrayList<String>(options.keySet()));
-        ComboBox<String> combobox = new ComboBox<>(list);
+        ComboBox<String> combobox = new ComboBox<>();
+        int index = 0;
+        for (String option : options.keySet()){
+            combobox.getItems().add(String.valueOf(index)+ " "+option);
+        index++;
+        }
         combobox.setPromptText(prompt);
-        combobox.setOnAction(e->event.accept(options.getString(combobox.getValue())));
+        combobox.setOnAction(e->event.accept(options.getString(combobox.getValue().substring(combobox.getValue().indexOf(" ")+1))));
         combobox.setPrefWidth(200);
         return combobox;
     }
 
     public static ComboBox buildCombo(String prompt, ObservableList<String> list,Consumer<String> event)
     {
-        ComboBox<String> combobox = new ComboBox<>(list);
+        ComboBox<String> combobox = new ComboBox<>();
+
+        int index = 0;
+        for (String option : list){
+            combobox.getItems().add(String.valueOf(index)+ " "+option);
+            index++;
+        }
         combobox.setPromptText(prompt);
-        combobox.setOnAction(e->event.accept(combobox.getValue()));
+        combobox.setOnAction(e->event.accept(combobox.getValue().substring(combobox.getValue().indexOf(" ")+1)));
         combobox.setPrefWidth(200);
         return combobox;
     }

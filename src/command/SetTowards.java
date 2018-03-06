@@ -1,3 +1,4 @@
+
 //package command;
 //
 //import controller.Controller;
@@ -28,11 +29,3 @@
 //	 */
 //	@Override
 //	public double execute(Controller controller) {
-//		// need to keep track of the previous heading, and then subtract from the new one
-//		double prevHeading = controller.getTurtleHeading();
-//		controller.setTurtleTowards(this.x, this.y);
-//		// heading is now updated, so we call it again
-//		return Math.abs(controller.getTurtleHeading() - prevHeading);
-//	}
-//
-//}
