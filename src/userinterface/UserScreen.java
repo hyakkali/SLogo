@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -46,6 +47,9 @@ public class UserScreen extends Application
     
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
+    
+    private final double ACTIVE_TURTLE = 0.0;
+    private final double INACTIVE_TURTLE = 0.5;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -119,10 +123,12 @@ public class UserScreen extends Application
 		    							inactiveTurtles.add(turtle);
 		    							activeTurtles.remove(turtle);
 		    							turtle.setActive(false);
+		    							turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
 	    							} else {
 		    							inactiveTurtles.remove(turtle);
 		    							activeTurtles.add(turtle);
 		    							turtle.setActive(true);
+		    							turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
 	    							}
 	    						} else if(event.getClickCount()==1) {
 		    						turtle.requestFocus();
@@ -184,6 +190,12 @@ public class UserScreen extends Application
 	    		animation.setCycleCount(Timeline.INDEFINITE);
 	    		animation.getKeyFrames().add(frame);
 	    		animation.play();  
+        }
+        
+        private ColorAdjust changeImageBrightness(double value) {
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setBrightness(value);
+			return colorAdjust;
         }
         
         public void step(double elapsedTime) {
