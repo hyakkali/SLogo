@@ -1,11 +1,10 @@
 package controller;
 import javafx.scene.paint.Color;
-import pen.Pen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
-import java.util.List;
-import backend.Variable;
+
+import java.util.ArrayList;
 
 
 /**
@@ -16,13 +15,11 @@ import backend.Variable;
 public class Controller {
 
 	private UserScreen view;
-	private Turtle turtle;
-	private Pen pen;
+	private ArrayList<Turtle> turtles;
 
-	public Controller(UserScreen view, Turtle turtle, Pen pen){
+	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
-		this.turtle = turtle;
-		this.pen = pen;
+		this.turtles = turtles;
 	}
 
 	/**
@@ -30,7 +27,9 @@ public class Controller {
 	 * @param xCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleXLocation(double xCoord) {
-		turtle.setXPosition(xCoord);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.setXPosition(xCoord);
+		}
 	}
 
 	/**
@@ -38,7 +37,9 @@ public class Controller {
 	 * @param yCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleYLocation(double yCoord) {
-		turtle.setYPosition(yCoord);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.setYPosition(yCoord);
+		}
 	}
 
 	/**
@@ -46,28 +47,36 @@ public class Controller {
 	 * @param id Double id to identify a turtle
 	 */
 	public void setTurtleID(double id) {
-		turtle.setID(id);
+		for(Turtle turtle: turtles) {
+			turtle.setID(id);
+		}
 	}
 
 	/**
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		turtle.move(turtle.getRotate(), amount);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.move(turtle.getRotate(), amount);
+		}
 	}
 
 	/**
 	 * @param heading Amount of degrees to rotate turtle
 	 */
 	public void rotateTurtle(double heading) {
-		turtle.rotate(heading);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.rotate(heading);
+		}
 	}
 
 	/**
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
-		turtle.setHeading(heading);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.setHeading(heading);
+		}
 	}
 
 	/**
@@ -75,7 +84,9 @@ public class Controller {
 	 * @param yCoord Y coordinate to set turtle towards
 	 */
 	public void setTurtleTowards(double xCoord, double yCoord) {
-		turtle.setTowards(xCoord,yCoord);
+		for(Turtle turtle: view.activeTurtles) {
+			turtle.setTowards(xCoord,yCoord);
+		}
 	}
 
 	/**
@@ -83,7 +94,9 @@ public class Controller {
 	 * @param penBoolean Boolean of true or false
 	 */
 	public void togglePen(boolean penBoolean) {
-		pen.togglePenUpOrDown(penBoolean);
+		for(Turtle turtle: turtles) {
+			turtle.pen.togglePenUpOrDown(penBoolean);
+		}
 	}
 
 	/**
@@ -91,11 +104,15 @@ public class Controller {
 	 * @param color Color of the pen
 	 */
 	public void setViewPenColor(Color color) {
-		pen.setPenColor(color);
+		for(Turtle turtle: turtles) {
+			turtle.pen.setPenColor(color);
+		}
 	}
 
 	public void setPenWidth(double width) {
-		pen.setPenWidth(width);
+		for(Turtle turtle: turtles) {
+			turtle.pen.setPenWidth(width);
+		}
 	}
 
 	/**
@@ -110,7 +127,9 @@ public class Controller {
 	 * Sets turtle back to (0,0)
 	 */
 	public void resetTurtlePosition() {
-		turtle.setToOrigin();
+		for(Turtle turtle: turtles) {
+			turtle.setToOrigin();
+		}
 	}
 
 	/**
@@ -118,7 +137,9 @@ public class Controller {
 	 * @param showTurtle Boolean of true or false
 	 */
 	public void toggleTurtleDisplay(boolean showTurtle) {
-		turtle.toggleTurtle(showTurtle);
+		for(Turtle turtle: turtles) {
+			turtle.toggleTurtle(showTurtle);
+		}
 	}
 
 	/**
@@ -149,36 +170,56 @@ public class Controller {
 	/**
 	 * @return Current heading of the turtle
 	 */
-	public double getTurtleHeading() {
-		return turtle.getRotate();
+	public ArrayList<Double> getTurtleHeading() {
+		ArrayList<Double> headingList = new ArrayList<>();
+		for(Turtle turtle: turtles) {
+			headingList.add(turtle.getRotate());
+		}
+		return headingList;
 	}
 
 	/**
 	 * @return X coordinate of the turtle
 	 */
-	public double getTurtleXLocation() {
-		return turtle.getLayoutX();
+	public ArrayList<Double> getTurtleXLocation() {
+		ArrayList<Double> xCoordList = new ArrayList<>();
+		for(Turtle turtle: turtles) {
+			xCoordList.add(turtle.getX());
+		}
+		return xCoordList;
 	}
 
 	/**
 	 * @return Y coordinate of the turtle
 	 */
-	public double getTurtleYLocation() {
-		return turtle.getLayoutY();
+	public ArrayList<Double> getTurtleYLocation() {
+		ArrayList<Double> yCoordList = new ArrayList<>();
+		for(Turtle turtle: turtles) {
+			yCoordList.add(turtle.getY());
+		}
+		return yCoordList;
 	}
 
 	/**
 	 * @return Whether or not pen is down
 	 */
-	public boolean getIsPen() {
-		return pen.getPenBoolean();
+	public ArrayList<Boolean> getIsPen() {
+		ArrayList<Boolean> isPenList = new ArrayList<>();
+		for(Turtle turtle: turtles) {
+			isPenList.add(turtle.pen.getPenBoolean());
+		}
+		return isPenList;
 	}
 
 	/**
 	 * @return Whether or not turtle is visible
 	 */
-	public boolean getIsTurtle() {
-		return turtle.getTurtleBoolean();
+	public ArrayList<Boolean> getIsTurtle() {
+		ArrayList<Boolean> isTurtleList = new ArrayList<>();
+		for(Turtle turtle: turtles) {
+			isTurtleList.add(turtle.getTurtleBoolean());
+		}
+		return isTurtleList;
 	}
 
 	public SLogoData getMyData() {
