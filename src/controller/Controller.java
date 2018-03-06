@@ -226,4 +226,8 @@ public class Controller {
 		return view.getMyModel().getMyData();
 	}
 
+	public Integer getNumTurtles() {
+		return turtles.size();
+	}
+
 }
