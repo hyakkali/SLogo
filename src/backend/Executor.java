@@ -95,7 +95,7 @@ public class Executor {
 
             // deal with lists here
             else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
-                Stack<String> tempStack = handleLists(input);
+                Stack<String> tempStack = new Stack<String>();
                 // pop once to get ride of the ListEnd, which we don't want on the stack
                 input.pop();
                 while (true) {
@@ -124,51 +124,51 @@ public class Executor {
 
 
 
-    private Stack<String> handleLists(Stack<String> input) {
-
-        Queue<String> tempInput = new PriorityQueue<>(input);
-
-        if (tempInput.peek().equals("repeat")) {
-            Stack<String> newInput = new Stack<>();
-            newInput.push(tempInput.poll());
-            String repeatVal = tempInput.poll();
-            newInput.addAll(tempInput);
-            newInput.push(repeatVal);
-            return newInput;
-        }
-
-
-        else if (tempInput.get(0).equals("if")) {
-            tempInput.remove(0);
-            tempInput.removeAll(brackets);
-            double ifVal = Double.parseDouble(tempInput.get(0));
-            tempInput.remove(0);
-            if (ifVal != 0.0) {
-                newInput.addAll(tempInput);
-            }
-            return newInput;
-        }
-
-
-
-        //Commands using 2 sets of brackets
-//        else if (tempInput.get(0).equals("for")) {
-//            tempInput.remove(0);
-//        }
-//        else if (tempInput.get(0).equals("dotimes")) {
-//            tempInput.remove(0);
-//        }
-//        else if (tempInput.get(0).equals("ifelse")) {
-//            tempInput.remove(0);
+//    private Stack<String> handleLists(Stack<String> input) {
 //
-//        }
-//        else if (tempInput.get(0).equals("to")) {
-//            tempInput.remove(0);
+//        Queue<String> tempInput = new PriorityQueue<>(input);
 //
+//        if (tempInput.peek().equals("repeat")) {
+//            Stack<String> newInput = new Stack<>();
+//            newInput.push(tempInput.poll());
+//            String repeatVal = tempInput.poll();
+//            newInput.addAll(tempInput);
+//            newInput.push(repeatVal);
+//            return newInput;
 //        }
-
-
-    }
+//
+//
+//        else if (tempInput.get(0).equals("if")) {
+//            tempInput.remove(0);
+//            tempInput.removeAll(brackets);
+//            double ifVal = Double.parseDouble(tempInput.get(0));
+//            tempInput.remove(0);
+//            if (ifVal != 0.0) {
+//                newInput.addAll(tempInput);
+//            }
+//            return newInput;
+//        }
+//
+//
+//
+//        //Commands using 2 sets of brackets
+////        else if (tempInput.get(0).equals("for")) {
+////            tempInput.remove(0);
+////        }
+////        else if (tempInput.get(0).equals("dotimes")) {
+////            tempInput.remove(0);
+////        }
+////        else if (tempInput.get(0).equals("ifelse")) {
+////            tempInput.remove(0);
+////
+////        }
+////        else if (tempInput.get(0).equals("to")) {
+////            tempInput.remove(0);
+////
+////        }
+//
+//
+//    }
 
     private Stack<String> reverseStack(Stack<String> stack) {
         Stack<String> ret = new Stack<>();
