@@ -20,6 +20,7 @@ public class XCoordinate implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return controller.getTurtleXLocation();
+		return 1;
+		//return controller.getTurtleXLocation();
 	}
 }

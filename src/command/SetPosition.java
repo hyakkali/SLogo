@@ -30,12 +30,13 @@ public class SetPosition implements Command {
 	@Override
 	public double execute(Controller controller) {
 		// calculate distance using distance formula 
-		double turtleX = controller.getTurtleXLocation();
-		double turtleY = controller.getTurtleYLocation();
-		double distance = Math.sqrt(Math.pow(this.x - turtleX, 2) + Math.pow(this.y - turtleY, 2));
-		controller.setTurtleXLocation(this.x);
-		controller.setTurtleYLocation(this.y);
-		return distance;
+//		double turtleX = controller.getTurtleXLocation();
+//		double turtleY = controller.getTurtleYLocation();
+//		double distance = Math.sqrt(Math.pow(this.x - turtleX, 2) + Math.pow(this.y - turtleY, 2));
+//		controller.setTurtleXLocation(this.x);
+//		controller.setTurtleYLocation(this.y);
+//		return distance;
+		return 5;
 	}
 
 }

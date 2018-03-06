@@ -2,6 +2,7 @@ package userinterface;
 
 import backend.SLogoModel;
 import backend.Variable;
+import javafx.scene.image.Image;
 import javafx.scene.web.WebEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -260,6 +261,8 @@ public class UserScreen extends Application
 
             commands = getCommandsList();
             variables = new VariableList(XSIZE,YSIZE);
+            ScrollPane scroll = new ScrollPane( variables);
+            scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
             ObservableList<String> images =FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
             ObservableList<String> languages =FXCollections.observableArrayList(languageOptions);
@@ -275,7 +278,7 @@ public class UserScreen extends Application
             interactives.setAlignment(Pos.CENTER);
             interactives.setSpacing(10);
             interactives.getChildren().addAll(language, background, imageCombo,
-                    lineCombo, commands, variables, buttons);
+                    lineCombo, commands, scroll, buttons);
 
             return interactives;
         }
@@ -361,11 +364,23 @@ public class UserScreen extends Application
         		MenuItem mItem1 = new MenuItem("X: "+Double.toString(turtle.getX()));
         		MenuItem mItem2 = new MenuItem("Y: "+Double.toString(turtle.getY()));
         		MenuItem mItem3 = new MenuItem("Heading: "+Double.toString(turtle.getRotate()%360.0));
-        		MenuItem mItem4 = new MenuItem("Color: "+turtle.pen.getPenColor());
+                Menu mItem4 = new Menu("Set Color");
+                    for(String color: colors.keySet()) {
+                        MenuItem colorOption = new MenuItem(color);
+                        colorOption.setOnAction(k -> turtle.pen.setPenColor(Color.valueOf(color)));
+                        mItem4.getItems().add(colorOption);
+                    }
         		MenuItem mItem5 = new MenuItem("Pen Down: "+turtle.pen.getPenBoolean());
         		MenuItem mItem6 = new MenuItem("Thickness: "+turtle.pen.getPenWidth());
+        		Menu mItem8 = new Menu("Set Image");
+        		for(String image: turtleImages.keySet()) {
+                    MenuItem colorOption = new MenuItem(image);
+                    colorOption.setOnAction(k -> turtle.setImage(new Image("File:images/"+turtleImages.getString(image))));
+                    mItem8.getItems().add(colorOption);
+                }
+
         		MenuItem mItem7 = new MenuItem("Active: "+turtle.getActive());
-        		menu.addAll(mItem0,mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7);
+        		menu.addAll(mItem0,mItem1,mItem2,mItem3,mItem4,mItem5,mItem6,mItem7,mItem8);
         		return menu;
         }
 
@@ -434,16 +449,16 @@ public class UserScreen extends Application
      * and redraws the UI
      */
     private void reset() {
-//        myTurtle.setToOrigin();
-//        myTurtle.setHeading(0);
-//        for(Line l: lines)
-//        {
-//            turtlePane.getChildren().remove(l);
-//        }
-//        lines.clear();
-//        pen.clearLines();
-        variables.addVariable(new Variable("Test",.9));
-
+        for(Turtle t : turtles) {
+            t.setToOrigin();
+            t.setHeading(0);
+            t.pen.clearLines();
+        }
+        for(Line l: lines)
+        {
+            turtlePane.getChildren().remove(l);
+        }
+        lines.clear();
     }
 
     /* Defines the actions to be taken

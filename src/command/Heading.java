@@ -20,6 +20,7 @@ public class Heading implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return controller.getTurtleHeading();
+		return 1;
+		//return controller.getTurtleHeading();
 	}
 }

@@ -26,9 +26,10 @@ public class SetHeading implements Command {
 	@Override
 	public double execute(Controller controller) {
 		// we need to return number of degrees moved, so subtract the current heading from the desired absolute heading
-		double degreesMoved = this.heading - controller.getTurtleHeading();
-		controller.setTurtleHeading(this.heading);
-		return Math.abs(degreesMoved);
+//		double degreesMoved = this.heading - controller.getTurtleHeading();
+//		controller.setTurtleHeading(this.heading);
+//		return Math.abs(degreesMoved);
+		return 1;
 	}
 
 }

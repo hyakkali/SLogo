@@ -20,6 +20,7 @@ public class IsShowing implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return controller.getIsTurtle() ? 1 : 0;
+		return 5;
+		//return controller.getIsTurtle() ? 1 : 0;
 	}
 }

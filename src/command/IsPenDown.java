@@ -20,6 +20,7 @@ public class IsPenDown implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return controller.getIsPen() ? 1 : 0;
+		return 1;
+		//return controller.getIsPen() ? 1 : 0;
 	}
 }

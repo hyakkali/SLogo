@@ -20,6 +20,7 @@ public class YCoordinate implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return controller.getTurtleYLocation();
+		return 1;
+		//return controller.getTurtleYLocation();
 	}
 }
