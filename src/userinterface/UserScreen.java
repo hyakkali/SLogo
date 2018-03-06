@@ -65,10 +65,11 @@ public class UserScreen extends Application
     private ArrayList<Turtle> turtles = new ArrayList<Turtle>();
     public ArrayList<Turtle> activeTurtles = new ArrayList<Turtle>();
     private ArrayList<Turtle> inactiveTurtles = new ArrayList<Turtle>();
+    private HashMap<Integer, String> colorMap = new HashMap<Integer,String>();
+    private HashMap<Integer, String> imageMap = new HashMap<Integer,String>();
 
     private HashMap<String, String> userCommands = new HashMap<String,String >();
     private HashMap<Variable,Turtle> varsList = new HashMap<Variable,Turtle>();
-//    private Turtle myTurtle;
     private SLogoModel mySLogoModel;
     private VariableList variables;
     private TextArea commands;
@@ -84,6 +85,8 @@ public class UserScreen extends Application
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
 
+       /* adds the turtles called for by controller to the userscreen
+        */
         public UserScreen(ArrayList<Turtle> t){
         		this.turtles = t;
         		this.activeTurtles = t; //all turtles are active at initialization
@@ -183,7 +186,11 @@ public class UserScreen extends Application
 
             return myScene;
         }
-        
+
+
+        /* animated the screen
+
+         */
         public void beginAnimationLoop() {
 	    		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 	    				e -> step(SECOND_DELAY));
@@ -192,7 +199,10 @@ public class UserScreen extends Application
 	    		animation.getKeyFrames().add(frame);
 	    		animation.play();  
         }
-        
+
+        /*  changes the brightness of the turtle
+
+         */
         private ColorAdjust changeImageBrightness(double value) {
 			ColorAdjust colorAdjust = new ColorAdjust();
 			colorAdjust.setBrightness(value);
@@ -227,6 +237,18 @@ public class UserScreen extends Application
             turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
             properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
             colors = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
+            int index=0;
+            for(String color : colors.keySet()){
+                colorMap.put(index,color);
+                index++;
+            }
+
+            index=0;
+            for(String color : turtleImages.keySet()){
+                imageMap.put(index,color);
+                index++;
+            }
+
             try {
                 descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang + "Descriptions");
             }
@@ -474,6 +496,30 @@ public class UserScreen extends Application
     		for(Turtle turtle: turtles) {
     	        turtle.pen.setPenColor(Color.web(color));
     		}
+    }
+
+    public void setPenColor(double d)
+    {
+        int index = (int)d;
+        setPenColor(colorMap.get(index));
+    }
+
+    public void setBackGroundColor(double d)
+    {
+        int index = (int)d;
+        changeBackground(colorMap.get(index));
+    }
+
+    public void setTurtleImage(double d)
+    {
+        int index = (int)d;
+        changeTurtleImage(imageMap.get(index));
+    }
+
+    public void setLanguage(double d)
+    {
+        int index = (int)d;
+        changeLanguage(languageOptions[index]);
     }
 
     /* Defines the onAction of the language combo box
