@@ -106,31 +106,36 @@ public class UserScreen extends Application
 
             setupProperties("English");
 
+            setupTurtlePane();
             VBox right = createSideMenu();
             HBox bottom = createBottomMenu();
-            BorderPane form = new BorderPane();
-
-            turtlePane = new Pane();
-            turtlePane.setPrefHeight(500);
-            turtlePane.setPrefWidth(500);
+            BorderPane form = setupBorderPane(right,bottom);
             
             setupTurtleMouseClicks();
             setupTurtleKeys();
             
-            for (Turtle turtle : turtles) {
-            		turtlePane.getChildren().add(turtle);
-            }
-
-            form.setRight(right);
-            form.setBottom(bottom);
-            form.setCenter(turtlePane);
-            form.setPrefSize(XSIZE, YSIZE);
+            turtlePane.getChildren().addAll(turtles);
 
             root.getChildren().add(form);
             
             beginAnimationLoop();
 
             return myScene;
+        }
+        
+        private BorderPane setupBorderPane(VBox right, HBox bottom) {
+            BorderPane form = new BorderPane();
+            form.setRight(right);
+            form.setBottom(bottom);
+            form.setCenter(turtlePane);
+            form.setPrefSize(XSIZE, YSIZE);
+            return form;
+        }
+        
+        private void setupTurtlePane() {
+            turtlePane = new Pane();
+            turtlePane.setPrefHeight(500);
+            turtlePane.setPrefWidth(500);
         }
         
         private void setupTurtleMouseClicks() {
