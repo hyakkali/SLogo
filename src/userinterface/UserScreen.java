@@ -488,13 +488,8 @@ public class UserScreen extends Application
         for(Turtle t : turtles) {
             t.setToOrigin();
             t.setHeading(0);
-            t.pen.clearLines();
         }
-        for(Line l: lines)
-        {
-            turtlePane.getChildren().remove(l);
-        }
-        lines.clear();
+        clearLines();
     }
     
     public void clearLines() {
