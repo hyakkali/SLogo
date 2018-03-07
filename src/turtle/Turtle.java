@@ -2,9 +2,19 @@ package turtle;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import pen.LinePen;
 import pen.Pen;
+import userinterface.MenuBuilder;
 
 /**
  * 
@@ -54,6 +64,7 @@ public class Turtle extends ImageView{
 		this.turtleID = Id;
 		setToOrigin();
 	}
+
 
 	/**
 	 * 
@@ -231,6 +242,25 @@ public class Turtle extends ImageView{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
 		}
+	}
+
+
+	public Turtle clone()
+	{
+		Pen copyPen = new LinePen();
+		copyPen.setPenColor(this.pen.getPenColor());
+		copyPen.setPenWidth(this.pen.getPenWidth());
+		copyPen.setStartLineLocation(this.getX(),this.getY());
+
+
+		Turtle copy = new Turtle(copyPen,this.getID());
+		copy.setImage(this.getImage());
+		copy.setX(this.getX());
+		copy.setY(this.getY());
+		copy.setRotate(this.getRotate());
+		copy.setVisible(this.isVisible());
+
+		return copy;
 	}
 
 }

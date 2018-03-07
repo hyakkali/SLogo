@@ -45,7 +45,8 @@ public class MenuBuilder {
             index++;
         }
         combobox.setPromptText(prompt);
-        combobox.setOnAction(e->event.accept(combobox.getValue().substring(combobox.getValue().indexOf(" ")+1)));
+        combobox.setOnAction(e->{event.accept(combobox.getValue().substring(combobox.getValue().indexOf(" ")+1));
+            combobox.setPromptText(prompt);});
         combobox.setPrefWidth(200);
         return combobox;
     }
