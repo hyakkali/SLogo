@@ -119,8 +119,7 @@ public class Controller {
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-		//		turtle.clearLines();
-		//		view.removeLines();
+		view.clearLines();
 	}
 
 	/**

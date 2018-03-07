@@ -496,6 +496,16 @@ public class UserScreen extends Application
         }
         lines.clear();
     }
+    
+    public void clearLines() {
+    		for(Turtle turtle:turtles) {
+    			turtle.pen.clearLines();
+    		}
+    		for(Line l:lines) {
+    			turtlePane.getChildren().remove(l);
+    		}
+    		lines.clear();
+    }
 
     /* Defines the actions to be taken
      *  when the user types in the console
