@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import java.util.HashMap;
+import java.util.List;
 
 public class VariableList extends VBox {
     //Make a tableview
@@ -25,31 +26,30 @@ public class VariableList extends VBox {
         setPrefHeight(YSIZE / 7 * 2);
     }
 
-    public void addVariable(Variable v)
+    public void addVariables(List<Variable> variables)
     {
+        for(Variable v : variables) {
+            String name = v.getName();
+            double info = v.getValue();
+            if (!list.containsValue(v)) {
+                TextField variableVal = new TextField(String.valueOf(info));
+                variableVal.setOnKeyPressed(k -> {
+                    if (k.getCode().equals(KeyCode.ENTER)) changeVar(v.getName(), variableVal);
+                });
+                Text variableName = new Text(name + ": ");
+                variableVal.setPrefWidth(160 - variableName.getText().length() * 5);
+                variableVal.setAlignment(Pos.CENTER_RIGHT);
+                HBox varNameCombo = new HBox();
+                varNameCombo.getChildren().addAll(variableName, variableVal);
+                list.put(variableVal, v);
 
-        String name = v.getName();
-        double info = v.getValue();
-        if(!list.containsValue(v))
-        {
-            TextField variableVal = new TextField(String.valueOf(info));
-            variableVal.setOnKeyPressed(k->{if(k.getCode().equals(KeyCode.ENTER)) changeVar(v.getName(),variableVal);});
-            Text variableName = new Text(name +": ");
-            variableVal.setPrefWidth(160-variableName.getText().length()*5);
-            variableVal.setAlignment(Pos.CENTER_RIGHT);
-            HBox varNameCombo= new HBox();
-            varNameCombo.getChildren().addAll(variableName,variableVal);
-            list.put(variableVal,v);
-
-            this.getChildren().add(varNameCombo);
-        }
-        else
-        {
-            for(TextField t: list.keySet())
-            {
-                if(list.get(t).equals(v)) {
-                    t.setText(String.valueOf(v.getValue()));
-                    break;
+                this.getChildren().add(varNameCombo);
+            } else {
+                for (TextField t : list.keySet()) {
+                    if (list.get(t).equals(v)) {
+                        t.setText(String.valueOf(v.getValue()));
+                        break;
+                    }
                 }
             }
         }
