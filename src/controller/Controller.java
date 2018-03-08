@@ -230,4 +230,18 @@ public class Controller {
 		return turtles.size();
 	}
 
+	public void setMyColor(double colorID) {
+		view.setPenColor(colorID);
+	}
+
+	public void setMyBackground(double colorID) {
+		view.setBackGroundColor(colorID);
+	}
+
+
+	public void setMyShape(double shapeID) {
+		view.setTurtleImage(shapeID);
+	}
+
+
 }
