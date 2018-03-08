@@ -2,19 +2,10 @@ package turtle;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import pen.LinePen;
 import pen.Pen;
-import userinterface.MenuBuilder;
 
 /**
  * 
@@ -28,6 +19,14 @@ public class Turtle extends ImageView{
 	private final double ORIGIN = 250;
 
 	private final double HALF_PI_SHIFT = 90.0;
+	
+	private double xEndLoc;
+	
+	private double yEndLoc;
+	
+	private double xSpeed;
+	
+	private double ySpeed;
 
 	private double turtleID;
 
@@ -35,11 +34,6 @@ public class Turtle extends ImageView{
 	 * String of path to an image file
 	 */
 	private String imageURL = "TMNT.png";
-
-	/**
-	 * Image object of the turtle
-	 */
-	private Image turtleImage;
 	
 	private boolean isActive;
 
@@ -62,6 +56,10 @@ public class Turtle extends ImageView{
 		this.pen = pen;
 		this.isActive = true;
 		this.turtleID = Id;
+		this.xEndLoc = ORIGIN;
+		this.yEndLoc = ORIGIN;
+		this.xSpeed = 30;
+		this.ySpeed = 30;
 		setToOrigin();
 	}
 
@@ -72,12 +70,36 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
+		System.out.println(amount);
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		this.setX(this.getX()+xAmount);
-		this.setY(this.getY()-yAmount);
+		if(amount<0||angle<0) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(xSpeed);
+		} else {
+			this.xSpeed = Math.abs(ySpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		}
+		this.xEndLoc = this.getX()+xAmount;
+		this.yEndLoc = this.getY()-yAmount;
 		pen.drawLine(xAmount, yAmount);
+	}
+	
+	public double getXEnd() {
+		return this.xEndLoc;
+	}
+	
+	public double getYEnd() {
+		return this.yEndLoc;
+	}
+	
+	public double getXSpeed() {
+		return this.xSpeed;
+	}
+	
+	public double getYSpeed() {
+		return this.ySpeed;
 	}
 
 	/**
@@ -135,19 +157,15 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		if(xCoord>0 && yCoord==0) {
-			this.setRotate(HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord==0) {
+		if(xCoord<0 && yCoord==0) {
 			this.setRotate(3*HALF_PI_SHIFT);
 		} else if(xCoord==0 && yCoord>0) {
 			this.setRotate(0);
-		} else if(xCoord==0 && yCoord<0) {
-			this.setRotate(2*HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord<0){
+		} else if(xCoord<=0 && yCoord<0){
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord>0){
+		} else if(xCoord<=0 && yCoord>0){
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+2*HALF_PI_SHIFT);
-		} else if(xCoord>0 && yCoord<0) {
+		} else if(xCoord>0 && yCoord<=0) {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
@@ -203,7 +221,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the x direction
 	 */ 
 	private double calculateXAmount(double angle, double amount) {
-		return amount*Math.sin(Math.toRadians(angle));
+		return Math.floor(amount*Math.sin(Math.toRadians(angle)));
 	}
 
 	/**
@@ -213,7 +231,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the y direction
 	 */ 
 	private double calculateYAmount(double angle, double amount) {
-		return amount*Math.cos(Math.toRadians(angle));
+		return Math.floor(amount*Math.cos(Math.toRadians(angle)));
 	} 
 
 	/**
