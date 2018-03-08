@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Minus implements Command {
 
-	private Double expr1;
+	private double expr1;
 	
 	/**
 	 * Initializes expr1
 	 */
-	public Minus(Double expr1) {
+	public Minus(double expr1) {
 		this.expr1 = expr1;
 	}
 	

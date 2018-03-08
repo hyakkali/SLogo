@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Random implements Command {
 
-	private Double max;
+	private double max;
 	
 	/**
 	 * Initializes max
 	 */
-	public Random(Double max) {
+	public Random(double max) {
 		this.max = max;
 	}
 	

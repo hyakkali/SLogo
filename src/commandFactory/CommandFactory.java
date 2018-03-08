@@ -37,10 +37,17 @@ public class CommandFactory {
 	 * 				Any necessary arguments - will be an array of size zero, one, or two
 	 * @throws CommandException to represent a bad command
 	 * @return a Command object that has been initialized
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public Command command(String commandName, ArrayList<Double>args) throws NullPointerException {
-		Class<?> commandClass = (Class<?>) commands.get(commandName);
-		return appropriateCommand(commandClass, args);
+	public Command command(String commandName) throws NullPointerException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Class<?> clazz = (Class<?>) commands.get(commandName);
+		Constructor<?> cons = clazz.getConstructor();
+		return (Command) cons.newInstance();
 	}
 	
 	/**

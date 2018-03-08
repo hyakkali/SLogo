@@ -25,7 +25,7 @@ public class Forward implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		System.out.println(this.amount);
+		// System.out.println(this.amount);
 		controller.moveTurtle(this.amount);
 		return this.amount;
 	}
