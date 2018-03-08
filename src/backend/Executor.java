@@ -1,16 +1,12 @@
 package backend;
 
-import resources.constants.Constants;
+
 import resources.languages.Language;
 import commandFactory.CommandFactory;
 import commandbuilders.*;
 import controller.Controller;
 import command.*;
-import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
-
-import java.util.ArrayList;
 
 /**
  * Class to handle parsing and executing of commands. Contains the main function that reads in user
@@ -108,57 +104,6 @@ public class Executor {
         }
     }
 
-    /*
-     * keep track of how many values something can take
-     *
-     */
-
-
-//            // variable
-    //else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
-    //  String var = input.pop();
-    // if (myData.getVariable(var) != null) {
-    //    Variable v = myData.getVariable(var);
-//                else {
-//                		if (myParameters.isEmpty()) {
-//                			Variable newVar = new Variable(var, 0.0);
-//                			myParameters.add(newVar.getValue());
-//                		}
-//                		else {
-//                			Variable newVar = new Variable(var, 0.0);
-//                         myData.addVariable(newVar);
-//                         myParameters.add(newVar.getMyID());
-//                		}
-//                }
-//            }
-//
-//            // deal with lists here
-//            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
-//                Stack<String> tempStack = new Stack<>();
-//                // pop once to get ride of the ListEnd, which we don't want on the stack
-//                input.pop();
-//                while (true) {
-//                		String arg = input.pop();
-//                		// don't add to tempStack if this is end of list
-//                		if (syntaxParser.getSymbol(arg).equals("ListStart")) break;
-//                		tempStack.push(arg);
-//                }
-//                // reverse the stack so that the later commands are on the top
-//                Stack<String> reversedStack = reverseStack(tempStack);
-//                // recurse here by adding the result of the next call to the parameters
-//                myParameters.add(parseText(reversedStack, myData));
-//            }
-//            // if we see a list start without first seeing a list end. Think Stack
-//            else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
-//                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
-//            } else {
-//            		// no valid symbols
-//                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
-//            }
-//        }
-//        // if we have gotten this far, there is only one return value, so return first index
-//        return myParameters.isEmpty() ? null : myParameters.get(0);
-//    }
 
     public Command getNextCommand() {
         return currentInput.pop();
