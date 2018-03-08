@@ -1,13 +1,11 @@
 package userinterface;
 
 import backend.SLogoModel;
-import backend.Variable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -36,7 +34,6 @@ import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -56,7 +53,6 @@ public class UserScreen extends Application {
     private final double ACTIVE_TURTLE = 0.0;
     private final double INACTIVE_TURTLE = 0.5;
     
-    private double turtleSpeed = 30;
     private double lineSpeed = 30;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -117,7 +113,6 @@ public class UserScreen extends Application {
         turtlePane.setPrefHeight(500);
         turtlePane.setPrefWidth(500);
         turtlePane.setStyle("-fx-background-color: #ffffff");
-        System.out.println("set secene");
         turtleSetup();
 
         form.setRight(right);
@@ -135,8 +130,7 @@ public class UserScreen extends Application {
     private void turtleSetup()
     {
         for (Turtle turtle : turtles) {
-            if(turtle.getActive()&&!activeTurtles.contains(turtle))
-            		System.out.println("doing it");
+            if(turtle.getActive())
                 activeTurtles.add(turtle);
 
             turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -181,7 +175,7 @@ public class UserScreen extends Application {
                             turtle.move(turtle.getRotate(), TURTLE_MOVE);
                         } else if (event.getCode() == KeyCode.S) {
                             turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.D) {
+                        } else if (event.getCode() == KeyCode.I) {
                             turtle.pen.togglePenUpOrDown(true);
                         } else if (event.getCode() == KeyCode.U) {
                             turtle.pen.togglePenUpOrDown(false);
@@ -223,9 +217,19 @@ public class UserScreen extends Application {
 //    		line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
 //    		line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
     		for (Turtle turtle : activeTurtles) {
+//    			Line line = turtle.pen.getLines().get(0);
+//    			System.out.println("End"+turtle.getXEnd());
+//			System.out.println(turtle.getX());
+    			if(turtle.getX()!=turtle.getXEnd()) {
+//    	    			line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
+        			turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
+    			}
+    			if(turtle.getY()!=turtle.getYEnd()) {
+//    	    			line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
+        			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
+    			}
             drawLine(turtle);
         }
-//    		System.out.println(activeTurtles.size());
     }
 
     private ColorAdjust changeImageBrightness(double value) {
