@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
-
+import pen.LinePen;
 import java.util.ArrayList;
 
 
@@ -262,6 +262,30 @@ public class Controller {
 	public double getActiveTurtle() {
 		return turtles.get(0).getID();
 	}
+
+	public void addActiveTurtles(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				if (!view.activeTurtles.contains(t)) {
+					view.activeTurtles.add(t);
+				}
+			}
+			else {
+				view.activeTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+			}
+		}
+	}
+
+	public Turtle getAskedTurtle(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+
 
 
 }

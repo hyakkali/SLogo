@@ -2,7 +2,6 @@ package backend;
 
 
 import resources.languages.Language;
-import commandFactory.CommandFactory;
 import commandbuilders.*;
 import controller.Controller;
 import command.*;
@@ -19,7 +18,6 @@ public class Executor {
     private Parser syntaxParser;
     private Language myLang;
     private Controller myController;
-    private CommandFactory commandFactory;
 
     // represents the current input into this executor
     private Stack<Command> currentInput;
@@ -28,10 +26,9 @@ public class Executor {
      * @param ctrl the controller for this simulation
      * @param myFactory the factory to generate commands with
      */
-    protected Executor(Controller ctrl, CommandFactory myFactory) {
+    protected Executor(Controller ctrl) {
         syntaxParser = new Parser(Language.SYNTAX);
         myController = ctrl;
-        commandFactory = myFactory;
         currentInput = new Stack<>();
     }
 
