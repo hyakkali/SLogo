@@ -58,7 +58,7 @@ public class Executor {
      * @param myData the current data associated with the workspace
      * @return the final value after all of the commands have been run
      */
-    protected double parseText(Stack<String> inputStack) {
+    public double parseText(Stack<String> inputStack) {
     		evaluate(inputStack);
     		double ret = 0;
     		while (!currentInput.isEmpty())
@@ -101,8 +101,9 @@ public class Executor {
             		}
             		// get rid of the list start
             		inputStack.pop();
-            		evaluate(reverseStack(temp));
-            		// recurse by evaluating the 
+            		// this is a list of commands, go ahead and instantiate it right away
+            		Command commandList = new CommandList(reverseStack(temp), this);
+            		currentInput.push(commandList);
             }
         }
     }
