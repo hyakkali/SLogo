@@ -8,13 +8,13 @@ import controller.Controller;
  */
 public class Or implements Command {
 
-	private Double test1;
-	private Double test2;
+	private double test1;
+	private double test2;
 	
 	/**
 	 * Initialize test1 and test2
 	 */
-	public Or(Double test1, Double test2) {
+	public Or(double test1, double test2) {
 		this.test1 = test1;
 		this.test2 = test2;
 	}

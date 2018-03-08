@@ -8,7 +8,7 @@ import controller.Controller;
  *
  */
 public class HideTurtle implements Command {
-
+	
 	/**
 	 * Empty constructor
 	 */
