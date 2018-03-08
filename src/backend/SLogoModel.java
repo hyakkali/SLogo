@@ -30,7 +30,7 @@ public class SLogoModel {
             try {
                 	// create full qualified name to load in
                 	String qualifiedName = "command." + key;
-                	System.out.println(String.format("Class name: %s", qualifiedName));
+                	// System.out.println(String.format("Class name: %s", qualifiedName));
                 Class<?> regClass = Class.forName(qualifiedName);
                 cmdFact.registerCommand(key, regClass);
             } catch (ClassNotFoundException e) {
@@ -52,14 +52,12 @@ public class SLogoModel {
             System.out.println(str + "\n");
             inputStack.push(str);
         }
-        myExecutor.parseText(inputStack, myData);
-            myController.addPreviouslyRunCommand(input);
+        myController.addPreviouslyRunCommand(input);
         try {
-            myExecutor.parseText(inputStack, myData);
+            myExecutor.parseText(inputStack);
         }
         catch (Exception e){
-        		e.printStackTrace();
-//            myController.displayText("Improper command! Try again!");
+        		throw new CommandException(e);
         }
     }
 

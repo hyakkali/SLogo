@@ -8,13 +8,13 @@ import controller.Controller;
  */
 public class Sum implements Command {
 
-	private Double expr1;
-	private Double expr2;
+	private double expr1;
+	private double expr2;
 	
 	/**
 	 * Initializes values of expr1 and expr2
 	 */
-	public Sum(Double expr1, Double expr2) {
+	public Sum(double expr1, double expr2) {
 		this.expr1 = expr1;
 		this.expr2 = expr2;
 	}

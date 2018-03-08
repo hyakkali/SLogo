@@ -9,13 +9,13 @@ import controller.Controller;
  */
 public class SetHeading implements Command {
 
-	private Double heading;
+	private double heading;
 	
 	/**
 	 * Specifies amount to move the turtle right.
 	 *  amount the amount to move.
 	 */
-	public SetHeading(Double heading) {
+	public SetHeading(double heading) {
 		this.heading = heading;
 	}
 	

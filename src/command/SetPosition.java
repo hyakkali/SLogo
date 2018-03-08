@@ -9,16 +9,15 @@ import controller.Controller;
  */
 public class SetPosition implements Command {
 
-	private Double x;
-	private Double y;
+	private double x;
+	private double y;
 	
 	/**
 	 * 
 	 * @param x x coordinate to move to
 	 * @param y y coordinate to move to
 	 */
-	public SetPosition(Double y, Double x) {
-		// because of the way the parser works, y is fed in first and x is fed in second
+	public SetPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

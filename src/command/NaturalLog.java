@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class NaturalLog implements Command {
 
-	private Double expr;
+	private double expr;
 	
 	/**
 	 * Initializes expr
 	 */
-	public NaturalLog(Double expr) {
+	public NaturalLog(double expr) {
 		this.expr = expr;
 	}
 	
