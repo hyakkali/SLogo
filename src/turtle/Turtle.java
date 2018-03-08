@@ -252,7 +252,6 @@ public class Turtle extends ImageView{
 		copyPen.setPenWidth(this.pen.getPenWidth());
 		copyPen.setStartLineLocation(this.getX(),this.getY());
 
-
 		Turtle copy = new Turtle(copyPen,this.getID());
 		copy.setImage(this.getImage());
 		copy.setX(this.getX());

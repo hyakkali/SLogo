@@ -41,7 +41,7 @@ public class State {
         hash+=(background.hashCode());
         hash+=language.hashCode();
         int h=(int)hash;
-        System.out.println(h);
+//        System.out.println(h);
         return h;
     }
 

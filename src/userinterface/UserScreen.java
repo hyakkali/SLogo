@@ -55,6 +55,9 @@ public class UserScreen extends Application {
 
     private final double ACTIVE_TURTLE = 0.0;
     private final double INACTIVE_TURTLE = 0.5;
+    
+    private double turtleSpeed = 30;
+    private double lineSpeed = 30;
 
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -66,7 +69,8 @@ public class UserScreen extends Application {
     private ResourceBundle properties;
     private ResourceBundle colors;
     private VariableList variables;
-    private ArrayList<Turtle> turtles;      public ArrayList<Turtle> activeTurtles = new ArrayList<>();
+    private ArrayList<Turtle> turtles;      
+    public ArrayList<Turtle> activeTurtles = new ArrayList<>();
     private HashMap<Integer, String> colorMap = new HashMap<>();
     private HashMap<Integer, String> imageMap = new HashMap<>();
 
@@ -99,7 +103,7 @@ public class UserScreen extends Application {
      * in the slogo project and add to the scene which returns to
      * start --this calls the menu related functions
      */
-    public Scene setScene(int width, int length) {
+    public Scene setupScene(int width, int length) {
         Group root = new Group();
         myScene = new Scene(root, width, length);
         myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());
@@ -113,6 +117,7 @@ public class UserScreen extends Application {
         turtlePane.setPrefHeight(500);
         turtlePane.setPrefWidth(500);
         turtlePane.setStyle("-fx-background-color: #ffffff");
+        System.out.println("set secene");
         turtleSetup();
 
         form.setRight(right);
@@ -130,7 +135,8 @@ public class UserScreen extends Application {
     private void turtleSetup()
     {
         for (Turtle turtle : turtles) {
-            if(turtle.getActive())
+            if(turtle.getActive()&&!activeTurtles.contains(turtle))
+            		System.out.println("doing it");
                 activeTurtles.add(turtle);
 
             turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -152,7 +158,6 @@ public class UserScreen extends Application {
                         } else if (event.getClickCount() == 1) {
                             turtle.requestFocus();
                         }
-                        //add set active or inactive
                     } else if (button == MouseButton.SECONDARY) {
                         ObservableList<MenuItem> menu = createContextMenuList(turtle);
                         ContextMenu cMenu = MenuBuilder.buildContext(menu);
@@ -161,7 +166,7 @@ public class UserScreen extends Application {
                 }
 
             });
-
+       
             turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
                 @Override
@@ -206,14 +211,23 @@ public class UserScreen extends Application {
     }
 
     private void step(double elapsedTime) {
-        for (Turtle turtle : activeTurtles) {
+//    		activeTurtles.get(0).setX(activeTurtles.get(0).getX()+turtleSpeed*elapsedTime);
+//    		Line line = activeTurtles.get(0).pen.getLines().get(0);
+//    		System.out.println(line);
+//    		if(line.getEndY()!=100) {
+//        		line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
+//    		}
+//    		if(line.getEndX()!=400) {
+//        		line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
+//    		}
+//    		line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
+//    		line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
+    		for (Turtle turtle : activeTurtles) {
             drawLine(turtle);
         }
+//    		System.out.println(activeTurtles.size());
     }
 
-    /*  changes the brightness of the turtle
-
-     */
     private ColorAdjust changeImageBrightness(double value) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(value);
@@ -226,7 +240,7 @@ public class UserScreen extends Application {
      * defines/ initializes the state and begins stepping
      */
     public void start(Stage stage) {
-        myScene = setScene(XSIZE, YSIZE); // get the scene
+        myScene = setupScene(XSIZE, YSIZE); // get the scene
         stage.setResizable(false);
         stage.setScene(myScene);
         stage.setTitle(TITLE);
@@ -396,7 +410,7 @@ public class UserScreen extends Application {
 
 
     /* called to update the form to show the path
-     * whenever the locatoun of turtle is changed
+     * whenever the location of turtle is changed
      */
     private void drawLine(Turtle turtle) {
         for (Line l : turtle.pen.getLines()) {
@@ -482,7 +496,7 @@ public class UserScreen extends Application {
        State toAdd = new State(turtles, lines, turtlePane.getStyle(), language);
        if(history.isEmpty() || !toAdd.equals(history.peek())){
            history.push(toAdd);
-            System.out.println("Add to stack");
+//            System.out.println("Add to stack");
        }
     }
 
@@ -532,64 +546,4 @@ public class UserScreen extends Application {
     	        turtle.setImage(image);
     		}
     }
-
-
-
-
-
-
-
-
-
-
-
-    //TO BE UNUSED
-    //BUTTON FUNCTIONS____________________________________________________________________________________________
-
-//    /* Defines the creation an onAction event
-//     * and returns reference to be set to instance
-//     * resetButton
-//     */
-//
-//
-//    private Button getSetCommand() {
-//        Button b = new Button("CMD");
-//        b.setOnAction(e -> importCMD());
-//        return b;
-//    }
-//
-//
-//
-//    private Hyperlink getExtraHelpButton() {
-//        Hyperlink h = new Hyperlink();
-//        h.setText("!?");
-//        h.setTextFill(Color.BLACK);
-//        h.setOnAction(e->getHostServices().showDocument("https://www.lifeoptimizer.org/2010/05/27/being-a-better-you/"));
-//        return h;
-//    }
-//
-//    private void importCMD() {
-//        final Stage dialog = new Stage();
-//        dialog.initModality(Modality.APPLICATION_MODAL);
-//        dialog.initOwner(myStage);
-//        VBox dBox = new VBox(20);
-//        TextArea cmd = new TextArea();
-//        cmd.setPromptText("Enter your Command name");
-//        TextArea code = new TextArea();
-//        code.setPromptText("Enter code");
-//        Button enter = new Button ("enter");
-//        enter.setOnAction(e->{this.addCommand(cmd.getText(),code.getText()); dialog.close();});
-//        dBox.getChildren().addAll(cmd,code, enter);
-//        Scene dialogScene = new Scene(dBox, 300, 200);
-//        dialog.setScene(dialogScene);
-//        dialog.show();
-//    }
-//
-//    private void addCommand(String cmd, String code) {
-//        if(!userCommands.containsKey(cmd)) {
-//            userCommands.put(cmd, code);
-//            commands.appendText(cmd + "\n\n");
-//        }
-//    }
-
 }

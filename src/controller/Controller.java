@@ -57,6 +57,7 @@ public class Controller {
 	 */
 	public void moveTurtle(double amount) {
 		for(Turtle turtle: view.activeTurtles) {
+			System.out.println(view.activeTurtles);
 			turtle.move(turtle.getRotate(), amount);
 		}
 	}
@@ -74,6 +75,7 @@ public class Controller {
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
+		System.out.println("didit");
 		for(Turtle turtle: view.activeTurtles) {
 			turtle.setHeading(heading);
 		}
