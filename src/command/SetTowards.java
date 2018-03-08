@@ -9,15 +9,14 @@ import controller.Controller;
  */
 public class SetTowards implements Command {
 
-	private Double x;
-	private Double y;
+	private double x;
+	private double y;
 	/**
 	 * 
 	 * @param x x coordinate that turtle should face
 	 * @param y y coordinate that turtle should face
 	 */
-	public SetTowards(Double y, Double x) {
-		// because of the way the parser works, y is fed in first and x is fed in second
+	public SetTowards(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

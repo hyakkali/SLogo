@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Tangent implements Command {
 
-	private Double degrees;
+	private double degrees;
 	
 	/**
 	 * Initializes degrees
 	 */
-	public Tangent(Double degrees) {
+	public Tangent(double degrees) {
 		this.degrees = degrees;
 	}
 	

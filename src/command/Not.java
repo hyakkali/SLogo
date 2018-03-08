@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Not implements Command {
 
-	private Double test;
+	private double test;
 	
 	/**
 	 * Initialize test1 and test2
 	 */
-	public Not(Double test) {
+	public Not(double test) {
 		this.test = test;
 	}
 	

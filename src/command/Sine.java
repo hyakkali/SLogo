@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Sine implements Command {
 
-	public Double degrees;
+	public double degrees;
 	
 	/**
 	 * Initializes degrees
 	 */
-	public Sine(Double degrees) {
+	public Sine(double degrees) {
 		this.degrees = degrees;
 	}
 	

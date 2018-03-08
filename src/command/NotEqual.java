@@ -8,13 +8,13 @@ import controller.Controller;
  */
 public class NotEqual implements Command {
 
-	private Double expr1;
-	private Double expr2;
+	private double expr1;
+	private double expr2;
 	
 	/**
 	 * Initialize expr1 and expr2
 	 */
-	public NotEqual(Double expr1, Double expr2) {
+	public NotEqual(double expr1, double expr2) {
 		this.expr1 = expr1;
 		this.expr2 = expr2;
 	}

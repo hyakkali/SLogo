@@ -6,10 +6,10 @@ import controller.Controller;
 
 public class MakeVariable implements Command {
 
-    private Double myVariableID;
-    private Double myVal;
+    private double myVariableID;
+    private double myVal;
 
-    public MakeVariable(Double value, Double ID) {
+    public MakeVariable(double value, double ID) {
         this.myVariableID = ID;
         this.myVal = value;
     }
