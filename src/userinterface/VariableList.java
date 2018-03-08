@@ -16,7 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class VariableList extends VBox {
-    //Make a tableview
+
+
+    /*Creates the
+
+
+     */
     private HashMap<TextField, Variable > list = new HashMap<TextField, Variable>();
 
     private Pane scrollable = new Pane();
@@ -47,7 +52,6 @@ public class VariableList extends VBox {
             } else {
                 for (TextField t : list.keySet()) {
                     if (list.get(t).getName().equals(name)) {
-                        System.out.println(String.valueOf(v.getValue()));
                         t.setText(String.valueOf(v.getValue()));
                         break;
                     }
@@ -70,9 +74,4 @@ public class VariableList extends VBox {
             alert.showAndWait();
         }
     }
-
-
-
-
-
 }

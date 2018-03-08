@@ -1,22 +1,20 @@
 package userinterface;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
+
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 public class MenuBuilder {
+    /*   @Author Conrad
+         creates menu items for the Userscreen allows for quick creation fo new elements for the menu
+     */
 
     private static final String DEFAULT_COLOR_PATH= "-fx-background-color: ";
 
@@ -31,6 +29,7 @@ public class MenuBuilder {
         for (String option : options.keySet()){
             Text name = new Text(index+ " " +option);
             HBox select = new HBox();
+            select.setAccessibleText(option);
             select.setPrefHeight(10);
             select.setPrefWidth(110);
             select.setSpacing(5);
@@ -39,12 +38,16 @@ public class MenuBuilder {
             combobox.getItems().add(select);
         index++;
         }
-        combobox.setOnAction(e->event.accept(combobox.getValue().getStyle()));
+        combobox.setOnAction(e->{event.accept(combobox.getValue().getAccessibleText());});
         combobox.setPromptText(prompt);
         combobox.setPrefWidth(200);
         return combobox;
     }
 
+
+    /*
+        creates comboboxes alternative to above because it dousnt require a property tabke
+     */
     public static ComboBox buildCombo(String prompt, ObservableList<String> list,Consumer<String> event)
     {
         ComboBox<String> combobox = new ComboBox<>();
@@ -60,13 +63,19 @@ public class MenuBuilder {
         combobox.setPrefWidth(200);
         return combobox;
     }
-    
+
+    /*
+        builds a context menu used by turtle
+     */
     public static ContextMenu buildContext(ObservableList<MenuItem> list) {
     		ContextMenu cMenu = new ContextMenu();
     		cMenu.getItems().addAll(list);
     		return cMenu;
     }
 
+    /*
+        creates buttons with onaction events defined by the caller
+     */
     public static Button buildButton(String prompt, Consumer<Void> event)
     {
         Button b = new Button();
@@ -85,7 +94,5 @@ public class MenuBuilder {
         b.setOnAction(e -> event.accept(null));
         return b;
     }
-
-
 
 }

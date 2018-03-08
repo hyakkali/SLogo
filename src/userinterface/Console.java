@@ -5,8 +5,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.function.Consumer;
+/* Author @Conrad
+    Defines the responsabilities of the console and allows for history accessing
+    send to userscreen for user input
+ */
+
 
 public class Console extends TextArea  {
+
 
     private History history = new History();
     private Consumer<String> eventToOccur;

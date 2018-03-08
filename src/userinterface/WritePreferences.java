@@ -34,7 +34,7 @@ public class WritePreferences {
         {
             Element turtleElement = xmlDoc.createElement("Turtle");
             String tInfo="";
-            tInfo+=turtle.getID()+ " " + turtle.getX() + " " +(turtle.getY())+ " "+ turtle.getRotate()+ " "+ turtle.getImageURL()+ " " +turtle.getActive()+ " " +turtle.isVisible();
+            tInfo+=turtle.getID()+ " " + turtle.getX() + " " +(turtle.getY())+ " "+ turtle.getRotate()+ " "+ turtle.getImageIndex()+ " " +turtle.getActive()+ " " +turtle.isVisible();
             turtleElement.appendChild(xmlDoc.createTextNode(tInfo));
             turtlesElement.appendChild(turtleElement);
         }
