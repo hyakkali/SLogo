@@ -1,6 +1,8 @@
-package command;
 
+import command.Command;
 import controller.Controller;
+
+
 
 /**
  * Move the turtle to a specified position on the screen.
@@ -38,3 +40,4 @@ public class SetPosition implements Command {
 	}
 
 }
+

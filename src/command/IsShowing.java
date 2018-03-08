@@ -1,3 +1,4 @@
+
 package command;
 
 import controller.Controller;
@@ -13,7 +14,7 @@ public class IsShowing implements Command {
 	 * Empty constructor
 	 */
 	public IsShowing() { }
-	
+
 	/**
 	 * Gets the status of the turtle's visibility
 	 * @return 1 if turtle is showing, 0 o.w.
@@ -23,3 +24,4 @@ public class IsShowing implements Command {
 		return controller.getIsTurtle() ? 1 : 0;
 	}
 }
+

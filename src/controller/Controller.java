@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
-
+import pen.LinePen;
 import java.util.ArrayList;
 
 
@@ -225,5 +225,67 @@ public class Controller {
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
 	}
+
+	public Integer getNumTurtles() {
+		return turtles.size();
+	}
+
+	public void setMyColor(double colorID) {
+		view.setPenColor(colorID);
+	}
+
+	public void setMyBackground(double colorID) {
+		view.setBackGroundColor(colorID);
+	}
+
+	public void setMyShape(double shapeID) {
+		view.setTurtleImage(shapeID);
+	}
+
+	public void setMyPenSize(double penSize) {
+		for (Turtle t : turtles) {
+			if (t.getActive()) {
+				t.pen.setPenWidth(penSize);
+			}
+		}
+	}
+
+	public double getPenColor() {
+		return turtles.get(0).pen.getColorIndex();
+	}
+
+	public double getShapeIndex() {
+		return turtles.get(0).getImageIndex();
+
+	}
+
+	public double getActiveTurtle() {
+		return turtles.get(0).getID();
+	}
+
+	public void addActiveTurtles(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				if (!view.activeTurtles.contains(t)) {
+					view.activeTurtles.add(t);
+				}
+			}
+			else {
+				view.activeTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+			}
+		}
+	}
+
+	public Turtle getAskedTurtle(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+
+
 
 }

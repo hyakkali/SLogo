@@ -1,3 +1,4 @@
+
 package command;
 
 import controller.Controller;
@@ -13,7 +14,7 @@ public class Heading implements Command {
 	 * Empty constructor
 	 */
 	public Heading() { }
-	
+
 	/**
 	 * Gets the turtle's heading in degrees
 	 * @return turtle's heading in degrees
@@ -23,3 +24,4 @@ public class Heading implements Command {
 		return controller.getTurtleHeading();
 	}
 }
+

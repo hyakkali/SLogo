@@ -25,6 +25,10 @@ public class CommandList implements Command {
 		this.executor = executor;
 	}
 
+	public Stack<String> getInputStack() {
+		return this.commands;
+	}
+
 	/**
 	 * Execute ALL of the commands in this list.
 	 * @param controller the controller for these commands to be executed on

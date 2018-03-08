@@ -1,3 +1,4 @@
+
 package command;
 
 import controller.Controller;
@@ -32,3 +33,4 @@ public class SetHeading implements Command {
 	}
 
 }
+

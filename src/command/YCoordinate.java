@@ -1,3 +1,4 @@
+
 package command;
 
 import controller.Controller;
@@ -13,7 +14,7 @@ public class YCoordinate implements Command {
 	 * Empty constructor
 	 */
 	public YCoordinate() { }
-	
+
 	/**
 	 * Gets turtle's y-coordinate
 	 * @return turtle's y-coordinate from the center of the screen
