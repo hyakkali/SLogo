@@ -3,10 +3,14 @@ package backend;
 import resources.constants.Constants;
 import resources.languages.Language;
 import commandFactory.CommandFactory;
+import commandbuilders.*;
 import controller.Controller;
 import command.*;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Class to handle parsing and executing of commands. Contains the main function that reads in user
@@ -21,6 +25,8 @@ public class Executor {
     private Controller myController;
     private CommandFactory commandFactory;
 
+    // represents the current input into this executor
+    private Stack<Command> currentInput;
     /**
      * Constructs an Executor object to parse and execute commands
      * @param ctrl the controller for this simulation
@@ -30,6 +36,7 @@ public class Executor {
         syntaxParser = new Parser(Language.SYNTAX);
         myController = ctrl;
         commandFactory = myFactory;
+        currentInput = new Stack<>();
     }
 
     /**
@@ -41,139 +48,148 @@ public class Executor {
     }
 
     /**
-     * Parse the text and execute commands accordingly. 
+     * Get the next command to be executed
+     */
+
+    /**
+     * Parse the text and pass the input to be evaluated and put them on a stack,
+     * and then execute the top-most command
      * @param input the input from the console, in Stack form
      * @param myData the current data associated with the workspace
      * @return the final value after all of the commands have been run
      */
-    protected double parseText(Stack<String> input, SLogoData myData) {
-        ArrayList<Double> myParameters = new ArrayList<>();
-        Parser languageParser = new Parser(myLang);
-        while (!input.isEmpty()) {
-            //System.out.println(syntaxParser.getSymbol(input.peek()));
-            if (syntaxParser.getSymbol(input.peek()).equals("Command")) {
-                // name of command
-                String commandName = input.pop();
-                try {
-                    Double temp = commandFactory.command(languageParser.getSymbol(commandName), myParameters).execute(myController);
-                    // only clear the parameters if we just used any
-                    if (myParameters.size() > 0) {
-                        myParameters.clear();
-                    }
-                    myParameters.add(temp);
-                } catch (NullPointerException e) {
-                    // if command does not exist, tell the user that
-                    throw new CommandException(CommandException.NON_EXISTENT, commandName);
-                }
-            }
-
-            // constants
-            else if (syntaxParser.getSymbol(input.peek()).equals("Constant")) {
-                Double value = Double.parseDouble(input.pop());
-                myParameters.add(value);
-            }
-
-            // variable
-            else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
-                String var = input.pop();
-                if (myData.getVariable(var) != null) {
-                    Variable v = myData.getVariable(var);
-                    myParameters.add(v.getValue());
-                }
-                else {
-                    if (myParameters.isEmpty()) {
-                        Variable newVar = new Variable(var, 0.0);
-                        myParameters.add(newVar.getValue());
-                    }
-                    else {
-                        Variable newVar = new Variable(var, 0.0);
-                        myData.addVariable(newVar);
-                        myParameters.add(newVar.getMyID());
-                    }
-                }
-            }
-
-            // deal with lists here
-            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
-                Stack<String> tempStack = new Stack<String>();
-                // pop once to get ride of the ListEnd, which we don't want on the stack
-                input.pop();
-                while (true) {
-                    String arg = input.pop();
-                    // don't add to tempStack if this is end of list
-                    if (syntaxParser.getSymbol(arg).equals("ListStart")) break;
-                    tempStack.push(arg);
-                }
-                // reverse the stack so that the later commands are on the top
-                Stack<String> reversedStack = reverseStack(tempStack);
-                // recurse here by adding the result of the next call to the parameters
-                myParameters.add(parseText(reversedStack, myData));
-            }
-            // if we see a list start without first seeing a list end. Think Stack
-            else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
-                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
-            } else {
-                // no valid symbols
-                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
-            }
-        }
-        // if we have gotten this far, there is only one return value, so return first index
-        if (!myParameters.isEmpty()) { return myParameters.get(0); }
-        return 0.0;
+    public double parseText(Stack<String> inputStack) {
+        evaluate(inputStack);
+        double ret = 0;
+        while (!currentInput.isEmpty())
+            ret = currentInput.pop().execute(myController);
+        return ret;
     }
 
+    /**
+     * Evaluates the input to generate the stack of commands to execute, often recursively
+     * @param input the input to be evaluated, in Stack form
+     * @param myData the current data associated with the workspace
+     */
+    private void evaluate(Stack<String> inputStack) {
+        Parser languageParser = new Parser(myLang);
+        Stack<Command> tokenStack = new Stack<>();
+        while (!inputStack.isEmpty()) {
+            // command
+            if (syntaxParser.getSymbol(inputStack.peek()).equals("Command")) {
+                // name of command
+                String commandName = languageParser.getSymbol(inputStack.pop());
+                // retrieve builder
+                CommandBuilder builder = getBuilder(commandName);
+                Command command = builder.build(myController, this);
+                currentInput.push(command);
+                // constants
+            } else if (syntaxParser.getSymbol(inputStack.peek()).equals("Constant")) {
+                // don't need a builder, because all we want to do is create a double based upon the next token
+                Command constantCommand = new Constant(Double.parseDouble(inputStack.pop()));
+                currentInput.push(constantCommand);
+                System.out.println("Size: " + currentInput.size());
+
+                // since the inputStack goes from the end of the input inwards, we will encounter the ListEnd first
+            } else if (syntaxParser.getSymbol(inputStack.peek()).equals("ListEnd")) {
+                // get rid of the end
+                inputStack.pop();
+                Stack<String> temp = new Stack<>();
+                // loop until we see the ListStart
+                while (!syntaxParser.getSymbol(inputStack.peek()).equals("ListStart")) {
+                    temp.push(inputStack.pop());
+                }
+                // get rid of the list start
+                inputStack.pop();
+                // this is a list of commands, go ahead and instantiate it right away
+                Command commandList = new CommandList(reverseStack(temp), this);
+                currentInput.push(commandList);
+            }
+        }
+    }
+
+    /*
+     * keep track of how many values something can take
+     *
+     */
 
 
-//    private Stack<String> handleLists(Stack<String> input) {
-//
-//        Queue<String> tempInput = new PriorityQueue<>(input);
-//
-//        if (tempInput.peek().equals("repeat")) {
-//            Stack<String> newInput = new Stack<>();
-//            newInput.push(tempInput.poll());
-//            String repeatVal = tempInput.poll();
-//            newInput.addAll(tempInput);
-//            newInput.push(repeatVal);
-//            return newInput;
-//        }
-//
-//
-//        else if (tempInput.get(0).equals("if")) {
-//            tempInput.remove(0);
-//            tempInput.removeAll(brackets);
-//            double ifVal = Double.parseDouble(tempInput.get(0));
-//            tempInput.remove(0);
-//            if (ifVal != 0.0) {
-//                newInput.addAll(tempInput);
+//            // variable
+    //else if (syntaxParser.getSymbol(input.peek()).equals("Variable")) {
+    //  String var = input.pop();
+    // if (myData.getVariable(var) != null) {
+    //    Variable v = myData.getVariable(var);
+//                else {
+//                		if (myParameters.isEmpty()) {
+//                			Variable newVar = new Variable(var, 0.0);
+//                			myParameters.add(newVar.getValue());
+//                		}
+//                		else {
+//                			Variable newVar = new Variable(var, 0.0);
+//                         myData.addVariable(newVar);
+//                         myParameters.add(newVar.getMyID());
+//                		}
+//                }
 //            }
-//            return newInput;
+//
+//            // deal with lists here
+//            else if (syntaxParser.getSymbol(input.peek()).equals("ListEnd")) {
+//                Stack<String> tempStack = new Stack<>();
+//                // pop once to get ride of the ListEnd, which we don't want on the stack
+//                input.pop();
+//                while (true) {
+//                		String arg = input.pop();
+//                		// don't add to tempStack if this is end of list
+//                		if (syntaxParser.getSymbol(arg).equals("ListStart")) break;
+//                		tempStack.push(arg);
+//                }
+//                // reverse the stack so that the later commands are on the top
+//                Stack<String> reversedStack = reverseStack(tempStack);
+//                // recurse here by adding the result of the next call to the parameters
+//                myParameters.add(parseText(reversedStack, myData));
+//            }
+//            // if we see a list start without first seeing a list end. Think Stack
+//            else if (syntaxParser.getSymbol(input.peek()).equals("ListStart")) {
+//                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("MissingOpenDelimiterError"));
+//            } else {
+//            		// no valid symbols
+//                throw new IllegalArgumentException(Constants.DEFAULT_RESOURCES.getString("InvalidSyntaxError"));
+//            }
 //        }
-//
-//
-//
-//        //Commands using 2 sets of brackets
-////        else if (tempInput.get(0).equals("for")) {
-////            tempInput.remove(0);
-////        }
-////        else if (tempInput.get(0).equals("dotimes")) {
-////            tempInput.remove(0);
-////        }
-////        else if (tempInput.get(0).equals("ifelse")) {
-////            tempInput.remove(0);
-////
-////        }
-////        else if (tempInput.get(0).equals("to")) {
-////            tempInput.remove(0);
-////
-////        }
-//
-//
+//        // if we have gotten this far, there is only one return value, so return first index
+//        return myParameters.isEmpty() ? null : myParameters.get(0);
 //    }
 
-    private Stack<String> reverseStack(Stack<String> stack) {
+    public Command getNextCommand() {
+        return currentInput.pop();
+    }
+
+    /**
+     * Retrieves the builder needed for a certain command.
+     * @param commandName the name of the command to be executed
+     * @return a builder object to build the specified command
+     */
+    private CommandBuilder getBuilder(String commandName) {
+        // construct fully qualified path
+        try {
+            String builderName = "commandbuilders." + commandName + "Builder";
+            Class<?> builderClass = Class.forName(builderName);
+            return (CommandBuilder) builderClass.getConstructor().newInstance();
+        } catch (Exception e) {
+            // command does not exist
+            throw new CommandException(CommandException.NON_EXISTENT, commandName);
+        }
+    }
+
+    /**
+     * Helper method to reverse a Stack
+     * @param input the stack to be reversed
+     * @return a reversed version of the input
+     */
+    private Stack<String> reverseStack(Stack<String> input) {
         Stack<String> ret = new Stack<>();
-        while (!stack.empty()) {
-            ret.push(stack.pop());
+        while (!input.isEmpty()) {
+            ret.push(input.pop());
         }
         return ret;
     }

@@ -8,12 +8,12 @@ import controller.Controller;
  */
 public class Cosine implements Command {
 
-	private Double degrees;
+	private double degrees;
 	
 	/**
 	 * Initializes degrees
 	 */
-	public Cosine(Double degrees) {
+	public Cosine(double degrees) {
 		this.degrees = degrees;
 	}
 	

@@ -238,9 +238,29 @@ public class Controller {
 		view.setBackGroundColor(colorID);
 	}
 
-
 	public void setMyShape(double shapeID) {
 		view.setTurtleImage(shapeID);
+	}
+
+	public void setMyPenSize(double penSize) {
+		for (Turtle t : turtles) {
+			if (t.getActive()) {
+				t.pen.setPenWidth(penSize);
+			}
+		}
+	}
+
+	public double getPenColor() {
+		return turtles.get(0).pen.getColorIndex();
+	}
+
+	public double getShapeIndex() {
+		return turtles.get(0).getImageIndex();
+
+	}
+
+	public double getActiveTurtle() {
+		return turtles.get(0).getID();
 	}
 
 

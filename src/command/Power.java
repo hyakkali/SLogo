@@ -8,13 +8,13 @@ import controller.Controller;
  */
 public class Power implements Command {
 
-	private Double base;
-	private Double exponent;
+	private double base;
+	private double exponent;
 	
 	/**
 	 * Initializes base and exponent
 	 */
-	public Power(Double base, Double exponent) {
+	public Power(double base, double exponent) {
 		this.base = base;
 		this.exponent = exponent;
 	}

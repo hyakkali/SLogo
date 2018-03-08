@@ -8,14 +8,13 @@ import controller.Controller;
  */
 public class LessThan implements Command {
 
-	private Double expr1;
-	private Double expr2;
+	private double expr1;
+	private double expr2;
 	
 	/**
 	 * Initialize expr1 and expr2
 	 */
-	public LessThan(Double expr2, Double expr1) {
-		// because of the way the parser works, expr2 is fed in first and expr1 is fed in second
+	public LessThan(double expr1, double expr2) {
 		this.expr1 = expr1;
 		this.expr2 = expr2;
 	}
