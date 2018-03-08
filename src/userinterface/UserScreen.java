@@ -105,8 +105,8 @@ public class UserScreen extends Application {
     public Scene setScene(int width, int length) {
         Group root = new Group();
         myScene = new Scene(root, width, length);
-        myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());
         setupProperties("English");
+        myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());
         myScene.addEventFilter(KeyEvent.KEY_PRESSED,e->{if(e.getCode().equals(KeyCode.ALT)) loadState();});
         VBox right = createSideMenu();
         HBox bottom = createBottomMenu();
@@ -130,8 +130,10 @@ public class UserScreen extends Application {
         return myScene;
     }
 
-    private void turtleSetup()
-    {
+    /* Initialize the turtles with context menus and
+        and put them in active or inactive lists
+     */
+    private void turtleSetup() {
         for (Turtle turtle : turtles) {
             if(turtle.getActive())
                 activeTurtles.add(turtle);
@@ -277,10 +279,10 @@ public class UserScreen extends Application {
 
         VBox interactives = new VBox();
 
+        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
         Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(helpURL));
-        Button load = MenuBuilder.buildButton("Load", e->loadState());
-        HBox buttons = new HBox(resetButton, helpButton, load);
+        HBox buttons = new HBox(resetButton, helpButton, newForm);
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
 
@@ -466,8 +468,8 @@ public class UserScreen extends Application {
      *  when the user types in the console
      */
     private void parse(String command) {
-        variables.addVariables(mySLogoModel.getMyData().getMyVariables());
         mySLogoModel.parse(command);
+        variables.addVariables(mySLogoModel.getMyData().getMyVariables());
         saveState();
 
     }
@@ -528,6 +530,12 @@ public class UserScreen extends Application {
     		for(Turtle turtle:turtles) {
     	        turtle.setImage(image);
     		}
+    }
+
+    private void createNewWindow()
+    {
+        try{ WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
+        catch(Exception c){}
     }
 
 

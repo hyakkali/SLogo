@@ -46,7 +46,8 @@ public class VariableList extends VBox {
                 this.getChildren().add(varNameCombo);
             } else {
                 for (TextField t : list.keySet()) {
-                    if (list.get(t).equals(v)) {
+                    if (list.get(t).getName().equals(name)) {
+                        System.out.println(String.valueOf(v.getValue()));
                         t.setText(String.valueOf(v.getValue()));
                         break;
                     }
