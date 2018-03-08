@@ -1,6 +1,5 @@
 package userinterface;
 
-import backend.Variable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -10,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import java.util.HashMap;
+
+import command.Variable;
 
 public class VariableList extends ScrollPane{
     //Make a tableview

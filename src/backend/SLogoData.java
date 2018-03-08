@@ -5,6 +5,9 @@ import resources.languages.Language;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import java.util.List;
+
+import command.Variable;
+
 import java.util.ArrayList;
 import resources.constants.Constants;
 import resources.languages.LanguageFactory;

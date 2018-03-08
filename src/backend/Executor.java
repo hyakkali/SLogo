@@ -58,8 +58,8 @@ public class Executor {
      * @param myData the current data associated with the workspace
      * @return the final value after all of the commands have been run
      */
-    public double parseText(Stack<String> inputStack) {
-    		evaluate(inputStack);
+    public double parseText(Stack<String> inputStack, SLogoData data) {
+    		evaluate(inputStack, data);
     		double ret = 0;
     		while (!currentInput.isEmpty())
     			ret = currentInput.pop().execute(myController);
@@ -71,7 +71,7 @@ public class Executor {
      * @param input the input to be evaluated, in Stack form
      * @param myData the current data associated with the workspace
      */
-    private void evaluate(Stack<String> inputStack) {
+    private void evaluate(Stack<String> inputStack, SLogoData data) {
         Parser languageParser = new Parser(myLang);
         Stack<Command> tokenStack = new Stack<>();
         while (!inputStack.isEmpty()) {
@@ -102,16 +102,29 @@ public class Executor {
             		// get rid of the list start
             		inputStack.pop();
             		// this is a list of commands, go ahead and instantiate it right away
-            		Command commandList = new CommandList(reverseStack(temp), this);
+            		Command commandList = new CommandList(reverseStack(temp), this, data);
             		currentInput.push(commandList);
+            }
+            
+            // variables
+            else if (syntaxParser.getSymbol(inputStack.peek()).equals("Variable")) {
+            		// name of the variable
+            		String var = inputStack.pop();
+            		// check if the variable already exists
+            		if (data.getVariable(var) != null) {
+            			Command v = data.getVariable(var);
+            			currentInput.push(v);
+            		} else {
+            			// we know this has to be a variable, so instantiate it
+            			Command v = new Variable(var);
+            			currentInput.push(v);
+            		}
+            } else {
+            		throw new CommandException(CommandException.NON_EXISTENT);
             }
         }
     }
-    
-    /*
-     * keep track of how many values something can take
-     * 
-     */
+   
     
 
 //            // variable
@@ -125,7 +138,7 @@ public class Executor {
 //                			myParameters.add(newVar.getValue());
 //                		}
 //                		else {
-//                			Variable newVar = new Variable(var, 0.0);
+//                		  Variable newVar = new Variable(var, 0.0);
 //                         myData.addVariable(newVar);
 //                         myParameters.add(newVar.getMyID());
 //                		}
@@ -173,6 +186,7 @@ public class Executor {
     		// construct fully qualified path
     		try {
     			String builderName = "commandbuilders." + commandName + "Builder";
+    			System.out.println("current builder name: " + builderName);
     			Class<?> builderClass = Class.forName(builderName);
     			return (CommandBuilder) builderClass.getConstructor().newInstance();
     		} catch (Exception e) {

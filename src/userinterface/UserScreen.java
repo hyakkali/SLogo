@@ -1,7 +1,7 @@
 package userinterface;
 
 import backend.SLogoModel;
-import backend.Variable;
+import command.Variable;
 import javafx.scene.web.WebEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

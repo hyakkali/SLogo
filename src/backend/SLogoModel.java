@@ -54,7 +54,7 @@ public class SLogoModel {
         }
         myController.addPreviouslyRunCommand(input);
         try {
-            myExecutor.parseText(inputStack);
+            myExecutor.parseText(inputStack, this.myData);
         }
         catch (Exception e){
         		throw new CommandException(e);
