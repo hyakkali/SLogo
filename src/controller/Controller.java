@@ -155,7 +155,7 @@ public class Controller {
 	 * @param command Original command String that user typed in
 	 */
 	public void addPreviouslyRunCommand(String command) {
-		view.addPreviousCommand(command);
+	//	view.addPreviousCommand(command);
 	}
 
 	/**
