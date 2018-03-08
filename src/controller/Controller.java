@@ -5,6 +5,7 @@ import userinterface.UserScreen;
 import backend.SLogoData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -57,7 +58,6 @@ public class Controller {
 	 */
 	public void moveTurtle(double amount) {
 		for(Turtle turtle: view.activeTurtles) {
-			System.out.println(view.activeTurtles);
 			turtle.move(turtle.getRotate(), amount);
 		}
 	}
@@ -171,18 +171,18 @@ public class Controller {
 	/**
 	 * @return Current heading of the turtle
 	 */
-	public ArrayList<Double> getTurtleHeading() {
+	public double getTurtleHeading() {
 		ArrayList<Double> headingList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			headingList.add(turtle.getRotate());
 		}
-		return headingList;
+		return headingList.get(2);
 	}
 
 	/**
 	 * @return X coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleXLocation() {
+	public List<Double> getTurtleXLocation() {
 		ArrayList<Double> xCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			xCoordList.add(turtle.getX());
@@ -193,7 +193,7 @@ public class Controller {
 	/**
 	 * @return Y coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleYLocation() {
+	public List<Double> getTurtleYLocation() {
 		ArrayList<Double> yCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			yCoordList.add(turtle.getY());
@@ -204,7 +204,7 @@ public class Controller {
 	/**
 	 * @return Whether or not pen is down
 	 */
-	public ArrayList<Boolean> getIsPen() {
+	public List<Boolean> getIsPen() {
 		ArrayList<Boolean> isPenList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isPenList.add(turtle.pen.getPenBoolean());
@@ -215,7 +215,7 @@ public class Controller {
 	/**
 	 * @return Whether or not turtle is visible
 	 */
-	public ArrayList<Boolean> getIsTurtle() {
+	public List<Boolean> getIsTurtle() {
 		ArrayList<Boolean> isTurtleList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isTurtleList.add(turtle.getTurtleBoolean());
