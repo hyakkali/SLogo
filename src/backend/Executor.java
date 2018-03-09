@@ -1,13 +1,10 @@
 package backend;
 
 import resources.languages.Language;
-import commandFactory.CommandFactory;
 import commandbuilders.*;
 import controller.Controller;
 import command.*;
 import java.util.Stack;
-
-
 /**
  * Class to handle parsing and executing of commands. Contains the main function that reads in user
  * inputs and runs the commands recursively, from the end to the beginning.
@@ -21,7 +18,6 @@ public class Executor {
     private Parser syntaxParser;
     private Language myLang;
     private Controller myController;
-    
     // represents the current input into this executor
     private Stack<Command> currentInput;
     /**
@@ -29,7 +25,7 @@ public class Executor {
      * @param ctrl the controller for this simulation
      * @param myFactory the factory to generate commands with
      */
-    protected Executor(Controller ctrl, CommandFactory myFactory) {
+    protected Executor(Controller ctrl) {
         syntaxParser = new Parser(Language.SYNTAX);
         myController = ctrl;
         currentInput = new Stack<>();
@@ -44,7 +40,7 @@ public class Executor {
     }
 
     /**
-     * Parse the text and pass the input to be evaluated and put them on a stack, 
+     * Parse the text and pass the input to be evaluated and put them on a stack,
      * and then execute the top-most command
      * @param input the input from the console, in Stack form
      * @param myData the current data associated with the workspace
@@ -57,7 +53,7 @@ public class Executor {
     			ret = currentInput.pop().execute(myController);
     		return ret;
     }
-    
+
     /**
      * Evaluates the input to generate the stack of commands to execute, often recursively
      * @param input the input to be evaluated, in Stack form
@@ -127,9 +123,9 @@ public class Executor {
      * @return the next Command object on the input stack
      */
     public Command getNextCommand() {
-    		return currentInput.pop();
+        return currentInput.pop();
     }
-    
+
     /**
      * Retrieves the builder needed for a certain command. Also, REFLECTION!!!
      * @param commandName the name of the command to be executed
@@ -143,17 +139,17 @@ public class Executor {
     		Class<?> builderClass = Class.forName(builderName);
     		return (CommandBuilder) builderClass.getConstructor().newInstance();
     }
-    
+
     /**
      * Helper method to reverse a Stack
      * @param input the stack to be reversed
      * @return a reversed version of the input
      */
     private Stack<String> reverseStack(Stack<String> input) {
-    		Stack<String> ret = new Stack<>();
-    		while (!input.isEmpty()) {
-    			ret.push(input.pop());
-    		}
-    		return ret;
+        Stack<String> ret = new Stack<>();
+        while (!input.isEmpty()) {
+            ret.push(input.pop());
+        }
+        return ret;
     }
 }

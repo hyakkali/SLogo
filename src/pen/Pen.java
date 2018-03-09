@@ -1,5 +1,6 @@
 package pen;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javafx.scene.paint.Color;
@@ -16,6 +17,8 @@ public abstract class Pen {
 	 * Color of the next line to be drawn
 	 */
 	protected Color penColor;
+
+	private HashMap<Color,Double> colorIndex;
 
 	protected double penWidth;
 
@@ -103,6 +106,11 @@ public abstract class Pen {
 	 */
 	public double getPenWidth() {
 		return penWidth;
+	}
+
+	public double getColorIndex()
+	{
+		return colorIndex.get(this.penColor);
 	}
 
 }

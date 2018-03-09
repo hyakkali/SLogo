@@ -9,10 +9,10 @@ import controller.Controller;
  *
  */
 public class If implements Command {
-	
+
 	private double expr;
 	private Command commandList;
-	
+
 	/**
 	 * Initialize this command with the expression to evaluate and the commands to execute if so
 	 * @param expr the expression to be evaluated
@@ -22,7 +22,7 @@ public class If implements Command {
 		this.expr = expr;
 		this.commandList = commandList;
 	}
-	
+
 	/**
 	 * Execute the given command list on the controller if the expression is not 0
 	 * @param controller the controller to execute these commands on
@@ -35,5 +35,5 @@ public class If implements Command {
 		if (this.expr != 0) ret = this.commandList.execute(controller);
 		return ret;
 	}
-	
+
 }

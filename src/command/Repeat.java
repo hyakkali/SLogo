@@ -9,10 +9,10 @@ import command.Command;
  *
  */
 public class Repeat implements Command {
-	
+
 	private double repeatTimes;
 	private Command commandList;
-	
+
 	/**
 	 * Initialize Repeat command
 	 * @param times the number of times to repeat
@@ -22,7 +22,7 @@ public class Repeat implements Command {
 		this.repeatTimes = times;
 		this.commandList = commandList;
 	}
-	
+
 	/**
 	 * Execute this command on the given controller
 	 * @param controller the controller to execute these commands on
