@@ -97,6 +97,10 @@ public class Turtle extends ImageView{
 		pen.drawLine(xAmount, yAmount);
 	}
 	
+	/**
+	 * 
+	 * @param angle Heading of turtle
+	 */
 	private void setForwardSpeed(double angle) {
 		double newAngle = getCoterminalAngle(angle);
 		if(newAngle>=0 && newAngle<=HALF_PI) {
@@ -114,6 +118,10 @@ public class Turtle extends ImageView{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param angle Heading of turtle
+	 */
 	private void setBackwardSpeed(double angle) {
 		double newAngle = getCoterminalAngle(angle);
 		if(newAngle>=0 && newAngle<=HALF_PI) {
@@ -129,16 +137,6 @@ public class Turtle extends ImageView{
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
 		}
-	}
-	
-	private double getCoterminalAngle(double angle) {
-		while(angle<0) {
-			angle += PI;
-		}
-		while(angle>PI) {
-			angle = angle % PI;
-		}
-		return angle;
 	}
 
 	/**
@@ -205,10 +203,18 @@ public class Turtle extends ImageView{
 		this.setY(yCoordinate);
 	}
 	
+	/**
+	 * 
+	 * @param xCoord End X coordinate 
+	 */
 	public void setXEnd(double xCoord) {
 		this.xEndLoc = xCoord;
 	}
 	
+	/**
+	 * 
+	 * @param yCoord End Y coordinate 
+	 */
 	public void setYEnd(double yCoord) {
 		this.yEndLoc = yCoord;
 	}
@@ -316,6 +322,14 @@ public class Turtle extends ImageView{
 	public double getYSpeed() {
 		return this.ySpeed;
 	}
+	
+	/**
+	 * 
+	 * @return Image index of the current turtle image
+	 */
+	public double getImageIndex() {
+		return imageKey.get(imageURL);
+	}
 
 	//math
 	/**
@@ -350,6 +364,21 @@ public class Turtle extends ImageView{
 		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
+	
+	/**
+	 * 
+	 * @param angle Heading of turtle
+	 * @return Coterminal angle
+	 */
+	private double getCoterminalAngle(double angle) {
+		while(angle<0) {
+			angle += PI;
+		}
+		while(angle>PI) {
+			angle = angle % PI;
+		}
+		return angle;
+	}
 
 	/**
 	 * Initializes image map
@@ -383,14 +412,6 @@ public class Turtle extends ImageView{
 		copy.setVisible(this.isVisible());
 
 		return copy;
-	}
-
-	/**
-	 * 
-	 * @return Image index of the current turtle image
-	 */
-	public double getImageIndex() {
-		return imageKey.get(imageURL);
 	}
 
 }

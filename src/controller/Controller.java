@@ -112,6 +112,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param width Pen thickness
+	 */
 	public void setPenWidth(double width) {
 		for(Turtle turtle: turtles) {
 			turtle.pen.setPenWidth(width);
@@ -151,14 +155,48 @@ public class Controller {
 	public void setViewBackgroundColor(Color color) {
 		view.setBackgroundColor(color);
 	}
+	
+	/**
+	 * 
+	 * @param colorID Color ID for pen
+	 */
+	public void setMyColor(double colorID) {
+		view.setPenColor(colorID);
+	}
+
+	/**
+	 * 
+	 * @param colorID Color ID for background
+	 */
+	public void setMyBackground(double colorID) {
+		view.setBackGroundColor(colorID);
+	}
+
+	/**
+	 * 
+	 * @param shapeID Shape ID for turtle
+	 */
+	public void setMyShape(double shapeID) {
+		view.setTurtleImage(shapeID);
+	}
+
+	/**
+	 * 
+	 * @param penSize Pen thickness
+	 */
+	public void setMyPenSize(double penSize) {
+		for (Turtle t : turtles) {
+			if (t.getActive()) {
+				t.pen.setPenWidth(penSize);
+			}
+		}
+	}
 
 	/**
 	 * 
 	 * @param command Original command String that user typed in
 	 */
-	public void addPreviouslyRunCommand(String command) {
-	//	view.addPreviousCommand(command);
-	}
+	public void addPreviouslyRunCommand(String command) {	}
 
 	/**
 	 * Triggers view to print text to the screen
@@ -224,43 +262,43 @@ public class Controller {
 		return isTurtleList;
 	}
 
+	/**
+	 * 
+	 * @return Data from view
+	 */
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
 	}
 
+	/**
+	 * 
+	 * @return Number of turtles
+	 */
 	public Integer getNumTurtles() {
 		return turtles.size();
 	}
 
-	public void setMyColor(double colorID) {
-		view.setPenColor(colorID);
-	}
-
-	public void setMyBackground(double colorID) {
-		view.setBackGroundColor(colorID);
-	}
-
-	public void setMyShape(double shapeID) {
-		view.setTurtleImage(shapeID);
-	}
-
-	public void setMyPenSize(double penSize) {
-		for (Turtle t : turtles) {
-			if (t.getActive()) {
-				t.pen.setPenWidth(penSize);
-			}
-		}
-	}
-
+	/**
+	 * 
+	 * @return ID of pen color
+	 */
 	public double getPenColor() {
 		return turtles.get(0).pen.getColorIndex();
 	}
 
+	/**
+	 * 
+	 * @return ID of turtle shape
+	 */
 	public double getShapeIndex() {
 		return turtles.get(0).getImageIndex();
 
 	}
 
+	/**
+	 * 
+	 * @return ID of active turtle
+	 */
 	public double getActiveTurtle() {
 		return turtles.get(0).getID();
 	}
