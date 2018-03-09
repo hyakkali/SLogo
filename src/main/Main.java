@@ -23,7 +23,6 @@ public class Main extends Application {
         SLogoModel smodel = new SLogoModel(controller);
         view.start(primaryStage);
 		view.addSlogo(smodel);
-        primaryStage.setScene(view.setScene(800,600));
         primaryStage.show();
 	}
 

@@ -5,6 +5,7 @@ import userinterface.UserScreen;
 import backend.SLogoData;
 import pen.LinePen;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 public class Controller {
 
 	private UserScreen view;
-	private ArrayList<Turtle> turtles;
-	private ArrayList<Turtle> holdActiveTurtles;
+	private List<Turtle> turtles;
+	private List<Turtle> holdActiveTurtles;
 
 	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
@@ -75,6 +76,7 @@ public class Controller {
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
+		System.out.println("didit");
 		for(Turtle turtle: view.activeTurtles) {
 			turtle.setHeading(heading);
 		}
@@ -110,6 +112,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param width Pen thickness
+	 */
 	public void setPenWidth(double width) {
 		for(Turtle turtle: turtles) {
 			turtle.pen.setPenWidth(width);
@@ -120,8 +126,7 @@ public class Controller {
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-		//		turtle.clearLines();
-		//		view.removeLines();
+		view.clearLines();
 	}
 
 	/**
@@ -150,14 +155,48 @@ public class Controller {
 	public void setViewBackgroundColor(Color color) {
 		view.setBackgroundColor(color);
 	}
+	
+	/**
+	 * 
+	 * @param colorID Color ID for pen
+	 */
+	public void setMyColor(double colorID) {
+		view.setPenColor(colorID);
+	}
+
+	/**
+	 * 
+	 * @param colorID Color ID for background
+	 */
+	public void setMyBackground(double colorID) {
+		view.setBackGroundColor(colorID);
+	}
+
+	/**
+	 * 
+	 * @param shapeID Shape ID for turtle
+	 */
+	public void setMyShape(double shapeID) {
+		view.setTurtleImage(shapeID);
+	}
+
+	/**
+	 * 
+	 * @param penSize Pen thickness
+	 */
+	public void setMyPenSize(double penSize) {
+		for (Turtle t : turtles) {
+			if (t.getActive()) {
+				t.pen.setPenWidth(penSize);
+			}
+		}
+	}
 
 	/**
 	 * 
 	 * @param command Original command String that user typed in
 	 */
-	public void addPreviouslyRunCommand(String command) {
-	//	view.addPreviousCommand(command);
-	}
+	public void addPreviouslyRunCommand(String command) {	}
 
 	/**
 	 * Triggers view to print text to the screen
@@ -171,18 +210,18 @@ public class Controller {
 	/**
 	 * @return Current heading of the turtle
 	 */
-	public ArrayList<Double> getTurtleHeading() {
+	public double getTurtleHeading() {
 		ArrayList<Double> headingList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			headingList.add(turtle.getRotate());
 		}
-		return headingList;
+		return headingList.get(2);
 	}
 
 	/**
 	 * @return X coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleXLocation() {
+	public List<Double> getTurtleXLocation() {
 		ArrayList<Double> xCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			xCoordList.add(turtle.getX());
@@ -193,7 +232,7 @@ public class Controller {
 	/**
 	 * @return Y coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleYLocation() {
+	public List<Double> getTurtleYLocation() {
 		ArrayList<Double> yCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			yCoordList.add(turtle.getY());
@@ -204,7 +243,7 @@ public class Controller {
 	/**
 	 * @return Whether or not pen is down
 	 */
-	public ArrayList<Boolean> getIsPen() {
+	public List<Boolean> getIsPen() {
 		ArrayList<Boolean> isPenList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isPenList.add(turtle.pen.getPenBoolean());
@@ -215,7 +254,7 @@ public class Controller {
 	/**
 	 * @return Whether or not turtle is visible
 	 */
-	public ArrayList<Boolean> getIsTurtle() {
+	public List<Boolean> getIsTurtle() {
 		ArrayList<Boolean> isTurtleList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isTurtleList.add(turtle.getTurtleBoolean());
@@ -223,43 +262,43 @@ public class Controller {
 		return isTurtleList;
 	}
 
+	/**
+	 * 
+	 * @return Data from view
+	 */
 	public SLogoData getMyData() {
 		return view.getMyModel().getMyData();
 	}
 
+	/**
+	 * 
+	 * @return Number of turtles
+	 */
 	public Integer getNumTurtles() {
 		return turtles.size();
 	}
 
-	public void setMyColor(double colorID) {
-		view.setPenColor(colorID);
-	}
-
-	public void setMyBackground(double colorID) {
-		view.setBackGroundColor(colorID);
-	}
-
-	public void setMyShape(double shapeID) {
-		view.setTurtleImage(shapeID);
-	}
-
-	public void setMyPenSize(double penSize) {
-		for (Turtle t : turtles) {
-			if (t.getActive()) {
-				t.pen.setPenWidth(penSize);
-			}
-		}
-	}
-
+	/**
+	 * 
+	 * @return ID of pen color
+	 */
 	public double getPenColor() {
 		return turtles.get(0).pen.getColorIndex();
 	}
 
+	/**
+	 * 
+	 * @return ID of turtle shape
+	 */
 	public double getShapeIndex() {
 		return turtles.get(0).getImageIndex();
 
 	}
 
+	/**
+	 * 
+	 * @return ID of active turtle
+	 */
 	public double getActiveTurtle() {
 		return turtles.get(0).getID();
 	}
@@ -268,11 +307,11 @@ public class Controller {
 		for (Turtle t: turtles) {
 			if (t.getID() == Double.parseDouble(inputName)) {
 				if (!view.activeTurtles.contains(t)) {
-					view.activeTurtles.add(t);
+					view.addActiveTurtles(t);
 				}
 			}
 			else {
-				view.activeTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+				view.addActiveTurtles(new Turtle(new LinePen(), Double.parseDouble(inputName)));
 			}
 		}
 	}
@@ -286,22 +325,19 @@ public class Controller {
 		return null;
 	}
 
-	public void tempActiveTurtles(ArrayList<Turtle> newTurtles) {
+	public void tempActiveTurtles(List<Turtle> newTurtles) {
 		holdActiveTurtles = view.activeTurtles;
 		view.activeTurtles.clear();
 		for (Turtle t: newTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
 
 	public void resetActiveTurtles() {
 		view.activeTurtles.clear();
 		for (Turtle t: holdActiveTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
-
-
-
 
 }

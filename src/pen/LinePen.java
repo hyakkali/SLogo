@@ -16,9 +16,10 @@ public class LinePen extends Pen{
 		this.lines = new ArrayList<>();	
 	}
 
+	@Override
 	public void drawLine(double xAmount, double yAmount) {
 		if(penBoolean) {
-			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation+xAmount,yStartLineLocation-yAmount);
+			Line newLine = new Line(xStartLineLocation,yStartLineLocation,xStartLineLocation,yStartLineLocation);
 			newLine.setStroke(penColor);
 			newLine.setStrokeWidth(penWidth);
 			lines.add(newLine);
@@ -30,6 +31,7 @@ public class LinePen extends Pen{
 		lines.clear();
 	}
 
+	@Override
 	public List<Line> getLines() {
 		return lines;
 	}
