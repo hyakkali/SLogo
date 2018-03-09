@@ -1,8 +1,12 @@
 package userinterface;
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.function.Consumer;
 /* Author @Conrad
@@ -11,35 +15,43 @@ import java.util.function.Consumer;
  */
 
 
-public class Console extends TextArea  {
+public class Console extends VBox {
 
-
-    private History history = new History();
+    private CMDHistory history = new CMDHistory();
     private Consumer<String> eventToOccur;
-
+    private VBox commandsContainer;
+    private ScrollPane commandScroller;
+    private TextArea commandWindow;
 
 
     /* Defines the orientation and and onAction properties
      * for the text this and sends the reference to be
      * set to instance variable this
      */
-    public Console (int XSIZE, int YSIZE, Consumer<String> event) {
+    public Console (int xsize, int ysize, Consumer<String> event) {
         eventToOccur = event;
-        this.prefWidth(XSIZE / 7 * 4);
-        this.setPrefWidth(XSIZE);
-        this.setPrefHeight(YSIZE);
-        this.setEditable(true);
-        this.setWrapText(true);
-        this.setPromptText("Enter a command");
-        this.setOnKeyPressed(k->thisHandler(k));
+        commandWindow = new TextArea();
+        commandWindow.setPrefHeight(10);
+        commandWindow.setEditable(true);
+        commandWindow.setWrapText(true);
+        commandWindow.setPromptText("Enter a command");
+        commandWindow.setOnKeyPressed(k->thisHandler(k));
+
+
+        commandsContainer = new VBox();
+        commandScroller = new ScrollPane(commandsContainer);
+        commandScroller.setPrefSize(xsize,ysize);
+        this.getChildren().add(commandScroller);
+        this.getChildren().add(commandWindow);
     }
+
 
     /* cycles forward through command list and
      * sets text value of this to next command
      */
     private void displayNext() {
         if(history.hasNext())
-            this.setText(history.moveForward());
+            commandWindow.setText(history.moveForward());
 
     }
 
@@ -48,7 +60,7 @@ public class Console extends TextArea  {
      */
     private void displayPrev() {
         if(history.hasPrev())
-            this.setText(history.moveBack());
+            commandWindow.setText(history.moveBack());
     }
 
 
@@ -59,10 +71,7 @@ public class Console extends TextArea  {
     private void thisHandler( KeyEvent k) {
         if (k.getCode().equals(KeyCode.ENTER)) {
             k.consume();
-            String textHolder=this.getText();
-            eventToOccur.accept(textHolder);
-            history.add(textHolder);
-            this.setText("");
+            this.processCommand();
         }
 
         else if (k.getCode().equals(KeyCode.UP)) {
@@ -72,8 +81,24 @@ public class Console extends TextArea  {
             this.displayNext();
         }
     }
-    /* Defines the actions to be taken
-     *  when the user types in the this
-     */
+    /*
 
+     */
+    private void processCommand(){
+        String textHolder=commandWindow.getText();
+        eventToOccur.accept(textHolder);
+        history.add(textHolder);
+        addPastCommand();
+        commandWindow.setText("");
+    }
+
+    /*
+        adds the commands to a list of
+     */
+    private void addPastCommand()
+    {
+        Text command = new Text(commandWindow.getText());
+        command.setOnMouseClicked(e->{commandWindow.setText(command.getText()); processCommand();});
+        commandsContainer.getChildren().add(command);
+    }
 }

@@ -3,8 +3,12 @@ package backend;
 import controller.Controller;
 import resources.languages.Language;
 
+import java.util.List;
 import java.util.Stack;
+import java.util.function.Consumer;
+
 import command.*;
+import userinterface.UserScreen;
 
 public class SLogoModel {
 
@@ -18,10 +22,13 @@ public class SLogoModel {
         myExecutor = new Executor(ctrl);
     }
 
-
-
     public void setLanguage(Language lang) {
         myExecutor.setMyLanguage(lang);
+    }
+
+    public List<Variable> getVariables()
+    {
+        return myData.getMyVariables();
     }
 
     @SuppressWarnings("serial")
@@ -32,7 +39,10 @@ public class SLogoModel {
             inputStack.push(str);
         }
         myController.addPreviouslyRunCommand(input);
+
         myExecutor.parseText(inputStack, this.myData);
+        for(Variable v :myData.getMyVariables())
+        System.out.print(v.getName());
     }
 
     public void setController(Controller ctrl) {

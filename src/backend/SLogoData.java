@@ -28,6 +28,8 @@ public class SLogoData {
     }
 
 
+
+
     public void deleteVariable(String variableName) {
 
         for (Variable v: myVariables) {
@@ -45,6 +47,7 @@ public class SLogoData {
     public void addVariable(Variable newVar) {
         deleteVariable(newVar.getName());
         myVariables.add(newVar);
+
     }
 
     public Variable getVariable(String name) {

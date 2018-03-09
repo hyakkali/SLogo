@@ -1,4 +1,5 @@
 package controller;
+import backend.SLogoModel;
 import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
@@ -16,12 +17,17 @@ import java.util.List;
 public class Controller {
 
 	private UserScreen view;
-	private List<Turtle> turtles;
-	private List<Turtle> holdActiveTurtles;
+	private ArrayList<Turtle> turtles;
+	private SLogoModel slogoModel;
+	private ArrayList<Turtle> activeTurtles;
 
 	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
 		this.turtles = turtles;
+	}
+	public void initSlogo(SLogoModel s)
+	{
+		slogoModel=s;
 	}
 
 	/**
@@ -29,7 +35,7 @@ public class Controller {
 	 * @param xCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleXLocation(double xCoord) {
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.setXPosition(xCoord);
 		}
 	}
@@ -39,7 +45,7 @@ public class Controller {
 	 * @param yCoord Desired Y Coordinate of the turtle
 	 */
 	public void setTurtleYLocation(double yCoord) {
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.setYPosition(yCoord);
 		}
 	}
@@ -58,7 +64,7 @@ public class Controller {
 	 * @param amount Amount of pixels to move turtle
 	 */
 	public void moveTurtle(double amount) {
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.move(turtle.getRotate(), amount);
 		}
 	}
@@ -67,7 +73,7 @@ public class Controller {
 	 * @param heading Amount of degrees to rotate turtle
 	 */
 	public void rotateTurtle(double heading) {
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.rotate(heading);
 		}
 	}
@@ -76,8 +82,7 @@ public class Controller {
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
-		System.out.println("didit");
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.setHeading(heading);
 		}
 	}
@@ -87,7 +92,7 @@ public class Controller {
 	 * @param yCoord Y coordinate to set turtle towards
 	 */
 	public void setTurtleTowards(double xCoord, double yCoord) {
-		for(Turtle turtle: view.activeTurtles) {
+		for(Turtle turtle: view.myActiveTurtles) {
 			turtle.setTowards(xCoord,yCoord);
 		}
 	}
@@ -267,13 +272,10 @@ public class Controller {
 	 * @return Data from view
 	 */
 	public SLogoData getMyData() {
-		return view.getMyModel().getMyData();
+		return slogoModel.getMyData();
 	}
 
-	/**
-	 * 
-	 * @return Number of turtles
-	 */
+
 	public Integer getNumTurtles() {
 		return turtles.size();
 	}
@@ -306,12 +308,12 @@ public class Controller {
 	public void addActiveTurtles(String inputName) {
 		for (Turtle t: turtles) {
 			if (t.getID() == Double.parseDouble(inputName)) {
-				if (!view.activeTurtles.contains(t)) {
-					view.addActiveTurtles(t);
+				if (!view.myActiveTurtles.contains(t)) {
+					view.myActiveTurtles.add(t);
 				}
 			}
 			else {
-				view.addActiveTurtles(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+				view.myActiveTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
 			}
 		}
 	}
@@ -325,18 +327,18 @@ public class Controller {
 		return null;
 	}
 
-	public void tempActiveTurtles(List<Turtle> newTurtles) {
-		holdActiveTurtles = view.activeTurtles;
-		view.activeTurtles.clear();
+	public void tempActiveTurtles(ArrayList<Turtle> newTurtles) {
+		activeTurtles = view.myActiveTurtles;
+		view.myActiveTurtles.clear();
 		for (Turtle t: newTurtles) {
-			view.addActiveTurtles(t);
+			view.myActiveTurtles.add(t);
 		}
 	}
 
 	public void resetActiveTurtles() {
-		view.activeTurtles.clear();
-		for (Turtle t: holdActiveTurtles) {
-			view.addActiveTurtles(t);
+		view.myActiveTurtles.clear();
+		for (Turtle t: activeTurtles) {
+			view.myActiveTurtles.add(t);
 		}
 	}
 

@@ -14,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import command.Variable;
 
-public class VariableList extends ScrollPane{
+public class VariableList extends VBox{
     //Make a tableview
-    private HashMap<TextArea, Variable > list = new HashMap<TextArea,Variable>();
+    private HashMap<TextField, Variable > list = new HashMap<>();
 
-    private Pane scrollable = new Pane();
     public VariableList(int XSIZE, int YSIZE)
     {
         setPrefWidth(XSIZE / 7 * 4);
@@ -29,6 +28,7 @@ public class VariableList extends ScrollPane{
     {
         for(Variable v : variables) {
             String name = v.getName();
+            System.out.print(name);
             double info = v.getValue();
             if (!list.containsValue(v)) {
                 TextField variableVal = new TextField(String.valueOf(info));

@@ -1,6 +1,8 @@
 package userinterface;
 
+import backend.SLogoData;
 import backend.SLogoModel;
+import command.Variable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -27,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import resources.languages.Language;
@@ -35,16 +38,17 @@ import turtle.Turtle;
 
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class UserScreen extends Application {
+public class UserScreen extends Application{
     private static final String DEFAULT_RESOURCES = "resources.languages/";
-    private static final String helpURL = "https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commands.php";
+    private static final String HELP_URL = "https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commandView.php";
     private static final String TITLE = "Slogo";
 
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-    private static final int XSIZE = 800;
-    private static final int YSIZE = 600;
+    private static final int X_SIZE = 800;
+    private static final int Y_SIZE = 600;
 
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
@@ -56,66 +60,79 @@ public class UserScreen extends Application {
 
     private Scene myScene;
 
-    private ResourceBundle descriptions;
-    private ResourceBundle turtleImages;
-    private ResourceBundle properties;
-    private ResourceBundle colors;
-    private VariableList variables;
-    private List<Turtle> turtles;
-    public List<Turtle> activeTurtles = new ArrayList<>();
-    public List<Turtle> inactiveTurtles = new ArrayList<>();
-    private HashMap<Integer, String> colorMap = new HashMap<>();
-    private HashMap<Integer, String> imageMap = new HashMap<>();
+    private Consumer<String> parseText;
+    private Consumer<Language> setSlogoLang;
+    private Consumer<Void> getVariables;
 
+
+    private ResourceBundle cmdDescriptions;
+    private ResourceBundle turtleImages;
+    private ResourceBundle colors;
+    private VariableList variableView;
+    private ArrayList<Turtle> myTurtles;
+    public ArrayList<Turtle> myActiveTurtles = new ArrayList<>();
+    private HashMap<Integer, String> colorIntMap = new HashMap<>();
+    private HashMap<Integer, String> imageIntMap = new HashMap<>();
     private HashMap<String, String> userCommands = new HashMap<>();
-    private SLogoModel mySLogoModel;
-    private TextArea commands;
+    private TextArea commandView;
     private Pane turtlePane;
+    private Stage myStage;
     private String language = "English";
     private List<Line> lines = new ArrayList<>();
     private final String[] languageOptions = {"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish"};
     private Stack<State> history = new Stack<>();
 
 
+<<<<<<< HEAD
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
     /* adds the turtles called for by controller to the userscreen
+=======
+    /* adds the myTurtles called for by controller to the userscreen
+>>>>>>> 09b76d185ebb01cd598ec7ed2a5746b4f10ae131
      */
-    public UserScreen(ArrayList<Turtle> t) {
-        this.turtles = t;
-    }//
+    public UserScreen(ArrayList<Turtle> t, Stage stage) {
+        myTurtles = t;
+        start(stage);
+    }
 
-    /* Add slogomodel to the view and send properties to the model
+    /* imports commands from slogomodel that the UI needs
      */
-    public void addSlogo(SLogoModel s) {
-        mySLogoModel = s;
+    public void initializeBackend(SLogoModel s) {
+        parseText = e->s.parse(e);
+        setSlogoLang = e->s.setLanguage(e);
+        getVariables = e-> {List<Variable> g = s.getVariables(); addVariables(g);};
         setupProperties(language);
-    }//
+
+    }
 
     /*will be used to insantiate all of the visual elements in
      * in the slogo project and add to the scene which returns to
      * start --this calls the menu related functions
      */
-    public Scene setupScene(int width, int length) {
+    private Scene setScene(int width, int length) {
         Group root = new Group();
-        myScene = new Scene(root, width, length);
+
         setupProperties("English");
+
+        myScene = new Scene(root, width, length);
         myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());//listens to the mouse and calls save when a mouse clicked / button pressed
         myScene.addEventFilter(KeyEvent.KEY_PRESSED,e->{if(e.getCode().equals(KeyCode.ALT)) loadState();});
+
         VBox right = createSideMenu();
         HBox bottom = createBottomMenu();
         BorderPane form = new BorderPane();
 
         turtlePane = new Pane();
-        turtlePane.setPrefSize(YSIZE*5/6, YSIZE*5/6);
+        turtlePane.setPrefSize(Y_SIZE*5/6, Y_SIZE*5/6);
         turtlePane.setStyle(colors.getString("WHITE"));
         turtleSetup();
 
         form.setRight(right);
         form.setBottom(bottom);
         form.setCenter(turtlePane);
-        form.setPrefSize(XSIZE, YSIZE);
+        form.setPrefSize(X_SIZE, Y_SIZE);
 
         root.getChildren().add(form);
 
@@ -123,109 +140,6 @@ public class UserScreen extends Application {
 
         return myScene;
     }
-
-    /* Initialize the turtles with context menus and
-        and put them in active or inactive lists
-     */
-    private void setupTurtleMouse() {
-        for (Turtle turtle : turtles) {
-            turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-                    MouseButton button = event.getButton();
-                    if (button == MouseButton.PRIMARY) {
-                        if (event.getClickCount() == 2) {
-	                        	if (activeTurtles.contains(turtle)) {
-	                        		addInactiveTurtles(turtle);
-                            } else {
-                            		addActiveTurtles(turtle);
-                            }
-                        } else if (event.getClickCount() == 1) {
-                            turtle.requestFocus();
-                        }
-                    } else if (button == MouseButton.SECONDARY) {
-                        ObservableList<MenuItem> menu = createContextMenuList(turtle);
-                        ContextMenu cMenu = MenuBuilder.buildContext(menu);
-                        cMenu.show(turtle, turtle.getX() + CONTEXT_X_OFFSET, turtle.getY() + CONTEXT_Y_OFFSET);
-                    }
-                }
-            });
-        }
-    }
-    
-    private void setupActiveTurtles() {
-	    	for(Turtle turtle:turtles) {
-	    		turtlePane.getChildren().add(turtle);
-	    		if(turtle.getActive()) {
-	    			activeTurtles.add(turtle);
-	    		}
-	    	}
-    }
-    
-    private void setupTurtleKeys() {
-	    	for(Turtle turtle:turtles) {
-	    		turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
-	
-	    			@Override
-	    			public void handle(KeyEvent event) {
-	    				saveState();
-	    				if (turtle.getActive()) {
-	    					if (event.getCode() == KeyCode.D) {
-	    						turtle.setRotate(turtle.getRotate() + TURTLE_MOVE);
-	    					} else if (event.getCode() == KeyCode.A) {
-	    						turtle.setRotate(turtle.getRotate() - TURTLE_MOVE);
-	    					} else if (event.getCode() == KeyCode.W) {
-	    						turtle.move(turtle.getRotate(), TURTLE_MOVE);
-	    					} else if (event.getCode() == KeyCode.S) {
-	    						turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
-	    					} else if (event.getCode() == KeyCode.I) {
-		    					turtle.pen.togglePenUpOrDown(true);
-		    				} else if (event.getCode() == KeyCode.U) {
-		    					turtle.pen.togglePenUpOrDown(false);
-		    				} else if (event.getCode() == KeyCode.Y) {
-		    					turtle.pen.setPenWidth(turtle.pen.getPenWidth() - PEN_THICKNESS);
-		    				} else if (event.getCode() == KeyCode.T) {
-		    					turtle.pen.setPenWidth(turtle.pen.getPenWidth() + PEN_THICKNESS);
-		    				}
-	    				}
-	    			}
-	    		});
-	    	}
-    }
-    
-    private void turtleSetup() {
-        setupTurtleMouse();
-        setupTurtleKeys();
-        setupActiveTurtles();
-    }
-    
-    /**
-     * Adds turtle to active turtle list and removes it from inactive list if
-     * inactive list contains turtle.
-     * @param turtle
-     */
-    public void addActiveTurtles(Turtle turtle) {
-    		activeTurtles.add(turtle);
-    		turtle.setActive(true);
-    		if(inactiveTurtles.contains(turtle)) {
-    			inactiveTurtles.remove(turtle);
-    		}
-    }
-    
-    /**
-     * Adds turtle to inactive turtle list and removes it from active list if
-     * active list contains turtle.
-     * @param turtle
-     */
-    public void addInactiveTurtles(Turtle turtle) {
-		inactiveTurtles.add(turtle);
-		turtle.setActive(false);
-		if(activeTurtles.contains(turtle)) {
-			activeTurtles.remove(turtle);
-		}
-    }
-
     /* animated the screen
      */
     private void beginAnimationLoop() {
@@ -239,90 +153,76 @@ public class UserScreen extends Application {
     }
 
     private void step(double elapsedTime) {
-    		for (Turtle turtle : activeTurtles) {
-    			List<Line> tLines = turtle.pen.getLines();
-    			if(!tLines.isEmpty()) {
-        			Line line = tLines.get(tLines.size()-1);
-        			if(turtle.getX()!=turtle.getXEnd()) {
-        				line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
-        				turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
-        			}
-	    			if(turtle.getY()!=turtle.getYEnd()) {
-		    			line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
-	        			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
-	    			}
-    			}
-
-    		}
-    		for (Turtle turtle : activeTurtles) {
-    			drawLine(turtle);
-    		}
+        for (Turtle turtle : myActiveTurtles) {
+            drawLine(turtle);
+        }
     }
 
     /* creates the scene within the stage by calling setScene
      * defines/ initializes the state and begins stepping
      */
     public void start(Stage stage) {
-        myScene = setupScene(XSIZE, YSIZE); // get the scene
-        stage.setResizable(false);
-        stage.setScene(myScene);
-        stage.setTitle(TITLE);
-        stage.show();
+        myStage=stage;
+        myScene = setScene(X_SIZE, Y_SIZE); // get the scene
+        myStage.setResizable(false);
+        myStage.setScene(myScene);
+        myStage.setTitle(TITLE);
+        myStage.show();
+
     }
 
     /* initializes the properties files containing value
-     * key pairs for commands, images, and colors
+     * key pairs for commandView, images, and colors
      * Also gives slogomodel the correct language and creates indicies for slogomodel to utilize
      */
     private void setupProperties(String lang) {
         turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
-        properties = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
         colors = ResourceBundle.getBundle(DEFAULT_RESOURCES + "Colors");
         int index = 0;
         for (String color : colors.keySet()) {
-            colorMap.put(index, color);
+            colorIntMap.put(index, color);
             index++;
         }
         index = 0;
         for (String color : turtleImages.keySet()) {
-            imageMap.put(index, color);
+            imageIntMap.put(index, color);
             index++;
         }
         try {
-            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang + "Descriptions");
+            cmdDescriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang + "Descriptions");
         } catch (MissingResourceException m) {
-            descriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
+            cmdDescriptions = ResourceBundle.getBundle(DEFAULT_RESOURCES + lang);
         }
         LanguageFactory backendLanguage = new LanguageFactory();
         Language myLanguage = backendLanguage.getLanguage(lang);
-        if (mySLogoModel != null)
-            mySLogoModel.setLanguage(myLanguage);
+        if(parseText!=null)
+            setSlogoLang.accept(myLanguage);
+
         language = lang;
     }
 
 
     /* Defines the sidemenu which contains comboboxes
      * for language, line colro, background color
-     * images-- text areas for commands and variables
+     * images-- text areas for commandView and variableView
      * and a reset button
      */
     private VBox createSideMenu() {
-
         VBox interactives = new VBox();
-
-//        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
+        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> safeFile());
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
-        Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(helpURL));
-        HBox buttons = new HBox(resetButton, helpButton);
+        Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(HELP_URL));
+        Button load = MenuBuilder.buildButton("Load", e->loadFile());
+        HBox buttons = new HBox(resetButton, helpButton ,newForm, load);
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
 
-        commands = getCommandsList();
-        variables = new VariableList(XSIZE, YSIZE);
-        ScrollPane scroll = new ScrollPane(variables);
-        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        commandView = getCommandsList();
+        variableView = new VariableList(X_SIZE, Y_SIZE);
+        ScrollPane variableScroller = new ScrollPane(variableView);
+        variableScroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        ObservableList<String> images = FXCollections.observableArrayList(new ArrayList<String>(turtleImages.keySet()));
+        ObservableList<String> images = FXCollections.observableArrayList(new ArrayList<>(turtleImages.keySet()));
         ObservableList<String> languages = FXCollections.observableArrayList(languageOptions);
 
         ComboBox imageCombo = MenuBuilder.buildCombo("Turtle Image", images, e -> setTurtleImage(e));
@@ -336,7 +236,7 @@ public class UserScreen extends Application {
         interactives.setAlignment(Pos.CENTER);
         interactives.setSpacing(10);
         interactives.getChildren().addAll(language, background, imageCombo,
-                lineCombo, commands, scroll, buttons);
+                lineCombo, commandView, variableScroller, buttons);
 
         return interactives;
     }
@@ -346,8 +246,8 @@ public class UserScreen extends Application {
      */
     private HBox createBottomMenu() {
         HBox interactives = new HBox();
-        Console console = new Console(XSIZE, YSIZE, i -> parse(i));
-        interactives.setPrefHeight(YSIZE / 9 * 2);
+        Console console = new Console(X_SIZE, Y_SIZE, i -> parse(i));
+        interactives.setPrefHeight(Y_SIZE / 9 * 2);
         interactives.setStyle("-fx-background-color: #008000");
         interactives.setPadding(new Insets(20, 10, 20, 10));
         interactives.setAlignment(Pos.TOP_LEFT);
@@ -356,39 +256,39 @@ public class UserScreen extends Application {
         return interactives;
     }
 
-
     /* Initializes the shape and properties of the command area
      */
     private TextArea getCommandsList() {
-        commands = new TextArea();
-        commands.prefWidth(XSIZE / 7 * 4);
-        commands.setPrefWidth(XSIZE / 7 * 4);
-        commands.setPrefHeight(YSIZE / 7 * 2);
-        commands.setEditable(false);
-        commands.setWrapText(true);
+        commandView = new TextArea();
+        commandView.prefWidth(X_SIZE / 7 * 4);
+        commandView.setPrefWidth(X_SIZE / 7 * 4);
+        commandView.setPrefHeight(Y_SIZE / 7 * 2);
+        commandView.setEditable(false);
+        commandView.setWrapText(true);
         setupCommandsList();
 
-        return commands;
+        return commandView;
     }
 
-
-    /*Initializes the command window with the descriptions
+    /*Initializes the command window with the cmdDescriptions
      * of each command from the properties/ user definition
      * and updates when new user ommands are defined
      */
     private void setupCommandsList() {
-        commands.clear();
-        commands.appendText("Inherent Commands: \n\n");
-        for (String cmd : descriptions.keySet()) {
-            commands.appendText(cmd.toUpperCase() + "\n");
-            commands.appendText(descriptions.getString(cmd) + "\n\n");
+        commandView.clear();
+        commandView.appendText("Inherent Commands: \n\n");
+        for (String cmd : cmdDescriptions.keySet()) {
+            commandView.appendText(cmd.toUpperCase() + "\n");
+            commandView.appendText(cmdDescriptions.getString(cmd) + "\n\n");
         }
-        commands.appendText("User Defined Commands: \n\n");
+        commandView.appendText("User Defined Commands: \n\n");
             for(String command : userCommands.keySet())
-                commands.appendText(command + "\n\n");
+                commandView.appendText(command + "\n\n");
     }
 
-    //Put this in turtle
+    /*
+        Put this in turtle
+     */
     private ObservableList<MenuItem> createContextMenuList(Turtle turtle) {
         ObservableList<MenuItem> menu = FXCollections.observableArrayList();
         MenuItem mItem0 = new MenuItem("ID: " + Double.toString(turtle.getID()));
@@ -448,13 +348,10 @@ public class UserScreen extends Application {
         alert.showAndWait();
     }
 
-    public SLogoModel getMyModel() {
-        return mySLogoModel;
-    }
 
     public void setPenColor(double d) {
         int index = (int) d;
-        setPenColor(colorMap.get(index));
+        setPenColor(colorIntMap.get(index));
     }
 
     public void setBackGroundColor(double d) {
@@ -463,7 +360,7 @@ public class UserScreen extends Application {
 
     public void setTurtleImage(double d) {
         int index = (int) d;
-        setTurtleImage(imageMap.get(index));
+        setTurtleImage(imageIntMap.get(index));
     }
 
     public void setLanguage(double d) {
@@ -472,11 +369,11 @@ public class UserScreen extends Application {
     }
 
 
-    /* Resets the turtle location, variables, draw pane
+    /* Resets the turtle location, variableView, draw pane
      * and redraws the UI
      */
     public void reset() {
-        for (Turtle t : turtles) {
+        for (Turtle t : myTurtles) {
             t.setToOrigin();
             t.setHeading(0);
             t.setXEnd(0);
@@ -499,10 +396,17 @@ public class UserScreen extends Application {
      *  when the user types in the console
      */
     private void parse(String command) {
-        mySLogoModel.parse(command);
-        variables.addVariables(mySLogoModel.getMyData().getMyVariables());
+        parseText.accept(command);
+        getVariables.accept(null);
         saveState();
 
+    }
+
+    private void addVariables(List<Variable> vars)
+    {
+        for(Variable v:vars)
+            System.out.print(v.getName());
+        variableView.addVariables(vars);
     }
 
 
@@ -512,7 +416,7 @@ public class UserScreen extends Application {
      */
     private void saveState() {
 
-       State toAdd = new State(turtles, lines, turtlePane.getStyle(), language);
+       State toAdd = new State(myTurtles, lines, turtlePane.getStyle(), language);
        if(history.isEmpty() || !toAdd.equals(history.peek())){
            history.push(toAdd);
        }
@@ -534,20 +438,20 @@ public class UserScreen extends Application {
     private void loadState() {
        if(!history.isEmpty()) {
            State load = history.pop();
-           turtles.clear();
-           activeTurtles.clear();
+           myTurtles.clear();
+           myActiveTurtles.clear();
            turtlePane.getChildren().clear();
-           turtles.addAll(load.onScreen);
+           myTurtles.addAll(load.pastTurtles);
            turtleSetup();
            lines.clear();
-           lines.addAll(load.drawnLines);
+           lines.addAll(load.pastLines);
            setBackgroundColor(load.background);
            turtlePane.getChildren().addAll(lines);
        }
     }
 
     private void setPenColor(String color) {
-        for(Turtle turtle: turtles) {
+        for(Turtle turtle: myTurtles) {
             if(turtle.getActive())
                 turtle.pen.setPenColor(Color.web(color));
         }
@@ -572,20 +476,27 @@ public class UserScreen extends Application {
     }
 
     private void setTurtleImage(String image) {
-    		for(Turtle turtle:turtles) {
+    		for(Turtle turtle: myTurtles) {
     	        turtle.setImage(image);
     		}
     }
 
-//    private void createNewWindow() {
-//        try{WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
-//        catch(Exception c){}
-//    }
->>>>>>> master
+    private void safeFile() {
+        WritePreferences.saveFile(turtlePane.getStyle(),language, myTurtles,lines);
+    }
+    private void safePref(){
+        WritePreferences.savePref(turtlePane.getStyle(),language, myTurtles.size());
+    }
 
+    private void loadFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.showOpenDialog(myStage);
+    }
 
+    private void loadPref(){
 
-
+    }
 
 
 
@@ -638,8 +549,75 @@ public class UserScreen extends Application {
 //    private void addCommand(String cmd, String code) {
 //        if(!userCommands.containsKey(cmd)) {
 //            userCommands.put(cmd, code);
-//            commands.appendText(cmd + "\n\n");
+//            commandView.appendText(cmd + "\n\n");
 //        }
 //    }
+
+    /* Initialize the myTurtles with context menus and
+       and put them in active or inactive lists
+    */
+    //NEEDS to be refctored!!!!!!!!!!!
+    private void turtleSetup() {
+        for (Turtle turtle : myTurtles) {
+            if(turtle.getActive())
+                myActiveTurtles.add(turtle);
+            turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    MouseButton button = event.getButton();
+                    if (button == MouseButton.PRIMARY) {
+                        if (event.getClickCount() == 2) {
+                            if (myActiveTurtles.contains(turtle)) {
+                                myActiveTurtles.remove(turtle);
+                                turtle.setActive(false);
+                                turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+                            } else {
+                                myActiveTurtles.add(turtle);
+                                turtle.setActive(true);
+                                turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+                            }
+                        } else if (event.getClickCount() == 1) {
+                            turtle.requestFocus();
+                        }
+                        //add set active or inactive
+                    } else if (button == MouseButton.SECONDARY) {
+                        ObservableList<MenuItem> menu = createContextMenuList(turtle);
+                        ContextMenu cMenu = MenuBuilder.buildContext(menu);
+                        cMenu.show(turtle, turtle.getX() + 150, turtle.getY() + 100);
+                    }
+                }
+
+            });
+
+            turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+                @Override
+                public void handle(KeyEvent event) {
+                    saveState();
+                    if (turtle.getActive()) {
+                        if (event.getCode() == KeyCode.D) {
+                            turtle.setRotate(turtle.getRotate() + TURTLE_MOVE);
+                        } else if (event.getCode() == KeyCode.A) {
+                            turtle.setRotate(turtle.getRotate() - TURTLE_MOVE);
+                        } else if (event.getCode() == KeyCode.W) {
+                            turtle.move(turtle.getRotate(), TURTLE_MOVE);
+                        } else if (event.getCode() == KeyCode.S) {
+                            turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
+                        } else if (event.getCode() == KeyCode.D) {
+                            turtle.pen.togglePenUpOrDown(true);
+                        } else if (event.getCode() == KeyCode.U) {
+                            turtle.pen.togglePenUpOrDown(false);
+                        } else if (event.getCode() == KeyCode.Y) {
+                            turtle.pen.setPenWidth(turtle.pen.getPenWidth() - PEN_THICKNESS);
+                        } else if (event.getCode() == KeyCode.T) {
+                            turtle.pen.setPenWidth(turtle.pen.getPenWidth() + PEN_THICKNESS);
+                        }
+                    }
+                }
+            });
+            turtlePane.getChildren().add(turtle);
+        }
+    }
 
 }
