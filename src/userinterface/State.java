@@ -21,27 +21,26 @@ public class State {
         copyLines(lines);
 
         onScreen = new ArrayList<Turtle>();
+        copyTurtles(turtles);
 
-        for(Turtle l : turtles)
-        {
-            Turtle clone = l.clone();
-            onScreen.add(clone);
-        }
         language = lang;
     }
 
+    //create random hash code for eachstate
+    @Override
     public int hashCode()
     {
         double hash=1;
 
         for(Turtle turtle :onScreen)
             hash+= turtle.getID()*turtle.getX()/turtle.getY()+turtle.getRotate()+(((double)turtle.getImage().hashCode())/90000);
-        for(Line line : drawnLines)
-            hash-=line.getEndX()+2*line.getEndY()-line.getEndX()*line.getEndY()/2;
+        for(Line line : drawnLines) {
+            hash -= line.getEndX() + 2 * line.getEndY() - line.getEndX() * line.getEndY() / 2;
+            hash-=line.getStroke().hashCode()/823404;
+        }
         hash+=(background.hashCode());
         hash+=language.hashCode();
         int h=(int)hash;
-//        System.out.println(h);
         return h;
     }
 
@@ -54,6 +53,16 @@ public class State {
         }
     }
 
+    private void copyTurtles(List<Turtle> turtles)
+    {
+        for(Turtle l : turtles)
+        {
+            Turtle clone = l.clone();
+            onScreen.add(clone);
+        }
+    }
+
+    //returns if two states are the sam for userscreen to decide to add a new states
     public boolean equals(State other)
     {
         return (other!=null && this.hashCode()==other.hashCode());

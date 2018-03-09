@@ -15,6 +15,7 @@ import pen.Pen;
 public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
+	private HashMap<String, Double> imageKey = new HashMap<>();
 
 	private final double ORIGIN = 250;
 
@@ -33,12 +34,19 @@ public class Turtle extends ImageView{
 	/**
 	 * String of path to an image file
 	 */
-	private String imageURL = "TMNT.png";
+	private String imageURL = "TMNT";
+
+	/**
+	 * Image object of the turtle
+	 */
+	private Image turtleImage;
 	
 	private boolean isActive;
 
 	private final int TURTLE_HEIGHT = 40;
 	private final int TURTLE_WIDTH = 40;
+
+	private double tImage;
 
 	public Pen pen;
 
@@ -49,6 +57,7 @@ public class Turtle extends ImageView{
 	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
+		tImage = 0;
 		this.setImage("Turtle");
 		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
@@ -167,6 +176,7 @@ public class Turtle extends ImageView{
 	 */
 	public void setImage(String k) {
 		this.setImage(images.get(k));
+		imageURL=k;
 	}
 
 	/**
@@ -177,14 +187,6 @@ public class Turtle extends ImageView{
 		this.setVisible(bool);
 	}
 
-	/**
-	 * 
-	 * @return Current path to the image file being used 
-	 */
-	public String getImageURL() {
-		return imageURL;
-	}
-	
 	public boolean getActive() {
 		return this.isActive;
 	}
@@ -275,10 +277,12 @@ public class Turtle extends ImageView{
 	private void initializeImages() {
 		images= new HashMap<String, Image>();
 		ResourceBundle imageFile = ResourceBundle.getBundle("resources.languages/TurtleImages");
+		int index=0;
 		for(String k:imageFile.keySet())
 		{
 			Image turtle = new Image("File:images/"+imageFile.getString(k));
 			images.put(k,turtle);
+			imageKey.put(k,(double)index);
 		}
 	}
 
@@ -298,6 +302,11 @@ public class Turtle extends ImageView{
 		copy.setVisible(this.isVisible());
 
 		return copy;
+	}
+
+	public double getImageIndex()
+	{
+		return imageKey.get(imageURL);
 	}
 
 }

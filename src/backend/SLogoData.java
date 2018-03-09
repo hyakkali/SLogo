@@ -26,8 +26,13 @@ public class SLogoData {
 
 
     public void deleteVariable(String variableName) {
+
         for (Variable v: myVariables) {
+            System.out.println("Deleted");
+            System.out.println(v.getName());
+            System.out.println(variableName);
             if (variableName.equals(v.getName())) {
+
                 myVariables.remove(v);
                 break;
             }

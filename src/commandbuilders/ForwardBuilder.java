@@ -1,6 +1,5 @@
 package commandbuilders;
 
-import backend.CommandList;
 import backend.Executor;
 import command.*;
 import controller.Controller;
@@ -8,6 +7,11 @@ import controller.Controller;
 public class ForwardBuilder extends CommandBuilder {
 	
 	private CommandList nextCommands;
+	
+	/**
+	 * Initialize
+	 */
+	public ForwardBuilder() {}
 
 	/**
 	 * Move the turtle forward by creating the Forward object and executing it.

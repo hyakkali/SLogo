@@ -65,35 +65,36 @@ public class UserScreen extends Application {
     private ResourceBundle properties;
     private ResourceBundle colors;
     private VariableList variables;
-    private ArrayList<Turtle> turtles;      
+    private ArrayList<Turtle> turtles;
     public ArrayList<Turtle> activeTurtles = new ArrayList<>();
     private HashMap<Integer, String> colorMap = new HashMap<>();
     private HashMap<Integer, String> imageMap = new HashMap<>();
 
-   // private HashMap<String, String> userCommands = new HashMap<>();
-    //private HashMap<Variable, Turtle> varsList = new HashMap<>();
+    private HashMap<String, String> userCommands = new HashMap<>();
     private SLogoModel mySLogoModel;
     private TextArea commands;
     private Pane turtlePane;
     private String language = "English";
     private List<Line> lines = new ArrayList<>();
-    private String[] languageOptions = {"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish"};
+    private final String[] languageOptions = {"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish"};
     private Stack<State> history = new Stack<>();
 
 
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
+    /* adds the turtles called for by controller to the userscreen
+     */
+    public UserScreen(ArrayList<Turtle> t) {
+        this.turtles = t;
+    }//
 
-       /* adds the turtles called for by controller to the userscreen
-        */
-        public UserScreen(ArrayList<Turtle> t){
-        		this.turtles = t;
-        	}
-
-       /* Add slogomodel to the view
-        */
-        public void addSlogo(SLogoModel s){mySLogoModel = s; setupProperties(language);}
+    /* Add slogomodel to the view and send properties to the model
+     */
+    public void addSlogo(SLogoModel s) {
+        mySLogoModel = s;
+        setupProperties(language);
+    }//
 
     /*will be used to insantiate all of the visual elements in
      * in the slogo project and add to the scene which returns to
@@ -102,17 +103,16 @@ public class UserScreen extends Application {
     public Scene setupScene(int width, int length) {
         Group root = new Group();
         myScene = new Scene(root, width, length);
-        myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());
         setupProperties("English");
+        myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e-> saveState());//listens to the mouse and calls save when a mouse clicked / button pressed
         myScene.addEventFilter(KeyEvent.KEY_PRESSED,e->{if(e.getCode().equals(KeyCode.ALT)) loadState();});
         VBox right = createSideMenu();
         HBox bottom = createBottomMenu();
         BorderPane form = new BorderPane();
 
         turtlePane = new Pane();
-        turtlePane.setPrefHeight(500);
-        turtlePane.setPrefWidth(500);
-        turtlePane.setStyle("-fx-background-color: #ffffff");
+        turtlePane.setPrefSize(YSIZE*5/6, YSIZE*5/6);
+        turtlePane.setStyle(colors.getString("WHITE"));
         turtleSetup();
 
         form.setRight(right);
@@ -127,12 +127,14 @@ public class UserScreen extends Application {
         return myScene;
     }
 
-    private void turtleSetup()
-    {
+    /* Initialize the turtles with context menus and
+        and put them in active or inactive lists
+     */
+    //NEEDS to be refctored!!!!!!!!!!!
+    private void turtleSetup() {
         for (Turtle turtle : turtles) {
             if(turtle.getActive())
                 activeTurtles.add(turtle);
-
             turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
@@ -228,10 +230,15 @@ public class UserScreen extends Application {
 //    	    			line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
         			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
     			}
-            drawLine(turtle);
-        }
+    		}
+    		for (Turtle turtle : activeTurtles) {
+    			drawLine(turtle);
+    		}
     }
 
+    //Figure out what this does
+    /*  changes the brightness of the turtle
+     */
     private ColorAdjust changeImageBrightness(double value) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(value);
@@ -254,7 +261,7 @@ public class UserScreen extends Application {
 
     /* initializes the properties files containing value
      * key pairs for commands, images, and colors
-     * Also gives slogomodel the correct language
+     * Also gives slogomodel the correct language and creates indicies for slogomodel to utilize
      */
     private void setupProperties(String lang) {
         turtleImages = ResourceBundle.getBundle(DEFAULT_RESOURCES + "TurtleImages");
@@ -292,10 +299,10 @@ public class UserScreen extends Application {
 
         VBox interactives = new VBox();
 
+//        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
         Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(helpURL));
-        Button load = MenuBuilder.buildButton("Load", e->loadState());
-        HBox buttons = new HBox(resetButton, helpButton, load);
+        HBox buttons = new HBox(resetButton, helpButton);
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
 
@@ -339,8 +346,6 @@ public class UserScreen extends Application {
     }
 
 
-    //COMMAND FUNCTIONS//__________________________________________________________________________________________
-
     /* Initializes the shape and properties of the command area
      */
     private TextArea getCommandsList() {
@@ -355,26 +360,24 @@ public class UserScreen extends Application {
         return commands;
     }
 
+
     /*Initializes the command window with the descriptions
      * of each command from the properties/ user definition
+     * and updates when new user ommands are defined
      */
     private void setupCommandsList() {
+        commands.clear();
         commands.appendText("Inherent Commands: \n\n");
         for (String cmd : descriptions.keySet()) {
             commands.appendText(cmd.toUpperCase() + "\n");
             commands.appendText(descriptions.getString(cmd) + "\n\n");
         }
         commands.appendText("User Defined Commands: \n\n");
+            for(String command : userCommands.keySet())
+                commands.appendText(command + "\n\n");
     }
 
-    /* Appends a previously run command to the history
-     */
-    public void addPreviousCommand(String s) {
-        //useablecmds.add(s);
-    }
-
-
-
+    //Put this in turtle
     private ObservableList<MenuItem> createContextMenuList(Turtle turtle) {
         ObservableList<MenuItem> menu = FXCollections.observableArrayList();
         MenuItem mItem0 = new MenuItem("ID: " + Double.toString(turtle.getID()));
@@ -406,8 +409,6 @@ public class UserScreen extends Application {
      * background of the UI calls changebackground
      */
     public void setBackgroundColor(Color c) {
-
-        //Figure out what this is
         if (colors.containsKey(c.toString()))
             setBackgroundColor(c.toString());
     }
@@ -430,8 +431,6 @@ public class UserScreen extends Application {
      * to inform the user of their error
      */
     public void printToScreen(String s) {
-        //look into getting an error type and error specific
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Error");
         alert.setContentText(s);
@@ -465,7 +464,7 @@ public class UserScreen extends Application {
     /* Resets the turtle location, variables, draw pane
      * and redraws the UI
      */
-    private void reset() {
+    public void reset() {
         for (Turtle t : turtles) {
             t.setToOrigin();
             t.setHeading(0);
@@ -487,20 +486,33 @@ public class UserScreen extends Application {
      *  when the user types in the console
      */
     private void parse(String command) {
-        variables.addVariables(mySLogoModel.getMyData().getMyVariables());
         mySLogoModel.parse(command);
+        variables.addVariables(mySLogoModel.getMyData().getMyVariables());
         saveState();
 
     }
 
+
+
     /* save the state of the current of the screen
+        and clears the stack if it gets too big
      */
     private void saveState() {
 
        State toAdd = new State(turtles, lines, turtlePane.getStyle(), language);
        if(history.isEmpty() || !toAdd.equals(history.peek())){
            history.push(toAdd);
-//            System.out.println("Add to stack");
+       }
+
+       if(history.size()>10)
+       {
+           Stack<State> temporaryStack = new Stack<>();
+           for(int a=0; a<5; a++) {
+                temporaryStack.push(history.pop());
+           }
+           history.clear();
+           while(!temporaryStack.isEmpty())
+               history.push(temporaryStack.pop());
        }
     }
 
@@ -523,7 +535,8 @@ public class UserScreen extends Application {
 
     private void setPenColor(String color) {
         for(Turtle turtle: turtles) {
-            turtle.pen.setPenColor(Color.web(color));
+            if(turtle.getActive())
+                turtle.pen.setPenColor(Color.web(color));
         }
     }
 
@@ -550,4 +563,69 @@ public class UserScreen extends Application {
     	        turtle.setImage(image);
     		}
     }
+
+//    private void createNewWindow() {
+//        try{WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
+//        catch(Exception c){}
+//    }
+
+
+
+
+
+
+
+
+
+
+
+    //TO BE UNUSED
+    //BUTTON FUNCTIONS____________________________________________________________________________________________
+
+//    /* Defines the creation an onAction event
+//     * and returns reference to be set to instance
+//     * resetButton
+//     */
+//
+//
+//    private Button getSetCommand() {
+//        Button b = new Button("CMD");
+//        b.setOnAction(e -> importCMD());
+//        return b;
+//    }
+//
+//
+//
+//    private Hyperlink getExtraHelpButton() {
+//        Hyperlink h = new Hyperlink();
+//        h.setText("!?");
+//        h.setTextFill(Color.BLACK);
+//        h.setOnAction(e->getHostServices().showDocument("https://www.lifeoptimizer.org/2010/05/27/being-a-better-you/"));
+//        return h;
+//    }
+//
+//    private void importCMD() {
+//        final Stage dialog = new Stage();
+//        dialog.initModality(Modality.APPLICATION_MODAL);
+//        dialog.initOwner(myStage);
+//        VBox dBox = new VBox(20);
+//        TextArea cmd = new TextArea();
+//        cmd.setPromptText("Enter your Command name");
+//        TextArea code = new TextArea();
+//        code.setPromptText("Enter code");
+//        Button enter = new Button ("enter");
+//        enter.setOnAction(e->{this.addCommand(cmd.getText(),code.getText()); dialog.close();});
+//        dBox.getChildren().addAll(cmd,code, enter);
+//        Scene dialogScene = new Scene(dBox, 300, 200);
+//        dialog.setScene(dialogScene);
+//        dialog.show();
+//    }
+//
+//    private void addCommand(String cmd, String code) {
+//        if(!userCommands.containsKey(cmd)) {
+//            userCommands.put(cmd, code);
+//            commands.appendText(cmd + "\n\n");
+//        }
+//    }
+
 }
