@@ -205,6 +205,14 @@ public class Turtle extends ImageView{
 	public void setYPosition(double yCoordinate) {
 		this.setY(yCoordinate);
 	}
+	
+	public void setXEnd(double xCoord) {
+		this.xEndLoc = xCoord;
+	}
+	
+	public void setYEnd(double yCoord) {
+		this.yEndLoc = yCoord;
+	}
 
 	/**
 	 * 

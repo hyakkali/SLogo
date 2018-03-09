@@ -463,6 +463,8 @@ public class UserScreen extends Application {
         for (Turtle t : turtles) {
             t.setToOrigin();
             t.setHeading(0);
+            t.setXEnd(0);
+            t.setYEnd(0);
         }
         clearLines();
     }
