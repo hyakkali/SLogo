@@ -29,9 +29,9 @@ public class Turtle extends ImageView{
 
 	private final double TWO_PI = 360.0;
 
-	private double xEndLoc;
+	private double xEndLoc = ORIGIN;
 	
-	private double yEndLoc;
+	private double yEndLoc = ORIGIN;
 	
 	private double xSpeed = 30;
 	
@@ -53,13 +53,13 @@ public class Turtle extends ImageView{
 	 */
 	private Image turtleImage;
 	
-	private boolean isActive;
+	private boolean isActive = true;
 
 	private final int TURTLE_HEIGHT = 40;
 	
 	private final int TURTLE_WIDTH = 40;
 
-	private double tImage;
+	private double tImage = 0;
 
 	public Pen pen;
 
@@ -70,16 +70,11 @@ public class Turtle extends ImageView{
 	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
-		this.tImage = 0;
 		this.setImage("Turtle");
-		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
-		this.isActive = true;
 		this.turtleID = Id;
-		this.xEndLoc = ORIGIN;
-		this.yEndLoc = ORIGIN;
 		setToOrigin();
 	}
 
@@ -103,34 +98,34 @@ public class Turtle extends ImageView{
 	}
 	
 	private void setForwardSpeed(double angle) {
-		angle = getCoterminalAngle(angle);
-		if(angle>=0 && angle<=HALF_PI) {
+		double newAngle = getCoterminalAngle(angle);
+		if(newAngle>=0 && newAngle<=HALF_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>HALF_PI && angle<=PI) {
+		} else if(newAngle>HALF_PI && newAngle<=PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>PI && angle<=THREE_HALF_PI) {
+		} else if(newAngle>PI && newAngle<=THREE_HALF_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>THREE_HALF_PI && angle<=TWO_PI) {
+		} else if(newAngle>THREE_HALF_PI && newAngle<=TWO_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
 		}
 	}
 	
 	private void setBackwardSpeed(double angle) {
-		angle = getCoterminalAngle(angle);
-		if(angle>=0 && angle<=HALF_PI) {
+		double newAngle = getCoterminalAngle(angle);
+		if(newAngle>=0 && newAngle<=HALF_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>HALF_PI && angle<=PI) {
+		} else if(newAngle>HALF_PI && newAngle<=PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>PI && angle<=THREE_HALF_PI) {
+		} else if(newAngle>PI && newAngle<=THREE_HALF_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>THREE_HALF_PI && angle<=TWO_PI) {
+		} else if(newAngle>THREE_HALF_PI && newAngle<=TWO_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
 		}

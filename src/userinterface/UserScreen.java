@@ -55,15 +55,14 @@ public class UserScreen extends Application {
 
     private Scene myScene;
 
-
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
     private ResourceBundle properties;
     private ResourceBundle colors;
     private VariableList variables;
-    private ArrayList<Turtle> turtles;
-    public ArrayList<Turtle> activeTurtles = new ArrayList<>();
-    public ArrayList<Turtle> inactiveTurtles = new ArrayList<>();
+    private List<Turtle> turtles;
+    public List<Turtle> activeTurtles = new ArrayList<>();
+    public List<Turtle> inactiveTurtles = new ArrayList<>();
     private HashMap<Integer, String> colorMap = new HashMap<>();
     private HashMap<Integer, String> imageMap = new HashMap<>();
 
@@ -127,11 +126,8 @@ public class UserScreen extends Application {
     /* Initialize the turtles with context menus and
         and put them in active or inactive lists
      */
-    //NEEDS to be refctored!!!!!!!!!!!
-    private void turtleSetup() {
+    private void setupTurtleMouse() {
         for (Turtle turtle : turtles) {
-            if(turtle.getActive())
-                activeTurtles.add(turtle);
             turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
@@ -153,37 +149,54 @@ public class UserScreen extends Application {
                         cMenu.show(turtle, turtle.getX() + CONTEXT_X_OFFSET, turtle.getY() + CONTEXT_Y_OFFSET);
                     }
                 }
-
             });
-       
-            turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-                @Override
-                public void handle(KeyEvent event) {
-                    saveState();
-                    if (turtle.getActive()) {
-                        if (event.getCode() == KeyCode.D) {
-                            turtle.setRotate(turtle.getRotate() + TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.A) {
-                            turtle.setRotate(turtle.getRotate() - TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.W) {
-                            turtle.move(turtle.getRotate(), TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.S) {
-                            turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.I) {
-                            turtle.pen.togglePenUpOrDown(true);
-                        } else if (event.getCode() == KeyCode.U) {
-                            turtle.pen.togglePenUpOrDown(false);
-                        } else if (event.getCode() == KeyCode.Y) {
-                            turtle.pen.setPenWidth(turtle.pen.getPenWidth() - PEN_THICKNESS);
-                        } else if (event.getCode() == KeyCode.T) {
-                            turtle.pen.setPenWidth(turtle.pen.getPenWidth() + PEN_THICKNESS);
-                        }
-                    }
-                }
-            });
-            turtlePane.getChildren().add(turtle);
         }
+    }
+    
+    private void setupActiveTurtles() {
+	    	for(Turtle turtle:turtles) {
+	    		turtlePane.getChildren().add(turtle);
+	    		if(turtle.getActive()) {
+	    			activeTurtles.add(turtle);
+	    		}
+	    	}
+    }
+    
+    private void setupTurtleKeys() {
+	    	for(Turtle turtle:turtles) {
+	    		turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	
+	    			@Override
+	    			public void handle(KeyEvent event) {
+	    				saveState();
+	    				if (turtle.getActive()) {
+	    					if (event.getCode() == KeyCode.D) {
+	    						turtle.setRotate(turtle.getRotate() + TURTLE_MOVE);
+	    					} else if (event.getCode() == KeyCode.A) {
+	    						turtle.setRotate(turtle.getRotate() - TURTLE_MOVE);
+	    					} else if (event.getCode() == KeyCode.W) {
+	    						turtle.move(turtle.getRotate(), TURTLE_MOVE);
+	    					} else if (event.getCode() == KeyCode.S) {
+	    						turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
+	    					} else if (event.getCode() == KeyCode.I) {
+		    					turtle.pen.togglePenUpOrDown(true);
+		    				} else if (event.getCode() == KeyCode.U) {
+		    					turtle.pen.togglePenUpOrDown(false);
+		    				} else if (event.getCode() == KeyCode.Y) {
+		    					turtle.pen.setPenWidth(turtle.pen.getPenWidth() - PEN_THICKNESS);
+		    				} else if (event.getCode() == KeyCode.T) {
+		    					turtle.pen.setPenWidth(turtle.pen.getPenWidth() + PEN_THICKNESS);
+		    				}
+	    				}
+	    			}
+	    		});
+	    	}
+    }
+    
+    private void turtleSetup() {
+        setupTurtleMouse();
+        setupTurtleKeys();
+        setupActiveTurtles();
     }
     
     /**
@@ -226,8 +239,8 @@ public class UserScreen extends Application {
 
     private void step(double elapsedTime) {
     		for (Turtle turtle : activeTurtles) {
+    			List<Line> lines = turtle.pen.getLines();
     			if(!lines.isEmpty()) {
-        			List<Line> lines = turtle.pen.getLines();
         			Line line = lines.get(lines.size()-1);
         			if(turtle.getX()!=turtle.getXEnd()) {
         				line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
