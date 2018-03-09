@@ -18,13 +18,10 @@ public class Main extends Application{
 		for(int i=0;i<3;i++) { //3 for testing purposes
 			turtles.add(new Turtle(new LinePen(),i+1));
 		}
-        UserScreen view =  new UserScreen(turtles);
+        UserScreen view =  new UserScreen(turtles, primaryStage);
         Controller controller = new Controller(view, turtles);
         SLogoModel smodel = new SLogoModel(controller);
-        view.start(primaryStage);
-		view.addSlogo(smodel);
-        primaryStage.setScene(view.setScene(800,600));
-        primaryStage.show();
+		view.initializeBackend(smodel);
 	}
 
 	public static void main(String[] args) {

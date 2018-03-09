@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<Properties>
+     <Preferences>
+          <NumTurtles>3</NumTurtles>
+          <Background>#ffffff</Background>
+          <Language>English</Language>
+     </Preferences>
+     <Turtles>
+          <Turtle>1.0 250.0 250.0 0.0 0.0 true true</Turtle>
+          <Turtle>2.0 250.0 250.0 0.0 0.0 true true</Turtle>
+          <Turtle>3.0 250.0 250.0 0.0 0.0 true true</Turtle>
+     </Turtles>
+     <Lines/>
+</Properties>
