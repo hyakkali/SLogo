@@ -280,10 +280,10 @@ public class UserScreen extends Application {
 
         VBox interactives = new VBox();
 
-        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
+        //Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
         Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(helpURL));
-        HBox buttons = new HBox(resetButton, helpButton, newForm);
+        HBox buttons = new HBox(resetButton, helpButton);
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
 
@@ -539,10 +539,10 @@ public class UserScreen extends Application {
     		}
     }
 
-    private void createNewWindow() {
-        try{ WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
-        catch(Exception c){}
-    }
+    //private void createNewWindow() {
+        //try{ WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
+   //     catch(Exception c){}
+   // }
 
 
 
