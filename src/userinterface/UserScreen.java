@@ -55,7 +55,6 @@ public class UserScreen extends Application {
 
     private Scene myScene;
 
-
     private ResourceBundle descriptions;
     private ResourceBundle turtleImages;
     private ResourceBundle properties;
@@ -127,7 +126,6 @@ public class UserScreen extends Application {
     /* Initialize the turtles with context menus and
         and put them in active or inactive lists
      */
-    //NEEDS to be refctored!!!!!!!!!!!
     private void setupTurtleMouse() {
         for (Turtle turtle : turtles) {
             turtle.setOnMouseClicked(new EventHandler<MouseEvent>() {
