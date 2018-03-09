@@ -19,9 +19,8 @@ public class MakeVariable implements Command {
 
     @Override
     public double execute(Controller controller) {
-        double ret = 0;
         this.variable.setValue(this.constant.execute(controller));
         controller.getMyData().addVariable(this.variable);
-        return ret;
+        return this.variable.getValue();
     }
 }

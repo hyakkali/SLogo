@@ -6,8 +6,13 @@ public class Variable implements Command {
     private String myName;
     private double myValue;
     private double myID;
+    private final String BAD_VAR_MESSAGE = "Variables must start with a colon.";
 
     public Variable(String name) {
+    		// variables must start with colons
+    		if (!name.startsWith(":")) {
+    			throw new CommandException(BAD_VAR_MESSAGE);
+    		}
         myName = name;
         myID = (double) name.toCharArray().hashCode();
     }
@@ -25,7 +30,7 @@ public class Variable implements Command {
     }
 
     public double getMyID() {
-        return this.myID;
+        return myID;
     }
     
     /**

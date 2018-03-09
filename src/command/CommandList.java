@@ -27,6 +27,14 @@ public class CommandList implements Command {
 		this.executor = executor;
 		this.data = data;
 	}
+	
+	/**
+	 * Method to get the next command off of the stack. Useful for interacting with some control commands
+	 * @return the String representing the next command off of the stack
+	 */
+	public String getTopListCommand() {
+		return this.commands.pop();
+	}
 
 	/**
 	 * Execute ALL of the commands in this list.

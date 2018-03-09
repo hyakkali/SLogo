@@ -10,7 +10,7 @@ import pen.LinePen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 
-public class Main extends Application{
+public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

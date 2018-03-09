@@ -53,12 +53,7 @@ public class SLogoModel {
             inputStack.push(str);
         }
         myController.addPreviouslyRunCommand(input);
-        try {
-            myExecutor.parseText(inputStack, this.myData);
-        }
-        catch (Exception e){
-        		throw new CommandException(e);
-        }
+        myExecutor.parseText(inputStack, this.myData);
     }
 
     public void setController(Controller ctrl) {

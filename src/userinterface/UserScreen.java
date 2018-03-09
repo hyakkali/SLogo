@@ -442,7 +442,7 @@ public class UserScreen extends Application
 //        }
 //        lines.clear();
 //        pen.clearLines();
-        variables.addVariable(new Variable("Test",.9));
+        variables.addVariable(new Variable("Test", .9));
 
     }
 

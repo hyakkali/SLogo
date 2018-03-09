@@ -30,10 +30,14 @@ public class Repeat implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
+		// create a new variable, assign it to :repcount so that it can be accessed by the commands
+		Variable v = new Variable(":repcount");
+		controller.getMyData().addVariable(v);
 		double ret = 0;
-		System.out.println(this.repeatTimes);
 		// execute according to the variable repeatTimes
 		for (int i = 0; i < this.repeatTimes; i++) {
+			// update value of :repcount each time through
+			v.setValue(i+1);
 			ret = commandList.execute(controller);
 			System.out.println(ret);
 		}
