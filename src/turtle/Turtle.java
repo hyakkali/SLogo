@@ -29,9 +29,9 @@ public class Turtle extends ImageView{
 
 	private final double TWO_PI = 360.0;
 
-	private double xEndLoc;
+	private double xEndLoc = ORIGIN;
 	
-	private double yEndLoc;
+	private double yEndLoc = ORIGIN;
 	
 	private double xSpeed = 30;
 	
@@ -53,13 +53,13 @@ public class Turtle extends ImageView{
 	 */
 	private Image turtleImage;
 	
-	private boolean isActive;
+	private boolean isActive = true;
 
 	private final int TURTLE_HEIGHT = 40;
 	
 	private final int TURTLE_WIDTH = 40;
 
-	private double tImage;
+	private double tImage = 0;
 
 	public Pen pen;
 
@@ -70,16 +70,11 @@ public class Turtle extends ImageView{
 	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
-		this.tImage = 0;
 		this.setImage("Turtle");
-		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
 		this.setFitWidth(TURTLE_WIDTH);
 		this.pen = pen;
-		this.isActive = true;
 		this.turtleID = Id;
-		this.xEndLoc = ORIGIN;
-		this.yEndLoc = ORIGIN;
 		setToOrigin();
 	}
 

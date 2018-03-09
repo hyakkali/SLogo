@@ -16,8 +16,8 @@ import java.util.List;
 public class Controller {
 
 	private UserScreen view;
-	private ArrayList<Turtle> turtles;
-	private ArrayList<Turtle> holdActiveTurtles;
+	private List<Turtle> turtles;
+	private List<Turtle> holdActiveTurtles;
 
 	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
@@ -287,7 +287,7 @@ public class Controller {
 		return null;
 	}
 
-	public void tempActiveTurtles(ArrayList<Turtle> newTurtles) {
+	public void tempActiveTurtles(List<Turtle> newTurtles) {
 		holdActiveTurtles = view.activeTurtles;
 		view.activeTurtles.clear();
 		for (Turtle t: newTurtles) {
