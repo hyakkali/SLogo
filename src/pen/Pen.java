@@ -108,8 +108,7 @@ public abstract class Pen {
 		return penWidth;
 	}
 
-	public double getColorIndex()
-	{
+	public double getColorIndex() {
 		return colorIndex.get(this.penColor);
 	}
 
