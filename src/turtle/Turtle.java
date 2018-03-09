@@ -2,6 +2,7 @@ package turtle;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pen.LinePen;
@@ -30,6 +31,10 @@ public class Turtle extends ImageView{
 	private double ySpeed;
 
 	private double turtleID;
+	
+    private final double ACTIVE_TURTLE = 0.0;
+    
+    private final double INACTIVE_TURTLE = 0.5;
 
 	/**
 	 * String of path to an image file
@@ -106,6 +111,12 @@ public class Turtle extends ImageView{
 	public void rotate(double heading) { //can be ccwise or cwise
 		this.setRotate(this.getRotate()+heading);
 	}
+	
+    public ColorAdjust changeImageBrightness(double value) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(value);
+        return colorAdjust;
+    }
 
 	/**
 	 * Resets location of the turtle to (0,0)
@@ -121,6 +132,11 @@ public class Turtle extends ImageView{
 
 	public void setActive(boolean bool) {
 		this.isActive = bool;
+		if(bool) {
+			this.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+		} else {
+			this.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+		}
 	}
 	
 	/**

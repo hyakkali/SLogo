@@ -49,9 +49,6 @@ public class UserScreen extends Application {
 
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
-
-    private final double ACTIVE_TURTLE = 0.0;
-    private final double INACTIVE_TURTLE = 0.5;
     
     private double lineSpeed = 30;
 
@@ -67,6 +64,7 @@ public class UserScreen extends Application {
     private VariableList variables;
     private ArrayList<Turtle> turtles;
     public ArrayList<Turtle> activeTurtles = new ArrayList<>();
+    public ArrayList<Turtle> inactiveTurtles = new ArrayList<>();
     private HashMap<Integer, String> colorMap = new HashMap<>();
     private HashMap<Integer, String> imageMap = new HashMap<>();
 
@@ -142,14 +140,10 @@ public class UserScreen extends Application {
                     MouseButton button = event.getButton();
                     if (button == MouseButton.PRIMARY) {
                         if (event.getClickCount() == 2) {
-                            if (activeTurtles.contains(turtle)) {
-                                activeTurtles.remove(turtle);
-                                turtle.setActive(false);
-                                turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+	                        	if (activeTurtles.contains(turtle)) {
+	                        		addInactiveTurtles(turtle);
                             } else {
-                                activeTurtles.add(turtle);
-                                turtle.setActive(true);
-                                turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+                            		addActiveTurtles(turtle);
                             }
                         } else if (event.getClickCount() == 1) {
                             turtle.requestFocus();
@@ -192,7 +186,32 @@ public class UserScreen extends Application {
             turtlePane.getChildren().add(turtle);
         }
     }
-
+    
+    /**
+     * Adds turtle to active turtle list and removes it from inactive list if
+     * inactive list contains turtle.
+     * @param turtle
+     */
+    public void addActiveTurtles(Turtle turtle) {
+    		activeTurtles.add(turtle);
+    		turtle.setActive(true);
+    		if(inactiveTurtles.contains(turtle)) {
+    			inactiveTurtles.remove(turtle);
+    		}
+    }
+    
+    /**
+     * Adds turtle to inactive turtle list and removes it from active list if
+     * active list contains turtle.
+     * @param turtle
+     */
+    public void addInactiveTurtles(Turtle turtle) {
+		inactiveTurtles.add(turtle);
+		turtle.setActive(false);
+		if(activeTurtles.contains(turtle)) {
+			activeTurtles.remove(turtle);
+		}
+    }
 
     /* animated the screen
      */
@@ -236,17 +255,6 @@ public class UserScreen extends Application {
     		}
     }
 
-    //Figure out what this does
-    /*  changes the brightness of the turtle
-     */
-    private ColorAdjust changeImageBrightness(double value) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(value);
-        return colorAdjust;
-    }
-
-
-
     /* creates the scene within the stage by calling setScene
      * defines/ initializes the state and begins stepping
      */
@@ -257,7 +265,6 @@ public class UserScreen extends Application {
         stage.setTitle(TITLE);
         stage.show();
     }
-
 
     /* initializes the properties files containing value
      * key pairs for commands, images, and colors

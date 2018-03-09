@@ -269,11 +269,11 @@ public class Controller {
 		for (Turtle t: turtles) {
 			if (t.getID() == Double.parseDouble(inputName)) {
 				if (!view.activeTurtles.contains(t)) {
-					view.activeTurtles.add(t);
+					view.addActiveTurtles(t);
 				}
 			}
 			else {
-				view.activeTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+				view.addActiveTurtles(new Turtle(new LinePen(), Double.parseDouble(inputName)));
 			}
 		}
 	}
@@ -291,14 +291,14 @@ public class Controller {
 		holdActiveTurtles = view.activeTurtles;
 		view.activeTurtles.clear();
 		for (Turtle t: newTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
 
 	public void resetActiveTurtles() {
 		view.activeTurtles.clear();
 		for (Turtle t: holdActiveTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
 
