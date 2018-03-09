@@ -1,13 +1,11 @@
 package userinterface;
 
 import backend.SLogoModel;
-import backend.Variable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -19,7 +17,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -36,7 +33,6 @@ import resources.languages.Language;
 import resources.languages.LanguageFactory;
 import turtle.Turtle;
 
-
 import java.util.*;
 import java.util.List;
 
@@ -45,17 +41,14 @@ public class UserScreen extends Application {
     private static final String helpURL = "https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commands.php";
     private static final String TITLE = "Slogo";
 
-    private static final int FRAMES_PER_SECOND = 10;
+    private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final int XSIZE = 800;
     private static final int YSIZE = 600;
 
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
-
-    private final double ACTIVE_TURTLE = 0.0;
-    private final double INACTIVE_TURTLE = 0.5;
-
+    
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Scene myScene;
@@ -68,6 +61,7 @@ public class UserScreen extends Application {
     private VariableList variables;
     private ArrayList<Turtle> turtles;
     public ArrayList<Turtle> activeTurtles = new ArrayList<>();
+    public ArrayList<Turtle> inactiveTurtles = new ArrayList<>();
     private HashMap<Integer, String> colorMap = new HashMap<>();
     private HashMap<Integer, String> imageMap = new HashMap<>();
 
@@ -84,7 +78,6 @@ public class UserScreen extends Application {
 
 //INITIALIZATION RELATED FUNCTIONS
     //SCENE RELATED FUNCTIONS_________________________________________________________________________
-
     /* adds the turtles called for by controller to the userscreen
      */
     public UserScreen(ArrayList<Turtle> t) {
@@ -102,7 +95,7 @@ public class UserScreen extends Application {
      * in the slogo project and add to the scene which returns to
      * start --this calls the menu related functions
      */
-    public Scene setScene(int width, int length) {
+    public Scene setupScene(int width, int length) {
         Group root = new Group();
         myScene = new Scene(root, width, length);
         setupProperties("English");
@@ -144,19 +137,14 @@ public class UserScreen extends Application {
                     MouseButton button = event.getButton();
                     if (button == MouseButton.PRIMARY) {
                         if (event.getClickCount() == 2) {
-                            if (activeTurtles.contains(turtle)) {
-                                activeTurtles.remove(turtle);
-                                turtle.setActive(false);
-                                turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+	                        	if (activeTurtles.contains(turtle)) {
+	                        		addInactiveTurtles(turtle);
                             } else {
-                                activeTurtles.add(turtle);
-                                turtle.setActive(true);
-                                turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+                            		addActiveTurtles(turtle);
                             }
                         } else if (event.getClickCount() == 1) {
                             turtle.requestFocus();
                         }
-                        //add set active or inactive
                     } else if (button == MouseButton.SECONDARY) {
                         ObservableList<MenuItem> menu = createContextMenuList(turtle);
                         ContextMenu cMenu = MenuBuilder.buildContext(menu);
@@ -165,7 +153,7 @@ public class UserScreen extends Application {
                 }
 
             });
-
+       
             turtle.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
                 @Override
@@ -180,7 +168,7 @@ public class UserScreen extends Application {
                             turtle.move(turtle.getRotate(), TURTLE_MOVE);
                         } else if (event.getCode() == KeyCode.S) {
                             turtle.move(turtle.getRotate(), -1 * TURTLE_MOVE);
-                        } else if (event.getCode() == KeyCode.D) {
+                        } else if (event.getCode() == KeyCode.I) {
                             turtle.pen.togglePenUpOrDown(true);
                         } else if (event.getCode() == KeyCode.U) {
                             turtle.pen.togglePenUpOrDown(false);
@@ -195,7 +183,32 @@ public class UserScreen extends Application {
             turtlePane.getChildren().add(turtle);
         }
     }
-
+    
+    /**
+     * Adds turtle to active turtle list and removes it from inactive list if
+     * inactive list contains turtle.
+     * @param turtle
+     */
+    public void addActiveTurtles(Turtle turtle) {
+    		activeTurtles.add(turtle);
+    		turtle.setActive(true);
+    		if(inactiveTurtles.contains(turtle)) {
+    			inactiveTurtles.remove(turtle);
+    		}
+    }
+    
+    /**
+     * Adds turtle to inactive turtle list and removes it from active list if
+     * active list contains turtle.
+     * @param turtle
+     */
+    public void addInactiveTurtles(Turtle turtle) {
+		inactiveTurtles.add(turtle);
+		turtle.setActive(false);
+		if(activeTurtles.contains(turtle)) {
+			activeTurtles.remove(turtle);
+		}
+    }
 
     /* animated the screen
      */
@@ -210,34 +223,36 @@ public class UserScreen extends Application {
     }
 
     private void step(double elapsedTime) {
-        System.out.print(turtles.size());
-        for (Turtle turtle : activeTurtles) {
-            drawLine(turtle);
-        }
+    		for (Turtle turtle : activeTurtles) {
+    			if(!lines.isEmpty()) {
+        			List<Line> lines = turtle.pen.getLines();
+        			Line line = lines.get(lines.size()-1);
+        			if(turtle.getX()!=turtle.getXEnd()) {
+        				line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
+        				turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
+        			}
+	    			if(turtle.getY()!=turtle.getYEnd()) {
+		    			line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
+	        			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
+	    			}
+    			}
+
+    		}
+    		for (Turtle turtle : activeTurtles) {
+    			drawLine(turtle);
+    		}
     }
-
-    //Figure out what this does
-    /*  changes the brightness of the turtle
-     */
-    private ColorAdjust changeImageBrightness(double value) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(value);
-        return colorAdjust;
-    }
-
-
 
     /* creates the scene within the stage by calling setScene
      * defines/ initializes the state and begins stepping
      */
     public void start(Stage stage) {
-        myScene = setScene(XSIZE, YSIZE); // get the scene
+        myScene = setupScene(XSIZE, YSIZE); // get the scene
         stage.setResizable(false);
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
     }
-
 
     /* initializes the properties files containing value
      * key pairs for commands, images, and colors
@@ -279,10 +294,10 @@ public class UserScreen extends Application {
 
         VBox interactives = new VBox();
 
-        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
+//        Button newForm = MenuBuilder.buildButton("File:images/new.png", e-> createNewWindow());
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
         Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(helpURL));
-        HBox buttons = new HBox(resetButton, helpButton, newForm);
+        HBox buttons = new HBox(resetButton, helpButton);
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
 
@@ -395,7 +410,7 @@ public class UserScreen extends Application {
 
 
     /* called to update the form to show the path
-     * whenever the locatoun of turtle is changed
+     * whenever the location of turtle is changed
      */
     private void drawLine(Turtle turtle) {
         for (Line l : turtle.pen.getLines()) {
@@ -448,12 +463,20 @@ public class UserScreen extends Application {
         for (Turtle t : turtles) {
             t.setToOrigin();
             t.setHeading(0);
-            t.pen.clearLines();
+            t.setXEnd(0);
+            t.setYEnd(0);
         }
-        for (Line l : lines) {
-            turtlePane.getChildren().remove(l);
-        }
-        lines.clear();
+        clearLines();
+    }
+    
+    public void clearLines() {
+    		for(Turtle turtle:turtles) {
+    			turtle.pen.clearLines();
+    		}
+    		for(Line l:lines) {
+    			turtlePane.getChildren().remove(l);
+    		}
+    		lines.clear();
     }
 
     /* Defines the actions to be taken
@@ -538,10 +561,10 @@ public class UserScreen extends Application {
     		}
     }
 
-    private void createNewWindow() {
-        try{ WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
-        catch(Exception c){}
-    }
+//    private void createNewWindow() {
+//        try{WritePreferences.saveForm(turtlePane.getStyle(),language,turtles,lines); }
+//        catch(Exception c){}
+//    }
 
 
 

@@ -5,6 +5,7 @@ import userinterface.UserScreen;
 import backend.SLogoData;
 import pen.LinePen;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -75,6 +76,7 @@ public class Controller {
 	 * @param heading Desired heading of turtle
 	 */
 	public void setTurtleHeading(double heading) {
+		System.out.println("didit");
 		for(Turtle turtle: view.activeTurtles) {
 			turtle.setHeading(heading);
 		}
@@ -120,8 +122,7 @@ public class Controller {
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-		//		turtle.clearLines();
-		//		view.removeLines();
+		view.clearLines();
 	}
 
 	/**
@@ -171,18 +172,18 @@ public class Controller {
 	/**
 	 * @return Current heading of the turtle
 	 */
-	public ArrayList<Double> getTurtleHeading() {
+	public double getTurtleHeading() {
 		ArrayList<Double> headingList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			headingList.add(turtle.getRotate());
 		}
-		return headingList;
+		return headingList.get(2);
 	}
 
 	/**
 	 * @return X coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleXLocation() {
+	public List<Double> getTurtleXLocation() {
 		ArrayList<Double> xCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			xCoordList.add(turtle.getX());
@@ -193,7 +194,7 @@ public class Controller {
 	/**
 	 * @return Y coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleYLocation() {
+	public List<Double> getTurtleYLocation() {
 		ArrayList<Double> yCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			yCoordList.add(turtle.getY());
@@ -204,7 +205,7 @@ public class Controller {
 	/**
 	 * @return Whether or not pen is down
 	 */
-	public ArrayList<Boolean> getIsPen() {
+	public List<Boolean> getIsPen() {
 		ArrayList<Boolean> isPenList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isPenList.add(turtle.pen.getPenBoolean());
@@ -215,7 +216,7 @@ public class Controller {
 	/**
 	 * @return Whether or not turtle is visible
 	 */
-	public ArrayList<Boolean> getIsTurtle() {
+	public List<Boolean> getIsTurtle() {
 		ArrayList<Boolean> isTurtleList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isTurtleList.add(turtle.getTurtleBoolean());
@@ -268,11 +269,11 @@ public class Controller {
 		for (Turtle t: turtles) {
 			if (t.getID() == Double.parseDouble(inputName)) {
 				if (!view.activeTurtles.contains(t)) {
-					view.activeTurtles.add(t);
+					view.addActiveTurtles(t);
 				}
 			}
 			else {
-				view.activeTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+				view.addActiveTurtles(new Turtle(new LinePen(), Double.parseDouble(inputName)));
 			}
 		}
 	}
@@ -290,18 +291,15 @@ public class Controller {
 		holdActiveTurtles = view.activeTurtles;
 		view.activeTurtles.clear();
 		for (Turtle t: newTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
 
 	public void resetActiveTurtles() {
 		view.activeTurtles.clear();
 		for (Turtle t: holdActiveTurtles) {
-			view.activeTurtles.add(t);
+			view.addActiveTurtles(t);
 		}
 	}
-
-
-
 
 }

@@ -2,19 +2,11 @@ package turtle;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import pen.LinePen;
 import pen.Pen;
-import userinterface.MenuBuilder;
 
 /**
  * 
@@ -24,13 +16,26 @@ import userinterface.MenuBuilder;
 public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
+	
 	private HashMap<String, Double> imageKey = new HashMap<>();
 
 	private final double ORIGIN = 250;
 
 	private final double HALF_PI_SHIFT = 90.0;
+	
+	private double xEndLoc;
+	
+	private double yEndLoc;
+	
+	private double xSpeed;
+	
+	private double ySpeed;
 
 	private double turtleID;
+	
+    private final double ACTIVE_TURTLE = 0.0;
+    
+    private final double INACTIVE_TURTLE = 0.5;
 
 	/**
 	 * String of path to an image file
@@ -45,6 +50,7 @@ public class Turtle extends ImageView{
 	private boolean isActive;
 
 	private final int TURTLE_HEIGHT = 40;
+	
 	private final int TURTLE_WIDTH = 40;
 
 	private double tImage;
@@ -58,7 +64,7 @@ public class Turtle extends ImageView{
 	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
-		tImage = 0;
+		this.tImage = 0;
 		this.setImage("Turtle");
 		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
@@ -66,9 +72,12 @@ public class Turtle extends ImageView{
 		this.pen = pen;
 		this.isActive = true;
 		this.turtleID = Id;
+		this.xEndLoc = ORIGIN;
+		this.yEndLoc = ORIGIN;
+		this.xSpeed = 30;
+		this.ySpeed = 30;
 		setToOrigin();
 	}
-
 
 	/**
 	 * 
@@ -79,9 +88,58 @@ public class Turtle extends ImageView{
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		this.setX(this.getX()+xAmount);
-		this.setY(this.getY()-yAmount);
+		if(amount<0) {
+			setBackwardSpeed(angle);
+		} else {
+			setForwardSpeed(angle);
+		}
+		this.xEndLoc = this.getX()+xAmount;
+		this.yEndLoc = this.getY()-yAmount;
 		pen.drawLine(xAmount, yAmount);
+	}
+	
+	private void setForwardSpeed(double angle) {
+		angle = getCoterminalAngle(angle);
+		if(angle>=0 && angle<=90) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>90 && angle<=180) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>180 && angle<=270) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>270 && angle<=360) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		}
+	}
+	
+	private void setBackwardSpeed(double angle) {
+		angle = getCoterminalAngle(angle);
+		if(angle>=0 && angle<=90) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>90 && angle<=180) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>180 && angle<=270) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>270 && angle<=360) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		}
+	}
+	
+	private double getCoterminalAngle(double angle) {
+		while(angle<0) {
+			angle+=360;
+		}
+		while(angle>360) {
+			angle = angle%360;
+		}
+		return angle;
 	}
 
 	/**
@@ -91,6 +149,17 @@ public class Turtle extends ImageView{
 	public void rotate(double heading) { //can be ccwise or cwise
 		this.setRotate(this.getRotate()+heading);
 	}
+	
+	/**
+	 * 
+	 * @param value Value between 0.0 and 1.0
+	 * @return ColorAdjust to adjust image
+	 */
+    public ColorAdjust changeImageBrightness(double value) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(value);
+        return colorAdjust;
+    }
 
 	/**
 	 * Resets location of the turtle to (0,0)
@@ -100,12 +169,25 @@ public class Turtle extends ImageView{
 		this.setY(ORIGIN);
 	}
 
+	/**
+	 * 
+	 * @param id Double ID of the turtle
+	 */
 	public void setID(double id) {
 		turtleID = id;
 	}
 
+	/**
+	 * 
+	 * @param bool True (active) or false (inactive)
+	 */
 	public void setActive(boolean bool) {
 		this.isActive = bool;
+		if(bool) {
+			this.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+		} else {
+			this.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+		}
 	}
 	
 	/**
@@ -123,6 +205,14 @@ public class Turtle extends ImageView{
 	public void setYPosition(double yCoordinate) {
 		this.setY(yCoordinate);
 	}
+	
+	public void setXEnd(double xCoord) {
+		this.xEndLoc = xCoord;
+	}
+	
+	public void setYEnd(double yCoord) {
+		this.yEndLoc = yCoord;
+	}
 
 	/**
 	 * 
@@ -139,19 +229,15 @@ public class Turtle extends ImageView{
 	 */
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
-		if(xCoord>0 && yCoord==0) {
-			this.setRotate(HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord==0) {
+		if(xCoord<0 && yCoord==0) {
 			this.setRotate(3*HALF_PI_SHIFT);
 		} else if(xCoord==0 && yCoord>0) {
 			this.setRotate(0);
-		} else if(xCoord==0 && yCoord<0) {
-			this.setRotate(2*HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord<0){
+		} else if(xCoord<=0 && yCoord<0){
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
-		} else if(xCoord<0 && yCoord>0){
+		} else if(xCoord<=0 && yCoord>0){
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+2*HALF_PI_SHIFT);
-		} else if(xCoord>0 && yCoord<0) {
+		} else if(xCoord>0 && yCoord<=0) {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
 		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
@@ -176,10 +262,18 @@ public class Turtle extends ImageView{
 		this.setVisible(bool);
 	}
 
+	/**
+	 * 
+	 * @return True or false boolean 
+	 */
 	public boolean getActive() {
 		return this.isActive;
 	}
 	
+	/**
+	 * 
+	 * @return ID of turtle
+	 */
 	public double getID() {
 		return this.turtleID;
 	}
@@ -191,6 +285,38 @@ public class Turtle extends ImageView{
 	public boolean getTurtleBoolean() {
 		return this.isVisible();
 	}
+	
+	/**
+	 * 
+	 * @return X end location of turtle
+	 */
+	public double getXEnd() {
+		return this.xEndLoc;
+	}
+	
+	/**
+	 * 
+	 * @return Y end location of turtle
+	 */
+	public double getYEnd() {
+		return this.yEndLoc;
+	}
+	
+	/**
+	 * 
+	 * @return X speed of turtle
+	 */
+	public double getXSpeed() {
+		return this.xSpeed;
+	}
+	
+	/**
+	 * 
+	 * @return Y speed of turtle
+	 */
+	public double getYSpeed() {
+		return this.ySpeed;
+	}
 
 	//math
 	/**
@@ -200,7 +326,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the x direction
 	 */ 
 	private double calculateXAmount(double angle, double amount) {
-		return amount*Math.sin(Math.toRadians(angle));
+		return Math.floor(amount*Math.sin(Math.toRadians(angle)));
 	}
 
 	/**
@@ -210,7 +336,7 @@ public class Turtle extends ImageView{
 	 * @return Amount of pixel change in the y direction
 	 */ 
 	private double calculateYAmount(double angle, double amount) {
-		return amount*Math.cos(Math.toRadians(angle));
+		return Math.floor(amount*Math.cos(Math.toRadians(angle)));
 	} 
 
 	/**
@@ -226,11 +352,9 @@ public class Turtle extends ImageView{
 		return currHeading-newHeading;
 	}
 
-
 	/**
-	 * Clears all the lines that were drawn by the turtle
+	 * Initializes image map
 	 */
-
 	private void initializeImages() {
 		images= new HashMap<String, Image>();
 		ResourceBundle imageFile = ResourceBundle.getBundle("resources.languages/TurtleImages");
@@ -243,14 +367,14 @@ public class Turtle extends ImageView{
 		}
 	}
 
-
-	public Turtle clone()
-	{
+	/**
+	 * Clones turtle properties including lines, image, X and Y coordinates, heading, etc.
+	 */
+	public Turtle clone() {
 		Pen copyPen = new LinePen();
 		copyPen.setPenColor(this.pen.getPenColor());
 		copyPen.setPenWidth(this.pen.getPenWidth());
 		copyPen.setStartLineLocation(this.getX(),this.getY());
-
 
 		Turtle copy = new Turtle(copyPen,this.getID());
 		copy.setImage(this.getImage());
@@ -262,8 +386,11 @@ public class Turtle extends ImageView{
 		return copy;
 	}
 
-	public double getImageIndex()
-	{
+	/**
+	 * 
+	 * @return Image index of the current turtle image
+	 */
+	public double getImageIndex() {
 		return imageKey.get(imageURL);
 	}
 
