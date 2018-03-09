@@ -21,15 +21,21 @@ public class Turtle extends ImageView{
 
 	private final double ORIGIN = 250;
 
-	private final double HALF_PI_SHIFT = 90.0;
+	private final double HALF_PI = 90.0;
 	
+	private final double PI = 180.0;
+
+	private final double THREE_HALF_PI = 270.0;
+
+	private final double TWO_PI = 360.0;
+
 	private double xEndLoc;
 	
 	private double yEndLoc;
 	
-	private double xSpeed;
+	private double xSpeed = 30;
 	
-	private double ySpeed;
+	private double ySpeed = 30;
 
 	private double turtleID;
 	
@@ -74,8 +80,6 @@ public class Turtle extends ImageView{
 		this.turtleID = Id;
 		this.xEndLoc = ORIGIN;
 		this.yEndLoc = ORIGIN;
-		this.xSpeed = 30;
-		this.ySpeed = 30;
 		setToOrigin();
 	}
 
@@ -100,16 +104,16 @@ public class Turtle extends ImageView{
 	
 	private void setForwardSpeed(double angle) {
 		angle = getCoterminalAngle(angle);
-		if(angle>=0 && angle<=90) {
+		if(angle>=0 && angle<=HALF_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>90 && angle<=180) {
+		} else if(angle>HALF_PI && angle<=PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>180 && angle<=270) {
+		} else if(angle>PI && angle<=THREE_HALF_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>270 && angle<=360) {
+		} else if(angle>THREE_HALF_PI && angle<=TWO_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
 		}
@@ -117,16 +121,16 @@ public class Turtle extends ImageView{
 	
 	private void setBackwardSpeed(double angle) {
 		angle = getCoterminalAngle(angle);
-		if(angle>=0 && angle<=90) {
+		if(angle>=0 && angle<=HALF_PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
-		} else if(angle>90 && angle<=180) {
+		} else if(angle>HALF_PI && angle<=PI) {
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>180 && angle<=270) {
+		} else if(angle>PI && angle<=THREE_HALF_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
-		} else if(angle>270 && angle<=360) {
+		} else if(angle>THREE_HALF_PI && angle<=TWO_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
 		}
@@ -134,10 +138,10 @@ public class Turtle extends ImageView{
 	
 	private double getCoterminalAngle(double angle) {
 		while(angle<0) {
-			angle+=360;
+			angle += PI;
 		}
-		while(angle>360) {
-			angle = angle%360;
+		while(angle>PI) {
+			angle = angle % PI;
 		}
 		return angle;
 	}
@@ -230,15 +234,15 @@ public class Turtle extends ImageView{
 	public void setTowards(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
 		if(xCoord<0 && yCoord==0) {
-			this.setRotate(3*HALF_PI_SHIFT);
+			this.setRotate(THREE_HALF_PI);
 		} else if(xCoord==0 && yCoord>0) {
 			this.setRotate(0);
 		} else if(xCoord<=0 && yCoord<0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI);
 		} else if(xCoord<=0 && yCoord>0){
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+2*HALF_PI_SHIFT);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+PI);
 		} else if(xCoord>0 && yCoord<=0) {
-			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI_SHIFT);
+			this.setRotate(currHeading-calculateAngle(xCoord,yCoord)+HALF_PI);
 		} else {
 			this.setRotate(currHeading-calculateAngle(xCoord,yCoord));
 		}

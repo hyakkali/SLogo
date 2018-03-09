@@ -48,6 +48,8 @@ public class UserScreen extends Application {
 
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
+    private final double CONTEXT_X_OFFSET = 150.0;
+    private final double CONTEXT_Y_OFFSET = 100.0;
     
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -148,7 +150,7 @@ public class UserScreen extends Application {
                     } else if (button == MouseButton.SECONDARY) {
                         ObservableList<MenuItem> menu = createContextMenuList(turtle);
                         ContextMenu cMenu = MenuBuilder.buildContext(menu);
-                        cMenu.show(turtle, turtle.getX() + 150, turtle.getY() + 100);
+                        cMenu.show(turtle, turtle.getX() + CONTEXT_X_OFFSET, turtle.getY() + CONTEXT_Y_OFFSET);
                     }
                 }
 
