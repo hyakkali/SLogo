@@ -1,6 +1,4 @@
 package userinterface;
-
-import backend.Variable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
@@ -14,17 +12,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.List;
+import command.Variable;
 
-public class VariableList extends VBox {
+public class VariableList extends VBox{
+    //Make a tableview
+    private HashMap<TextField, Variable > list = new HashMap<>();
 
-
-    /*Creates the
-
-
-     */
-    private HashMap<TextField, Variable > list = new HashMap<TextField, Variable>();
-
-    private Pane scrollable = new Pane();
     public VariableList(int XSIZE, int YSIZE)
     {
         setPrefWidth(XSIZE / 7 * 4);
@@ -35,6 +28,7 @@ public class VariableList extends VBox {
     {
         for(Variable v : variables) {
             String name = v.getName();
+            System.out.print(name);
             double info = v.getValue();
             if (!list.containsValue(v)) {
                 TextField variableVal = new TextField(String.valueOf(info));

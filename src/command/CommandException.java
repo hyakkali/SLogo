@@ -17,13 +17,12 @@ public class CommandException extends RuntimeException {
 	// error messages
 	public static final String DEFAULT_MESSAGE = "Something is wrong with the command as entered. Try again!";
 	public static final String NON_EXISTENT = "The command %s does not exist. Please try again.";
-	public static final String BAD_PARAMS = "The command as entered contains an invalid amount of parameters. Please try again.";
 	
 	/**
-	 * Constructs the exception with the default message.
+	 * Constructs the exception with the default message, but does not display an alert.
 	 */
 	public CommandException() {
-		this(DEFAULT_MESSAGE);
+		super(DEFAULT_MESSAGE);
 	}
 
 	/**

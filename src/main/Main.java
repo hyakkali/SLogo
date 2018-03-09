@@ -10,7 +10,7 @@ import pen.LinePen;
 import turtle.Turtle;
 import userinterface.UserScreen;
 
-public class Main extends Application{
+public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -21,6 +21,7 @@ public class Main extends Application{
         UserScreen view =  new UserScreen(turtles, primaryStage);
         Controller controller = new Controller(view, turtles);
         SLogoModel smodel = new SLogoModel(controller);
+        controller.initSlogo(smodel);
 		view.initializeBackend(smodel);
 	}
 

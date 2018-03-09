@@ -1,6 +1,9 @@
 package userinterface;
 
+import backend.SLogoData;
 import backend.SLogoModel;
+import command.Variable;
+import javafx.scene.web.WebEngine;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -95,7 +98,7 @@ public class UserScreen extends Application{
     public void initializeBackend(SLogoModel s) {
         parseText = e->s.parse(e);
         setSlogoLang = e->s.setLanguage(e);
-        getVariables = e-> variableView.addVariables( s.getMyData().getMyVariables());
+        getVariables = e-> {List<Variable> g = s.getVariables(); addVariables(g);};
         setupProperties(language);
 
     }
@@ -400,6 +403,13 @@ public class UserScreen extends Application{
         getVariables.accept(null);
         saveState();
 
+    }
+
+    private void addVariables(List<Variable> vars)
+    {
+        for(Variable v:vars)
+            System.out.print(v.getName());
+        variableView.addVariables(vars);
     }
 
 

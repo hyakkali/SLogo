@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import turtle.Turtle;
 import userinterface.UserScreen;
 import backend.SLogoData;
-
+import pen.LinePen;
 import java.util.ArrayList;
 
 
@@ -18,11 +18,15 @@ public class Controller {
 	private UserScreen view;
 	private ArrayList<Turtle> turtles;
 	private SLogoModel slogoModel;
+	private ArrayList<Turtle> activeTurtles;
 
 	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
 		this.turtles = turtles;
-		slogoModel = new SLogoModel(this);
+	}
+	public void initSlogo(SLogoModel s)
+	{
+		slogoModel=s;
 	}
 
 	/**
@@ -228,6 +232,83 @@ public class Controller {
 	public SLogoData getMyData() {
 		return slogoModel.getMyData();
 	}
+
+
+	public Integer getNumTurtles() {
+		return turtles.size();
+	}
+
+	public void setMyColor(double colorID) {
+		view.setPenColor(colorID);
+	}
+
+	public void setMyBackground(double colorID) {
+		view.setBackGroundColor(colorID);
+	}
+
+	public void setMyShape(double shapeID) {
+		view.setTurtleImage(shapeID);
+	}
+
+	public void setMyPenSize(double penSize) {
+		for (Turtle t : turtles) {
+			if (t.getActive()) {
+				t.pen.setPenWidth(penSize);
+			}
+		}
+	}
+
+	public double getPenColor() {
+		return turtles.get(0).pen.getColorIndex();
+	}
+
+	public double getShapeIndex() {
+		return turtles.get(0).getImageIndex();
+
+	}
+
+	public double getActiveTurtle() {
+		return turtles.get(0).getID();
+	}
+
+	public void addActiveTurtles(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				if (!view.myActiveTurtles.contains(t)) {
+					view.myActiveTurtles.add(t);
+				}
+			}
+			else {
+				view.myActiveTurtles.add(new Turtle(new LinePen(), Double.parseDouble(inputName)));
+			}
+		}
+	}
+
+	public Turtle getAskedTurtle(String inputName) {
+		for (Turtle t: turtles) {
+			if (t.getID() == Double.parseDouble(inputName)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	public void tempActiveTurtles(ArrayList<Turtle> newTurtles) {
+		activeTurtles = view.myActiveTurtles;
+		view.myActiveTurtles.clear();
+		for (Turtle t: newTurtles) {
+			view.myActiveTurtles.add(t);
+		}
+	}
+
+	public void resetActiveTurtles() {
+		view.myActiveTurtles.clear();
+		for (Turtle t: activeTurtles) {
+			view.myActiveTurtles.add(t);
+		}
+	}
+
+
 
 
 }

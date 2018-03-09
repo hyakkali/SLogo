@@ -2,7 +2,9 @@ package commandbuilders;
 
 import backend.Executor;
 import command.Command;
+import command.Constant;
 import command.MakeVariable;
+import command.Variable;
 import controller.Controller;
 
 /**
@@ -24,6 +26,9 @@ public class MakeVariableBuilder extends CommandBuilder {
 	 */
 	@Override
 	public Command build(Controller controller, Executor context) {
-		return new MakeVariable(context.getNextCommand().execute(controller), context.getNextCommand().execute(controller));
+		// get the variable and constant
+		Variable v = (Variable) context.getNextCommand();
+		Constant c = (Constant) context.getNextCommand();
+		return new MakeVariable(v, c);
 	}
 }

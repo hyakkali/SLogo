@@ -1,6 +1,5 @@
 package commandbuilders;
 
-import backend.CommandList;
 import backend.Executor;
 import command.Command;
 import controller.Controller;
