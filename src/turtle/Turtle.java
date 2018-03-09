@@ -64,7 +64,7 @@ public class Turtle extends ImageView{
 	public Turtle(Pen pen, double Id){
 		super();
 		initializeImages();
-		tImage = 0;
+		this.tImage = 0;
 		this.setImage("Turtle");
 		setToOrigin();
 		this.setFitHeight(TURTLE_HEIGHT);
@@ -85,24 +85,61 @@ public class Turtle extends ImageView{
 	 * @param amount Amount of pixels to move
 	 */
 	public void move(double angle, double amount) {
-		System.out.println(amount);
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
-		if(amount<0||angle<0) {
-			if(angle<0 && angle>-90) {
-				this.xSpeed = -1*Math.abs(xSpeed);
-				this.ySpeed = Math.abs(xSpeed);
-			} 
-//			this.xSpeed = -1*Math.abs(xSpeed);
-//			this.ySpeed = -1*Math.abs(xSpeed);
+		if(amount<0) {
+			setBackwardSpeed(angle);
 		} else {
-			this.xSpeed = Math.abs(ySpeed);
-			this.ySpeed = Math.abs(ySpeed);
+			setForwardSpeed(angle);
 		}
 		this.xEndLoc = this.getX()+xAmount;
 		this.yEndLoc = this.getY()-yAmount;
 		pen.drawLine(xAmount, yAmount);
+	}
+	
+	private void setForwardSpeed(double angle) {
+		angle = getCoterminalAngle(angle);
+		if(angle>=0 && angle<=90) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>90 && angle<=180) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>180 && angle<=270) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>270 && angle<=360) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		}
+	}
+	
+	private void setBackwardSpeed(double angle) {
+		angle = getCoterminalAngle(angle);
+		if(angle>=0 && angle<=90) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		} else if(angle>90 && angle<=180) {
+			this.xSpeed = -1*Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>180 && angle<=270) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = Math.abs(ySpeed);
+		} else if(angle>270 && angle<=360) {
+			this.xSpeed = Math.abs(xSpeed);
+			this.ySpeed = -1*Math.abs(ySpeed);
+		}
+	}
+	
+	private double getCoterminalAngle(double angle) {
+		while(angle<0) {
+			angle+=360;
+		}
+		while(angle>360) {
+			angle = angle%360;
+		}
+		return angle;
 	}
 
 	/**

@@ -49,8 +49,6 @@ public class UserScreen extends Application {
     private final double TURTLE_MOVE = 20.0;
     private final double PEN_THICKNESS = 0.5;
     
-    private double lineSpeed = 30;
-
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Scene myScene;
@@ -225,29 +223,20 @@ public class UserScreen extends Application {
     }
 
     private void step(double elapsedTime) {
-//    		activeTurtles.get(0).setX(activeTurtles.get(0).getX()+turtleSpeed*elapsedTime);
-//    		Line line = activeTurtles.get(0).pen.getLines().get(0);
-//    		System.out.println(line);
-//    		if(line.getEndY()!=100) {
-//        		line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
-//    		}
-//    		if(line.getEndX()!=400) {
-//        		line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
-//    		}
-//    		line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
-//    		line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
     		for (Turtle turtle : activeTurtles) {
-//    			Line line = turtle.pen.getLines().get(0);
-//    			System.out.println("End"+turtle.getXEnd());
-//			System.out.println(turtle.getX());
-    			if(turtle.getX()!=turtle.getXEnd()) {
-//    	    			line.setEndX(line.getEndX()+lineSpeed*elapsedTime);
-        			turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
+    			if(!lines.isEmpty()) {
+        			List<Line> lines = turtle.pen.getLines();
+        			Line line = lines.get(lines.size()-1);
+        			if(turtle.getX()!=turtle.getXEnd()) {
+        				line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
+        				turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
+        			}
+	    			if(turtle.getY()!=turtle.getYEnd()) {
+		    			line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
+	        			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
+	    			}
     			}
-    			if(turtle.getY()!=turtle.getYEnd()) {
-//    	    			line.setEndY(line.getEndY()-lineSpeed*elapsedTime);
-        			turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
-    			}
+
     		}
     		for (Turtle turtle : activeTurtles) {
     			drawLine(turtle);
