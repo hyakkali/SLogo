@@ -16,6 +16,7 @@ import pen.Pen;
 public class Turtle extends ImageView{
 
 	private HashMap<String, Image> images;
+	
 	private HashMap<String, Double> imageKey = new HashMap<>();
 
 	private final double ORIGIN = 250;
@@ -49,6 +50,7 @@ public class Turtle extends ImageView{
 	private boolean isActive;
 
 	private final int TURTLE_HEIGHT = 40;
+	
 	private final int TURTLE_WIDTH = 40;
 
 	private double tImage;
@@ -76,7 +78,6 @@ public class Turtle extends ImageView{
 		this.ySpeed = 30;
 		setToOrigin();
 	}
-
 
 	/**
 	 * 
@@ -112,6 +113,11 @@ public class Turtle extends ImageView{
 		this.setRotate(this.getRotate()+heading);
 	}
 	
+	/**
+	 * 
+	 * @param value Value between 0.0 and 1.0
+	 * @return ColorAdjust to adjust image
+	 */
     public ColorAdjust changeImageBrightness(double value) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(value);
@@ -126,10 +132,18 @@ public class Turtle extends ImageView{
 		this.setY(ORIGIN);
 	}
 
+	/**
+	 * 
+	 * @param id Double ID of the turtle
+	 */
 	public void setID(double id) {
 		turtleID = id;
 	}
 
+	/**
+	 * 
+	 * @param bool True (active) or false (inactive)
+	 */
 	public void setActive(boolean bool) {
 		this.isActive = bool;
 		if(bool) {
@@ -203,10 +217,18 @@ public class Turtle extends ImageView{
 		this.setVisible(bool);
 	}
 
+	/**
+	 * 
+	 * @return True or false boolean 
+	 */
 	public boolean getActive() {
 		return this.isActive;
 	}
 	
+	/**
+	 * 
+	 * @return ID of turtle
+	 */
 	public double getID() {
 		return this.turtleID;
 	}
@@ -285,11 +307,9 @@ public class Turtle extends ImageView{
 		return currHeading-newHeading;
 	}
 
-
 	/**
-	 * Clears all the lines that were drawn by the turtle
+	 * Initializes image map
 	 */
-
 	private void initializeImages() {
 		images= new HashMap<String, Image>();
 		ResourceBundle imageFile = ResourceBundle.getBundle("resources.languages/TurtleImages");
@@ -302,9 +322,10 @@ public class Turtle extends ImageView{
 		}
 	}
 
-
-	public Turtle clone()
-	{
+	/**
+	 * Clones turtle properties including lines, image, X and Y coordinates, heading, etc.
+	 */
+	public Turtle clone() {
 		Pen copyPen = new LinePen();
 		copyPen.setPenColor(this.pen.getPenColor());
 		copyPen.setPenWidth(this.pen.getPenWidth());
@@ -320,8 +341,11 @@ public class Turtle extends ImageView{
 		return copy;
 	}
 
-	public double getImageIndex()
-	{
+	/**
+	 * 
+	 * @return Image index of the current turtle image
+	 */
+	public double getImageIndex() {
 		return imageKey.get(imageURL);
 	}
 
