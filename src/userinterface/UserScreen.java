@@ -82,7 +82,7 @@ public class UserScreen extends Application{
     private Stage myStage;
     private String language = "English";
     private List<Line> lines = new ArrayList<>();
-    private final String[] languageOptions = {"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish"};
+    private final String[] languageOptions = {"English", "Chinese", "French", "German", "Italian", "Portuguese", "Russian", "Spanish","Urdu"};
     private Stack<State> history = new Stack<>();
 
 
