@@ -75,8 +75,12 @@ public class Turtle extends ImageView{
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
 		if(amount<0||angle<0) {
-			this.xSpeed = -1*Math.abs(xSpeed);
-			this.ySpeed = -1*Math.abs(xSpeed);
+			if(angle<0 && angle>-90) {
+				this.xSpeed = -1*Math.abs(xSpeed);
+				this.ySpeed = Math.abs(xSpeed);
+			} 
+//			this.xSpeed = -1*Math.abs(xSpeed);
+//			this.ySpeed = -1*Math.abs(xSpeed);
 		} else {
 			this.xSpeed = Math.abs(ySpeed);
 			this.ySpeed = Math.abs(ySpeed);
@@ -84,22 +88,6 @@ public class Turtle extends ImageView{
 		this.xEndLoc = this.getX()+xAmount;
 		this.yEndLoc = this.getY()-yAmount;
 		pen.drawLine(xAmount, yAmount);
-	}
-	
-	public double getXEnd() {
-		return this.xEndLoc;
-	}
-	
-	public double getYEnd() {
-		return this.yEndLoc;
-	}
-	
-	public double getXSpeed() {
-		return this.xSpeed;
-	}
-	
-	public double getYSpeed() {
-		return this.ySpeed;
 	}
 
 	/**
@@ -211,6 +199,38 @@ public class Turtle extends ImageView{
 	 */
 	public boolean getTurtleBoolean() {
 		return this.isVisible();
+	}
+	
+	/**
+	 * 
+	 * @return X end location of turtle
+	 */
+	public double getXEnd() {
+		return this.xEndLoc;
+	}
+	
+	/**
+	 * 
+	 * @return Y end location of turtle
+	 */
+	public double getYEnd() {
+		return this.yEndLoc;
+	}
+	
+	/**
+	 * 
+	 * @return X speed of turtle
+	 */
+	public double getXSpeed() {
+		return this.xSpeed;
+	}
+	
+	/**
+	 * 
+	 * @return Y speed of turtle
+	 */
+	public double getYSpeed() {
+		return this.ySpeed;
 	}
 
 	//math
