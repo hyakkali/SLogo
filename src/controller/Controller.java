@@ -16,6 +16,7 @@ public class Controller {
 
 	private UserScreen view;
 	private ArrayList<Turtle> turtles;
+	private ArrayList<Turtle> holdActiveTurtles;
 
 	public Controller(UserScreen view, ArrayList<Turtle> turtles){
 		this.view = view;
@@ -283,6 +284,21 @@ public class Controller {
 			}
 		}
 		return null;
+	}
+
+	public void tempActiveTurtles(ArrayList<Turtle> newTurtles) {
+		holdActiveTurtles = view.activeTurtles;
+		view.activeTurtles.clear();
+		for (Turtle t: newTurtles) {
+			view.activeTurtles.add(t);
+		}
+	}
+
+	public void resetActiveTurtles() {
+		view.activeTurtles.clear();
+		for (Turtle t: holdActiveTurtles) {
+			view.activeTurtles.add(t);
+		}
 	}
 
 

@@ -30,9 +30,9 @@ public class Ask implements Command {
             }
 
         }
-        for (Turtle t: askedTurtles) {
-            retVal = myCommandList.execute(controller);
-        }
+        controller.tempActiveTurtles(askedTurtles);
+        retVal = this.myCommandList.execute(controller);
+        controller.resetActiveTurtles();
         return retVal;
     }
 }
