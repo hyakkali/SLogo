@@ -50,6 +50,7 @@ public class UserScreen extends Application {
     private final double PEN_THICKNESS = 0.5;
     private final double CONTEXT_X_OFFSET = 150.0;
     private final double CONTEXT_Y_OFFSET = 100.0;
+    private final double TWO_PI = 360.0;
     
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -239,9 +240,9 @@ public class UserScreen extends Application {
 
     private void step(double elapsedTime) {
     		for (Turtle turtle : activeTurtles) {
-    			List<Line> lines = turtle.pen.getLines();
-    			if(!lines.isEmpty()) {
-        			Line line = lines.get(lines.size()-1);
+    			List<Line> tLines = turtle.pen.getLines();
+    			if(!tLines.isEmpty()) {
+        			Line line = tLines.get(tLines.size()-1);
         			if(turtle.getX()!=turtle.getXEnd()) {
         				line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
         				turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
@@ -393,7 +394,7 @@ public class UserScreen extends Application {
         MenuItem mItem0 = new MenuItem("ID: " + Double.toString(turtle.getID()));
         MenuItem mItem1 = new MenuItem("X: " + Double.toString(turtle.getX()));
         MenuItem mItem2 = new MenuItem("Y: " + Double.toString(turtle.getY()));
-        MenuItem mItem3 = new MenuItem("Heading: " + Double.toString(turtle.getRotate() % 360.0));
+        MenuItem mItem3 = new MenuItem("Heading: " + Double.toString(turtle.getRotate() % TWO_PI));
         Menu mItem4 = new Menu("Set Color");
         for (String color : colors.keySet()) {
             MenuItem colorOption = new MenuItem(color);
