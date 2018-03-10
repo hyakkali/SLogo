@@ -11,7 +11,7 @@ import pen.Pen;
 /**
  * 
  * @author Hemanth Yakkali
- * Turtle object that lies in the View part of the project.
+ * Class that creates a turtle object with speed, location, and other such properties. 
  */
 public class Turtle extends ImageView{
 

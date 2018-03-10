@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author Hemanth Yakkali
- * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
+ * Primary controller class that manages flow of data between commands, user interface, and turtle.
  */
 public class Controller {
 
