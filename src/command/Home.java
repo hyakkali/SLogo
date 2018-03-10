@@ -23,8 +23,11 @@ public class Home implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		return 0.0;
+		double xpos = controller.getTurtleXLocation();
+		double ypos = controller.getTurtleYLocation();
+		controller.resetTurtlePosition();
+		// calculate and return distance between old position and new position
+		return Math.sqrt(Math.pow(xpos - controller.getTurtleXLocation(),  2) + Math.pow(ypos - controller.getTurtleYLocation(), 2));
 	}
 }
-		// get current x and y coordinates so that we can calculate distance
 

@@ -25,12 +25,12 @@ public abstract class Pen {
 	/**
 	 * Start X coordinate for the next line
 	 */
-	protected double xStartLineLocation;
+	protected double xStartLineLocation = 0;
 
 	/**
 	 * Start Y coordinate for the next line
 	 */
-	protected double yStartLineLocation;
+	protected double yStartLineLocation = 0;
 
 	public Pen() {
 		this.penBoolean = true;

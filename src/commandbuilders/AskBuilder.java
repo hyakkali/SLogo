@@ -6,12 +6,12 @@ import controller.Controller;
 import command.Ask;
 import command.CommandList;
 
+/**
+ * @author Alexi Kontos
+ * Class to create Ask Command
+ */
 public class AskBuilder extends CommandBuilder {
 
-    /**
-     * @Author Alexi Kontos
-     * Class to create Ask Command
-     */
     public AskBuilder() {
 
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author Hemanth Yakkali
- * Primary controller class that manages flow of data between Command (model) and UserInterface (view)
+ * Primary controller class that manages flow of data between commands, user interface, and turtle.
  */
 public class Controller {
 
@@ -126,8 +126,11 @@ public class Controller {
 	 * Removes all the lines that the turtle has drawn
 	 */
 	public void clearTurtleLines() {
-		//		turtle.clearLines();
-		//		view.removeLines();
+		for(Turtle turtle:turtles) {
+			turtle.setToOrigin();
+			turtle.pen.clearLines();
+		}
+		view.clearLines();
 	}
 
 	/**
@@ -177,56 +180,56 @@ public class Controller {
 	/**
 	 * @return Current heading of the turtle
 	 */
-	public ArrayList<Double> getTurtleHeading() {
+	public double getTurtleHeading() {
 		ArrayList<Double> headingList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			headingList.add(turtle.getRotate());
 		}
-		return headingList;
+		return headingList.get(0);
 	}
 
 	/**
 	 * @return X coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleXLocation() {
+	public double getTurtleXLocation() {
 		ArrayList<Double> xCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			xCoordList.add(turtle.getX());
 		}
-		return xCoordList;
+		return xCoordList.get(0);
 	}
 
 	/**
 	 * @return Y coordinate of the turtle
 	 */
-	public ArrayList<Double> getTurtleYLocation() {
+	public double getTurtleYLocation() {
 		ArrayList<Double> yCoordList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			yCoordList.add(turtle.getY());
 		}
-		return yCoordList;
+		return yCoordList.get(0);
 	}
 
 	/**
 	 * @return Whether or not pen is down
 	 */
-	public ArrayList<Boolean> getIsPen() {
+	public boolean getIsPen() {
 		ArrayList<Boolean> isPenList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isPenList.add(turtle.pen.getPenBoolean());
 		}
-		return isPenList;
+		return isPenList.get(0);
 	}
 
 	/**
 	 * @return Whether or not turtle is visible
 	 */
-	public ArrayList<Boolean> getIsTurtle() {
+	public boolean getIsTurtle() {
 		ArrayList<Boolean> isTurtleList = new ArrayList<>();
 		for(Turtle turtle: turtles) {
 			isTurtleList.add(turtle.getTurtleBoolean());
 		}
-		return isTurtleList;
+		return isTurtleList.get(0);
 	}
 
 	public SLogoData getMyData() {

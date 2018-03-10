@@ -11,7 +11,7 @@ import pen.Pen;
 /**
  * 
  * @author Hemanth Yakkali
- * Turtle object that lies in the View part of the project.
+ * Class that creates a turtle object with speed, location, and other such properties. 
  */
 public class Turtle extends ImageView{
 
@@ -164,6 +164,9 @@ public class Turtle extends ImageView{
 	public void setToOrigin() {
 		this.setX(ORIGIN);
 		this.setY(ORIGIN);
+		this.setHeading(0.0);
+		this.xEndLoc = ORIGIN;
+		this.yEndLoc = ORIGIN;
 	}
 
 	/**
@@ -255,7 +258,6 @@ public class Turtle extends ImageView{
 	 * 
 	 */
 	public void setImage(String k) {
-		System.out.print(k);
 		this.setImage(images.get(k));
 		imageURL=k;
 	}
@@ -362,7 +364,6 @@ public class Turtle extends ImageView{
 	private double calculateAngle(double xCoord, double yCoord) {
 		double currHeading = this.getRotate();
 		double newHeading = Math.toDegrees(Math.acos(xCoord/Math.sqrt(yCoord*yCoord+xCoord*xCoord)));
-		System.out.println(newHeading);
 		return currHeading-newHeading;
 	}
 	
@@ -373,10 +374,10 @@ public class Turtle extends ImageView{
 	 */
 	private double getCoterminalAngle(double angle) {
 		while(angle<0) {
-			angle += PI;
+			angle += TWO_PI;
 		}
-		while(angle>PI) {
-			angle = angle % PI;
+		while(angle>TWO_PI) {
+			angle = angle % TWO_PI;
 		}
 		return angle;
 	}

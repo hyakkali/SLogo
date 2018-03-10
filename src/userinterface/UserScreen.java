@@ -2,7 +2,6 @@ package userinterface;
 
 import backend.SLogoModel;
 import command.Variable;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -73,7 +72,6 @@ public class UserScreen extends Application {
     private ResourceBundle cmdDescriptions;
     private ResourceBundle turtleImages;
     private ResourceBundle colors;
-
     private VariableList variableView;
     private ArrayList<Turtle> myTurtles;
     public ArrayList<Turtle> myActiveTurtles = new ArrayList<>();
@@ -269,15 +267,20 @@ public class UserScreen extends Application {
     private void step(double elapsedTime) {
         for (Turtle turtle : myActiveTurtles) {
             List<Line> tLines = turtle.pen.getLines();
-            if (!tLines.isEmpty()) {
-                Line line = tLines.get(tLines.size() - 1);
-                if (turtle.getX() != turtle.getXEnd()) {
-                    line.setEndX(line.getEndX() + turtle.getXSpeed() * elapsedTime);
-                    turtle.setX(turtle.getX() + turtle.getXSpeed() * elapsedTime);
+
+            if(!tLines.isEmpty()) {
+                Line line = tLines.get(tLines.size()-1);
+                if(turtle.getX()!=turtle.getXEnd()) {
+                		if(turtle.pen.getPenBoolean()) {
+                			line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
+                		}
+                    turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
                 }
-                if (turtle.getY() != turtle.getYEnd()) {
-                    line.setEndY(line.getEndY() - turtle.getYSpeed() * elapsedTime);
-                    turtle.setY(turtle.getY() - turtle.getYSpeed() * elapsedTime);
+                if(turtle.getY()!=turtle.getYEnd()) {
+	                	if(turtle.pen.getPenBoolean()) {
+	                		line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
+	                	}
+                    turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
                 }
             }
 
@@ -286,7 +289,6 @@ public class UserScreen extends Application {
             drawLine(turtle);
         }
     }
-
 
     /* creates the scene within the stage by calling setScene
      * defines/ initializes the state and begins stepping
@@ -341,7 +343,9 @@ public class UserScreen extends Application {
 
         Button resetButton = MenuBuilder.buildButton("File:images/reset.png", e -> reset());
         Button helpButton = MenuBuilder.buildButton("File:images/help.png", e -> getHostServices().showDocument(HELP_URL));
-        HBox buttons = new HBox(resetButton, helpButton);
+        Button newWIndow = MenuBuilder.buildButton("File:images/new.png", e -> newForm.accept(null));
+        HBox buttons = new HBox(resetButton, helpButton, newWIndow);
+
 
         buttons.setSpacing(20);
         buttons.setAlignment(Pos.CENTER);
@@ -549,9 +553,8 @@ public class UserScreen extends Application {
     }
 
     private void addVariables(List<Variable> vars) {
-        for (Variable v : vars)
-            System.out.print(v.getName());
-        variableView.addVariables(vars);
+        for(Variable v:vars)
+            variableView.addVariables(vars);
     }
 
     /*
