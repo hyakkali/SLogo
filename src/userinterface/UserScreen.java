@@ -43,7 +43,7 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class UserScreen extends Application {
+public class UserScreen extends Application implements UserInterface{
     private static final String DEFAULT_RESOURCES = "resources.languages/";
     private static final String HELP_URL = "https://www2.cs.duke.edu/courses/compsci308/spring18/assign/03_slogo/commandView.php";
     private static final String TITLE = "Slogo";
@@ -114,7 +114,7 @@ public class UserScreen extends Application {
      * in the slogo project and add to the scene which returns to
      * start --this calls the menu related functions
      */
-    public Scene setupScene(int width, int length) {
+    private Scene setupScene(int width, int length) {
         Group root = new Group();
 
         setupProperties("English");
@@ -293,6 +293,7 @@ public class UserScreen extends Application {
     /* creates the scene within the stage by calling setScene
      * defines/ initializes the state and begins stepping
      */
+    @Override
     public void start(Stage stage) {
         myStage = stage;
         myScene = setupScene(X_SIZE, Y_SIZE); // get the scene
