@@ -167,8 +167,9 @@ public class Turtle extends ImageView{
 	public void setToOrigin() {
 		this.setX(ORIGIN);
 		this.setY(ORIGIN);
-		this.xEndLoc = 0.0;
-		this.yEndLoc = 0.0;
+		this.setHeading(0.0);
+		this.xEndLoc = ORIGIN;
+		this.yEndLoc = ORIGIN;
 	}
 
 	/**
