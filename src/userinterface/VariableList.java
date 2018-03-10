@@ -22,6 +22,7 @@ public class VariableList extends VBox{
     {
         setPrefWidth(XSIZE / 7 * 4);
         setPrefHeight(YSIZE / 7 * 2);
+
     }
 
     public void addVariables(List<Variable> variables)

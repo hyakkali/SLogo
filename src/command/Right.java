@@ -13,7 +13,7 @@ public class Right implements Command {
 	
 	/**
 	 * Specifies amount to move the turtle right.
-	 * @param amount the amount to move.
+	 * param  the amount to move.
 	 */
 	public Right(Double degrees) {
 		this.degrees = degrees;
