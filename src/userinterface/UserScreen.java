@@ -122,7 +122,7 @@ public class UserScreen extends Application implements UserInterface{
         myScene = new Scene(root, width, length);
         myScene.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> saveState());//listens to the mouse and calls save when a mouse clicked / button pressed
         myScene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-            if (e.getCode().equals(KeyCode.ALT)) loadState();
+            if (e.getCode().equals(KeyCode.ALT)) undo();
         });
 
         VBox right = createSideMenu();
@@ -147,6 +147,7 @@ public class UserScreen extends Application implements UserInterface{
 
         return myScene;
     }
+
 
     /* Initialize the turtles with context menus and
      * and put them in active or inactive lists
@@ -390,6 +391,9 @@ public class UserScreen extends Application implements UserInterface{
         return interactives;
     }
 
+    /*
+        initializes the file choosing menu at the top
+     */
     private MenuBar createTopMenu()
     {
         MenuBar topMenu = new MenuBar();
@@ -597,7 +601,7 @@ public class UserScreen extends Application implements UserInterface{
 
     /* reinitialize the state from a past state 'undo'
      */
-    private void loadState() {
+    private void undo() {
         if (!history.isEmpty()) {
             State load = history.pop();
             myTurtles.clear();
@@ -660,7 +664,7 @@ public class UserScreen extends Application implements UserInterface{
             File xml = fileChooser.showOpenDialog(myStage);
             State load = ReadXML.buildState(xml);
             history.push(load);
-            loadState();
+            undo();
         } catch (IllegalStateException e) {
             printError("File could not b e read");
         }

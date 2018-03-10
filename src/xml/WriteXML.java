@@ -25,7 +25,13 @@ public class WriteXML {
     private static Element rootElement;
     private static final String STATE_FILE = "-state";
     private static final String PREF_FILE = "-pref";
+/*
+      Author @ Conrad defines how and where files are saveed by the user
+ */
 
+    /*
+        builds the structure of the file writer
+     */
     private static void buildDoc() {
         documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
@@ -37,6 +43,7 @@ public class WriteXML {
         catch(javax.xml.parsers.ParserConfigurationException e){}
     }
 
+    //calls save turtles lines and preferences and writes output
     public static void saveFile(State state) {
 
         buildDoc();
@@ -45,13 +52,14 @@ public class WriteXML {
         writeTurtles(state.pastTurtles);
         writeLines(state.pastLines);
 
-        writeFile(STATE_FILE);
+        createFile(STATE_FILE);
     }
 
+    //saves preferences and outputs to directory od data
     public static void savePref(String background, String language, int tNum) {
         buildDoc();
         writePreferences(language, background, tNum);
-        writeFile(PREF_FILE);
+        createFile(PREF_FILE);
     }
 
     private static void writeTurtles(List<Turtle> turtles) {
@@ -73,7 +81,8 @@ public class WriteXML {
         }
     }
 
-    private static void writeFile(String fileType) {
+    //specifies a format and file location to save the information
+    private static void createFile(String fileType) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
         File xmlFile = new File(System.getProperty("user.dir")+"/data/saved/"+dtf.format(now) + fileType + ".xml");

@@ -15,7 +15,9 @@ import java.util.List;
 import command.Variable;
 
 public class VariableList extends VBox{
-    //Make a tableview
+    /*
+        Author @Conrad this class defines the method of adding variables to the UI and editing them dynamically in the UI
+     */
     private HashMap<TextField, Variable > list = new HashMap<>();
 
     public VariableList(int XSIZE, int YSIZE)
@@ -25,6 +27,10 @@ public class VariableList extends VBox{
 
     }
 
+    /*
+            receives all variables in the backend of slogo and iterates through them to update and
+            changes not currently represented in the view
+     */
     public void addVariables(List<Variable> variables)
     {
         for(Variable v : variables) {
@@ -54,6 +60,9 @@ public class VariableList extends VBox{
         }
     }
 
+    /*
+        edits the value of a specific variable if it was changed
+     */
     public void changeVar(String value, TextField textArea)
     {
         try {

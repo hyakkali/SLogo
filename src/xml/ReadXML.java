@@ -17,9 +17,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+    Auhot @Conrad defines the method of reading in xml files and outputting this information to the UI to be initialized
+ */
 public class ReadXML {
 
+    /*
+        parses the xml file and sends state info to UI
+     */
     public static State buildState(File xml) {
         if(!xml.getName().contains("-state"))
             throw new IllegalStateException();;
@@ -48,7 +53,9 @@ public class ReadXML {
            }
            catch(Exception e){throw new IllegalStateException();}
     }
-
+    /*
+        parses pref info and sends to UI to initialize
+     */
     public static void buildPreference(File xml, UserScreen view)
     {
         if(!xml.getName().contains("-pref"))
@@ -68,6 +75,9 @@ public class ReadXML {
         catch(Exception e){throw new IllegalStateException();}
     }
 
+    /*
+        method to declutter the copying of lines in stateLoading method
+     */
     private static Line buildLine(String lInfo) {
         Line l = new Line();
         l.setStartX(Double.valueOf(lInfo.substring(0,lInfo.indexOf(" "))));
