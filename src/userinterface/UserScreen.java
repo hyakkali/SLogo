@@ -83,14 +83,7 @@ public class UserScreen extends Application{
     private Stack<State> history = new Stack<>();
 
 
-<<<<<<< HEAD
-
-//INITIALIZATION RELATED FUNCTIONS
-    //SCENE RELATED FUNCTIONS_________________________________________________________________________
-    /* adds the turtles called for by controller to the userscreen
-=======
     /* adds the myTurtles called for by controller to the userscreen
->>>>>>> 09b76d185ebb01cd598ec7ed2a5746b4f10ae131
      */
     public UserScreen(ArrayList<Turtle> t, Stage stage) {
         myTurtles = t;
@@ -383,7 +376,7 @@ public class UserScreen extends Application{
     }
     
     public void clearLines() {
-    		for(Turtle turtle:turtles) {
+    		for(Turtle turtle: myTurtles) {
     			turtle.pen.clearLines();
     		}
     		for(Line l:lines) {
@@ -571,11 +564,11 @@ public class UserScreen extends Application{
                             if (myActiveTurtles.contains(turtle)) {
                                 myActiveTurtles.remove(turtle);
                                 turtle.setActive(false);
-                                turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
+                                //turtle.setEffect(changeImageBrightness(INACTIVE_TURTLE));
                             } else {
                                 myActiveTurtles.add(turtle);
                                 turtle.setActive(true);
-                                turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
+                                //turtle.setEffect(changeImageBrightness(ACTIVE_TURTLE));
                             }
                         } else if (event.getClickCount() == 1) {
                             turtle.requestFocus();
