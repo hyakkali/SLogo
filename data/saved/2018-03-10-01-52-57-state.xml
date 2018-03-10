@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<Properties>
+     <NumTurtles>3</NumTurtles>
+     <Background>#ffffff</Background>
+     <Language>English</Language>
+     <Turtle>1.0 250.0 200.0 0.0 Turtle true true</Turtle>
+     <Turtle>2.0 250.0 200.0 0.0 Turtle true true</Turtle>
+     <Turtle>3.0 300.0 141.0 40.0 Turtle true true</Turtle>
+     <Line>270.0 290.0 270.0 272.0 0x000000ff 1.0</Line>
+     <Line>270.0 272.0 270.0 252.0 0x000000ff 1.0</Line>
+     <Line>270.0 252.0 276.0 234.0 0x000000ff 1.0</Line>
+     <Line>276.0 234.0 288.0 219.0 0x000000ff 1.0</Line>
+     <Line>270.0 290.0 270.0 240.0 0x000000ff 1.0</Line>
+     <Line>270.0 290.0 270.0 240.0 0x000000ff 1.0</Line>
+     <Line>288.0 219.0 320.0 181.0 0x000000ff 1.0</Line>
+</Properties>

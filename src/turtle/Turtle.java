@@ -255,6 +255,7 @@ public class Turtle extends ImageView{
 	 * 
 	 */
 	public void setImage(String k) {
+		System.out.print(k);
 		this.setImage(images.get(k));
 		imageURL=k;
 	}
@@ -405,13 +406,35 @@ public class Turtle extends ImageView{
 		copyPen.setStartLineLocation(this.getX(),this.getY());
 
 		Turtle copy = new Turtle(copyPen,this.getID());
-		copy.setImage(this.getImage());
+		copy.setImage(this.imageURL);
 		copy.setX(this.getX());
 		copy.setY(this.getY());
 		copy.setRotate(this.getRotate());
 		copy.setVisible(this.isVisible());
 
 		return copy;
+	}
+
+	public String toString()
+	{
+		String tInfo="";
+		tInfo += getID() + " " + getX() + " " + getY() + " " + getRotate() + " " + imageURL + " " + getActive() + " " + isVisible();
+		return tInfo;
+	}
+	public Turtle(String tInfo) {
+		this(new LinePen(), Double.valueOf(tInfo.substring(0,tInfo.indexOf(" "))));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setX(Double.valueOf(tInfo.substring(0,tInfo.indexOf(" "))));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setY(Double.valueOf(tInfo.substring(0,tInfo.indexOf(" "))));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setRotate(Double.valueOf(tInfo.substring(0,tInfo.indexOf(" "))));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setImage(tInfo.substring(0,tInfo.indexOf(" ")));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setActive(Boolean.valueOf(tInfo.substring(0,tInfo.indexOf(" "))));
+		tInfo = tInfo.substring(tInfo.indexOf(" ")+1);
+		setVisible(Boolean.valueOf(tInfo));
 	}
 
 }

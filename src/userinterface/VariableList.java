@@ -29,7 +29,6 @@ public class VariableList extends VBox{
     {
         for(Variable v : variables) {
             String name = v.getName();
-            System.out.print(name);
             double info = v.getValue();
             if (!list.containsValue(v)) {
                 TextField variableVal = new TextField(String.valueOf(info));

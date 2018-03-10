@@ -171,7 +171,7 @@ public class Controller {
 	 * 
 	 */
 	public void displayText(String text) {
-		view.printToScreen(text);
+		view.printError(text);
 	}
 
 	/**

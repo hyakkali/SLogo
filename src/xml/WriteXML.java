@@ -1,14 +1,13 @@
-package userinterface;
+package xml;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XML11Serializer;
 import javafx.scene.shape.Line;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.html.HTMLLabelElement;
 import turtle.Turtle;
+import userinterface.State;
 
-import javax.swing.event.DocumentEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class WritePreferences {
+public class WriteXML {
 
     private static DocumentBuilderFactory documentBuilderFactory;
     private static DocumentBuilder documentBuilder;
@@ -35,16 +34,16 @@ public class WritePreferences {
             rootElement = xmlDoc.createElement("Properties");
             xmlDoc.appendChild(rootElement);
         }
-        catch(javax.xml.parsers.ParserConfigurationException e){System.out.println("WRONGDOC");}
+        catch(javax.xml.parsers.ParserConfigurationException e){}
     }
 
-    public static void saveFile(String background, String language, List<Turtle> turtles, List<Line> lines) {
+    public static void saveFile(State state) {
 
         buildDoc();
-        writePreferences(language, background, turtles.size());
+        writePreferences(state.language, state.background, state.pastTurtles.size());
 
-        writeTurtles(turtles);
-        writeLines(lines);
+        writeTurtles(state.pastTurtles);
+        writeLines(state.pastLines);
 
         writeFile(STATE_FILE);
     }
@@ -56,35 +55,28 @@ public class WritePreferences {
     }
 
     private static void writeTurtles(List<Turtle> turtles) {
-        Element turtlesElement = xmlDoc.createElement("Turtles");
         for(Turtle turtle  :turtles)
         {
             Element turtleElement = xmlDoc.createElement("Turtle");
-            String tInfo = "";
-            tInfo += turtle.getID() + " " + turtle.getX() + " " + (turtle.getY()) + " " + turtle.getRotate() + " " + turtle.getImageIndex() + " " + turtle.getActive() + " " + turtle.isVisible();
-            turtleElement.appendChild(xmlDoc.createTextNode(tInfo));
-            turtlesElement.appendChild(turtleElement);
+            turtleElement.appendChild(xmlDoc.createTextNode(turtle.toString()));
+            rootElement.appendChild(turtleElement);
         }
-                rootElement.appendChild(turtlesElement);
     }
 
     private static void writeLines(List<Line> lines) {
-        Element linesElement = xmlDoc.createElement("Lines");
         for (Line line : lines) {
             Element lineElement = xmlDoc.createElement("Line");
             String lInfo = "";
             lInfo += line.getStartX() + " " + (line.getStartY()) + " " + line.getEndX() + " " + line.getEndY() + " " + line.getStroke().toString() + " " + line.getStrokeWidth();
             lineElement.appendChild(xmlDoc.createTextNode(lInfo));
-            linesElement.appendChild(lineElement);
+            rootElement.appendChild(lineElement);
         }
-        rootElement.appendChild(linesElement);
     }
 
     private static void writeFile(String fileType) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
-        System.out.print(dtf.format(now));
-        File xmlFile = new File(dtf.format(now) + fileType + ".xml");
+        File xmlFile = new File(System.getProperty("user.dir")+"/data/saved/"+dtf.format(now) + fileType + ".xml");
         OutputFormat out = new OutputFormat();
         out.setIndent(5);
         try {
@@ -93,28 +85,27 @@ public class WritePreferences {
             try {
                 serializer.serialize(xmlDoc);
             } catch (java.io.IOException e) {
-                System.out.print("WRONGt1");
+
             }
         } catch (FileNotFoundException e) {
-            System.out.println("WRONGt2");
+
         }
     }
 
     private static void writePreferences(String language, String background, int tNum) {
 
-        Element preferences  = xmlDoc.createElement("Preferences");
         Element turtleNum = xmlDoc.createElement("NumTurtles");
         turtleNum.appendChild(xmlDoc.createTextNode(String.valueOf(tNum)));
-        preferences.appendChild(turtleNum);
+        rootElement.appendChild(turtleNum);
 
         Element backgroundElement = xmlDoc.createElement("Background");
         backgroundElement.appendChild(xmlDoc.createTextNode(String.valueOf(background)));
-        preferences.appendChild(backgroundElement);
+        System.out.print(background);
+        rootElement.appendChild(backgroundElement);
 
         Element languageElement = xmlDoc.createElement("Language");
         languageElement.appendChild(xmlDoc.createTextNode(String.valueOf(language)));
-        preferences.appendChild(languageElement);
-        rootElement.appendChild(preferences);
+        rootElement.appendChild(languageElement);
     }
 
 }

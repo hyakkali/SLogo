@@ -25,7 +25,6 @@ public class Right implements Command {
 	 */
 	@Override
 	public double execute(Controller controller) {
-		// JavaFX specifies that CW is positive, so leave "degrees" as is
 		controller.rotateTurtle(this.degrees);
 		System.out.println("hemanth"+degrees);
 		return this.degrees;
