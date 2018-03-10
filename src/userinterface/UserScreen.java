@@ -258,11 +258,15 @@ public class UserScreen extends Application{
             if(!tLines.isEmpty()) {
                 Line line = tLines.get(tLines.size()-1);
                 if(turtle.getX()!=turtle.getXEnd()) {
-                    line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
+                		if(turtle.pen.getPenBoolean()) {
+                			line.setEndX(line.getEndX()+turtle.getXSpeed()*elapsedTime);
+                		}
                     turtle.setX(turtle.getX()+turtle.getXSpeed()*elapsedTime);
                 }
                 if(turtle.getY()!=turtle.getYEnd()) {
-                    line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
+	                	if(turtle.pen.getPenBoolean()) {
+	                		line.setEndY(line.getEndY()-turtle.getYSpeed()*elapsedTime);
+	                	}
                     turtle.setY(turtle.getY()-turtle.getYSpeed()*elapsedTime);
                 }
             }
