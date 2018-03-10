@@ -648,11 +648,24 @@ public class UserScreen extends Application implements UserInterface{
     }
 
     private void saveFile() {
-        WriteXML.saveFile(history.peek());
+        try{
+            WriteXML.saveFile(history.peek());
+        }
+        catch(Exception e)
+        {
+            printError("Could not Save File");
+        }
+
     }
 
     private void safePref() {
-        WriteXML.savePref(turtlePane.getStyle(), language, myTurtles.size());
+        try {
+            WriteXML.savePref(turtlePane.getStyle(), language, myTurtles.size());
+        }
+        catch(Exception e)
+        {
+            printError("Could not Save Preference");
+        }
     }
 
     private void loadFile() {

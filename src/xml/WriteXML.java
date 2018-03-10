@@ -13,8 +13,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 public class WriteXML {
@@ -44,7 +46,7 @@ public class WriteXML {
     }
 
     //calls save turtles lines and preferences and writes output
-    public static void saveFile(State state) {
+    public static void saveFile(State state) throws Exception{
 
         buildDoc();
         writePreferences(state.language, state.background, state.pastTurtles.size());
@@ -53,10 +55,11 @@ public class WriteXML {
         writeLines(state.pastLines);
 
         createFile(STATE_FILE);
+
     }
 
     //saves preferences and outputs to directory od data
-    public static void savePref(String background, String language, int tNum) {
+    public static void savePref(String background, String language, int tNum) throws Exception {
         buildDoc();
         writePreferences(language, background, tNum);
         createFile(PREF_FILE);
@@ -82,23 +85,16 @@ public class WriteXML {
     }
 
     //specifies a format and file location to save the information
-    private static void createFile(String fileType) {
+    private static void createFile(String fileType) throws Exception {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
         File xmlFile = new File(System.getProperty("user.dir")+"/data/saved/"+dtf.format(now) + fileType + ".xml");
         OutputFormat out = new OutputFormat();
         out.setIndent(5);
-        try {
             FileOutputStream fos = new FileOutputStream(xmlFile);
             XML11Serializer serializer = new XML11Serializer(fos, out);
-            try {
-                serializer.serialize(xmlDoc);
-            } catch (java.io.IOException e) {
+            serializer.serialize(xmlDoc);
 
-            }
-        } catch (FileNotFoundException e) {
-
-        }
     }
 
     private static void writePreferences(String language, String background, int tNum) {
