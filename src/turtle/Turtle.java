@@ -87,6 +87,7 @@ public class Turtle extends ImageView{
 		pen.setStartLineLocation(this.getX()+(TURTLE_WIDTH/2), this.getY()+TURTLE_HEIGHT);
 		double xAmount = calculateXAmount(angle,amount);
 		double yAmount = calculateYAmount(angle,amount);
+		System.out.println(angle);
 		if(amount<0) {
 			setBackwardSpeed(angle);
 		} else {
@@ -103,6 +104,7 @@ public class Turtle extends ImageView{
 	 */
 	private void setForwardSpeed(double angle) {
 		double newAngle = getCoterminalAngle(angle);
+		System.out.println("forward"+newAngle);
 		if(newAngle>=0 && newAngle<=HALF_PI) {
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = Math.abs(ySpeed);
@@ -110,6 +112,7 @@ public class Turtle extends ImageView{
 			this.xSpeed = Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
 		} else if(newAngle>PI && newAngle<=THREE_HALF_PI) {
+			System.out.println("what the!");
 			this.xSpeed = -1*Math.abs(xSpeed);
 			this.ySpeed = -1*Math.abs(ySpeed);
 		} else if(newAngle>THREE_HALF_PI && newAngle<=TWO_PI) {
@@ -372,10 +375,10 @@ public class Turtle extends ImageView{
 	 */
 	private double getCoterminalAngle(double angle) {
 		while(angle<0) {
-			angle += PI;
+			angle += TWO_PI;
 		}
-		while(angle>PI) {
-			angle = angle % PI;
+		while(angle>TWO_PI) {
+			angle = angle % TWO_PI;
 		}
 		return angle;
 	}
