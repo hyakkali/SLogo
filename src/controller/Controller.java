@@ -130,6 +130,7 @@ public class Controller {
 			turtle.setToOrigin();
 			turtle.pen.clearLines();
 		}
+		view.clearLines();
 	}
 
 	/**

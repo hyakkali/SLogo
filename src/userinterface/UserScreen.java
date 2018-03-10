@@ -255,7 +255,6 @@ public class UserScreen extends Application{
     private void step(double elapsedTime) {
         for (Turtle turtle : myActiveTurtles) {
             List<Line> tLines = turtle.pen.getLines();
-            System.out.println(turtle.getXEnd());
             if(!tLines.isEmpty()) {
                 Line line = tLines.get(tLines.size()-1);
                 if(turtle.getX()!=turtle.getXEnd()) {
@@ -523,7 +522,6 @@ public class UserScreen extends Application{
 
     private void addVariables(List<Variable> vars) {
         for(Variable v:vars)
-            System.out.print(v.getName());
         variableView.addVariables(vars);
     }
 
